@@ -1,0 +1,496 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>线程属性 | 生如夏花的博客</title>
+<meta property="og:title" content="线程属性 - 生如夏花的博客"><meta property="og:type" content="article"><meta property="article:published_time" content='2024-01-31T22:57:51+08:00'><meta property="article:modified_time" content='2024-02-24T23:34:45+08:00'><meta name=Keywords content="C语言,Linux系统开发,物联网,博客,项目管理,软件架构"><meta name=description content="系统对线程的限制、通过属性对象控制线程、线程的同步属性"><meta name=author content><meta property="og:url" content="https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7/"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css integrity="sha512-RLF8eOxhuwsRINc7r56dpl9a3VStqrXD+udWahutJrYdyh++2Ghnf+s4jFsOyryKZt/GNjPwbXVPH3MJpKrn2g==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=/css/badge.min.dc57f0a9d275742b1e2d17f204ae0b829361b5dd0df99d3d356615830fb223936c054d31a888c5f369975da90586601e2666ddbbbb36e98510b814a70826e874.css integrity="sha512-3FfwqdJ1dCseLRfyBK4LgpNhtd0N+Z09NWYVgw+yI5NsBU0xqIjF82mXXakFhmAeJmbdu7s26YUQuBSnCCbodA==" crossorigin=anonymous><link rel=stylesheet href=/css/header.min.9e74ad2f7e23fb54e2da3ef2f1eb6498897cd4139d181133b5e641f107980364ccfbcea731badb693b4a50819c388b6f8cab037346daf142114f86f14faa8766.css integrity="sha512-nnStL34j+1Ti2j7y8etkmIl81BOdGBEzteZB8QeYA2TM+86nMbrbaTtKUIGcOItvjKsDc0ba8UIRT4bxT6qHZg==" crossorigin=anonymous><link rel=stylesheet href=/css/table.min.032852d8d049c55be5cd0a27bf8c7b09c8ea549fb719c2fd0231ebd262fdddb5aaaf391dabeb89ce33bcbe49f13ee8a530822a26f76b675af23473ed07b95d2e.css integrity="sha512-AyhS2NBJxVvlzQonv4x7CcjqVJ+3GcL9AjHr0mL93bWqrzkdq+uJzjO8vknxPuilMIIqJvdrZ1ryNHPtB7ldLg==" crossorigin=anonymous><link rel=stylesheet href=/css/baseof.min.5e04a6c8338c3c57aedaaae91320971e148651ac160d51bb58ebfec7757346a177331ac5646bbb1b2664b1c8cc405939125785c138935bc0d29a805b11791691.css integrity="sha512-XgSmyDOMPFeu2qrpEyCXHhSGUawWDVG7WOv+x3VzRqF3MxrFZGu7GyZkscjMQFk5EleFwTiTW8DSmoBbEXkWkQ==" crossorigin=anonymous><link rel=stylesheet href=/css/rocket.min.96a6be31cd3df9dcd4e7e131e9fcb0e63149da1da6a23df5ed8c8e0ccf0436f4c95aad5ded6a69e7fba5c051f8cc00466fcedaa07e4c7f59492d4a15aba2e936.css integrity="sha512-lqa+Mc09+dzU5+Ex6fyw5jFJ2h2moj317YyODM8ENvTJWq1d7Wpp5/ulwFH4zABGb87aoH5Mf1lJLUoVq6LpNg==" crossorigin=anonymous><link rel=stylesheet href=/css/toc.min.6d85af7b55a06a3c1672914851ad8f64e3e4de3a81435cc45b05f1b71fb4bde6d0f00597b4f316d214809e3597a66516d7651772c9da8d8e42bf188fb3df5a85.css integrity="sha512-bYWve1WgajwWcpFIUa2PZOPk3jqBQ1zEWwXxtx+0vebQ8AWXtPMW0hSAnjWXpmUW12UXcsnajY5CvxiPs99ahQ==" crossorigin=anonymous><link rel=stylesheet href=/css/clipboard.min.5e6a0198e50c850ced7dc2ba6f282ecaab21a8daad9eee626b990120818361b4b0007128d73957d5682346c88a6f9831f5872051e5f12da830cc29ca75676403.css integrity="sha512-XmoBmOUMhQztfcK6byguyqshqNqtnu5ia5kBIIGDYbSwAHEo1zlX1WgjRsiKb5gx9YcgUeXxLagwzCnKdWdkAw==" crossorigin=anonymous><link rel=stylesheet href=/css/style.min.2af5fd807ef34ec700d21d326733adff6177ee5261d0810a5357fe02d9508bd54418aff2317c7d8761548124f1f7befd087353c6308ec3795a1dafbfba4b7193.css integrity="sha512-KvX9gH7zTscA0h0yZzOt/2F37lJh0IEKU1f+AtlQi9VEGK/yMXx9h2FUgSTx9779CHNTxjCOw3laHa+/uktxkw==" crossorigin=anonymous><link rel="shortcut icon" href=/img/favicon.png type=image/x-icon><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin=anonymous referrerpolicy=no-referrer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/vim.min.js></script><script src=/js/gumshoe.min.min.9dec1df0371d73b03324ed4bb78a6d5b2e84af6a37b11ce799808a26d70dfd156595f8d23c42db9e4866f12b4c0de664cfd032fa6f95bdaaada1bacdb235e79e.js integrity="sha512-newd8Dcdc7AzJO1Lt4ptWy6Er2o3sRznmYCKJtcN/RVllfjSPELbnkhm8StMDeZkz9Ay+m+VvaqtobrNsjXnng==" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.1/Valine.min.js integrity="sha512-FxPzcGnQGjqsUr1ofvicx9Y7T53thxBSvYCBdKeW/Sfr5dQVEkh70r7sl1TMsEVheXsoOTqXZ9z2t75JNeak/g==" crossorigin=anonymous referrerpolicy=no-referrer></script></head><body><div class=container><div class=container-header><header><div class=header-main><div class=header-site-name><a id=header-title href=https://DBL2017.github.io/>生如夏花的博客</a><p class=description>专注于工业物联网行业数据采集，嵌入式Linux系统裁剪，5G智慧网关软件开发等</p></div><div class=header-menu><nav id=header-nav-menu><a href=https://DBL2017.github.io/>首页</a>
+<a href=https://DBL2017.github.io/series/ title=系列>系列</a>
+<a href=https://DBL2017.github.io/categories/ title=分类>分类</a>
+<a href=https://DBL2017.github.io/tags/ title=标签>标签</a>
+<a href=https://DBL2017.github.io/archives/ title=归档>归档</a>
+<a href=https://DBL2017.github.io/about/ title=关于>关于</a></nav></div></div></header></div><div class=container-content><div class=content-center><div class=main-single><div class=single-toc><div class=post-toc><h2 class=post-toc-title><a href=#>目录</a></h2><div class=post-toc-content><nav id=TableOfContents><ul><li><a href=#系统限制>系统限制</a></li><li><a href=#线程创建属性>线程创建属性</a><ul><li><a href=#线程分离状态>线程分离状态</a></li><li><a href=#线程栈属性>线程栈属性</a></li><li><a href=#线程栈警戒缓冲区大小>线程栈警戒缓冲区大小</a></li></ul></li><li><a href=#线程取消属性>线程取消属性</a><ul><li><a href=#可取消状态>可取消状态</a></li><li><a href=#可取消类型>可取消类型</a></li></ul></li></ul></nav></div></div></div><div class=single-article><article class=post><header><h1 class=post-title>线程属性</h1></header><date class="post-meta meta-date"><span class=meta-category><a href=/archives/#2024>2024年1月31日</a></span></date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/categories/#%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0>读书笔记</a></span></div><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/series/#APUE>APUE</a></span></div><div class=post-meta><span>|</span>
+<span>共5098字</span></div><div class=post-meta><span>|</span>
+<span>阅读时长(11分钟)</span></div><div class=clear style=display:none><div class=toc-article><div class=toc-title>文章目录</div></div></div><div class=post-content><p>SUS定义了一些系统层面上对于线程的限制，比如进程可以创建的最大线程数、线程栈可用的最小字节数等等。</p><p><code>pthread</code>接口允许我们传入<strong>线程或同步对象的属性</strong>来调节线程或同步对象的行为。</p><h2 id=系统限制><a href=#%e7%b3%bb%e7%bb%9f%e9%99%90%e5%88%b6>系统限制</a></h2><p>SUS定义了下面4个线程相关的限制，以增强不同系统之间的可移植性。</p><p>这些限制的值均可通过<code>sysconf</code>函数来获取。</p><table><thead><tr><th>限制名称</th><th>描述</th><th><code>name</code>参数</th></tr></thead><tbody><tr><td><code>PTHREAD_DESTRUCTOR_ITERATIONS</code></td><td>线程退出时操作系统试图销毁<strong>线程特定数据</strong>的最大次数</td><td><code>_SC_THREAD_DESTRUCTOR_ITERATIONS</code></td></tr><tr><td><code>PTHREAD_KEYS_MAX</code></td><td>进程可以创建的键的最大数目</td><td><code>_SC_THREAD_KEYS_MAX</code></td></tr><tr><td><code>PTHREAD_STACK_MIN</code></td><td>一个线程的栈可用最小字节数</td><td><code>_SC_THREAD_STACK_MIN</code></td></tr><tr><td><code>PTHREAD_THREADS_MAX</code></td><td>进程可以创建的最大线程数</td><td><code>_SC_THREAD_THREADS_MAX</code></td></tr></tbody></table><p>下面的例子展示了使用<code>sysconf</code>函数获取上面这些限制的值：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;errno.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>pr_sysconf</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>mesg</span><span class=p>,</span> <span class=kt>int</span> <span class=n>name</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>long</span> <span class=n>val</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;%s&#34;</span><span class=p>,</span> <span class=n>mesg</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>((</span><span class=n>val</span> <span class=o>=</span> <span class=nf>sysconf</span><span class=p>(</span><span class=n>name</span><span class=p>))</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 返回-1并不代表sysconf调用出错
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=n>errno</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>errno</span> <span class=o>==</span> <span class=n>EINVAL</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=c1>// errno设置为EINVAL表示不支持字段
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=nf>printf</span><span class=p>(</span><span class=s>&#34; (not supported)</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span>
+</span></span><span class=line><span class=cl>                <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;sysconf&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// errno没有设置，表示不确定值
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34; (no limit)</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34; %ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>val</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 线程退出时操作系统试图销毁线程特定数据的最大次数
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pr_sysconf</span><span class=p>(</span><span class=s>&#34;PTHREAD_DESTRUCTOR_INTERATIONS&#34;</span><span class=p>,</span> <span class=n>_SC_THREAD_DESTRUCTOR_ITERATIONS</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 进程可以创建的键的最大数目
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pr_sysconf</span><span class=p>(</span><span class=s>&#34;PTHREAD_KEYS_MAX&#34;</span><span class=p>,</span> <span class=n>_SC_THREAD_KEYS_MAX</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 一个线程可用栈的最小字节数
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pr_sysconf</span><span class=p>(</span><span class=s>&#34;PTHREAD_STACK_MIN&#34;</span><span class=p>,</span> <span class=n>_SC_THREAD_STACK_MIN</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 进程可以从创建的最大线程数
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pr_sysconf</span><span class=p>(</span><span class=s>&#34;PTHREAD_THREADS_MAX&#34;</span><span class=p>,</span> <span class=n>_SC_THREAD_THREADS_MAX</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// PTHREAD_DESTRUCTOR_INTERATIONS 4
+</span></span></span><span class=line><span class=cl><span class=c1>// PTHREAD_KEYS_MAX 1024
+</span></span></span><span class=line><span class=cl><span class=c1>// PTHREAD_STACK_MIN 16384
+</span></span></span><span class=line><span class=cl><span class=c1>// PTHREAD_THREADS_MAX (no limit)
+</span></span></span></code></pre></div><p><code>sysconf</code>函数返回值小于0时，还需要通过<code>errno</code>进一步判断是不支持、无限制以及调用失败这三种情况。</p><h2 id=线程创建属性><a href=#%e7%ba%bf%e7%a8%8b%e5%88%9b%e5%bb%ba%e5%b1%9e%e6%80%a7>线程创建属性</a></h2><p>通过向<code>pthread</code>接口传入线程或同步对象的<strong>属性</strong>可以来调节线程或同步对象的行为。管理这些属性的函数一般遵循相同的模式。</p><p>关于属性有以下几点说明：</p><ol><li>每个对象与他自己类型的属性对象进行关联（线程与线程属性关联、互斥量与互斥量属性关联）。</li><li>一个属性对象可以表示多个属性。属性对象对应用程序是不透明的。</li><li>具有一个初始化函数将属性设置为默认值。</li><li>具有一个销毁属性对象的函数。</li><li>具有一个从属性对象中获取属性值的函数。</li><li>具有一个设置属性值到属性对象的函数。属性值作为参数进行传递。</li></ol><p>线程属性的类型：<code>pthread_attr_t</code>，可以传入<code>pthread_create</code>函数改变线程的行为。</p><p>线程属性的初始化函数：<code>pthread_attr_init</code>，属性对象的内容空间是动态分配的，值为操作系统实现支持线程属性的默认值。</p><p>线程属性的销毁函数：<code>pthread_attr_destroy</code>，释放动态分配的属性对象内存空间。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_init</span><span class=p>(</span><span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_destroy</span><span class=p>(</span><span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值：成功返回0， 失败返回错误编号
+</span></span></span></code></pre></div><p>下面是POSIX.1支持的4个线程属性，这4个属性均包含在<code>pthread_attr_t</code>结构中并在线程创建时进行设置。</p><table><thead><tr><th>属性名称</th><th>描述</th></tr></thead><tbody><tr><td><code>detachstate</code></td><td>线程的分离状态属性</td></tr><tr><td><code>guardsize</code></td><td>线程栈末尾的警戒缓冲区大小（字节数）</td></tr><tr><td><code>stackaddr</code></td><td>线程栈的最低地址</td></tr><tr><td><code>stacksize</code></td><td>线程栈的最小长度（字节数）</td></tr></tbody></table><p>含有两个线程属性分别是<strong>可取消状态</strong>（<code>cancelstatue</code>）和<strong>可取消类型</strong>（<code>canceltype</code>），用于调节线程被取消时的行为。</p><h3 id=线程分离状态><a href=#%e7%ba%bf%e7%a8%8b%e5%88%86%e7%a6%bb%e7%8a%b6%e6%80%81>线程分离状态</a></h3><p>如果对线程的终止状态不感兴趣，有以下两种方法可以使线程处于分离状态，操作系统会在线程（处于分离状态）退出时收回它所占用的资源。</p><ol><li><strong>如果线程已存在，可以调用<code>pthread_detach</code>函数使线程处于分离状态</strong>。</li><li><strong>如果线程还未创建，可以修改<code>pthread_attr_t</code>结构中的<code>detachstate</code>线程属性，使线程一开始就处于分离状态</strong>。</li></ol><p>可以使用下面两个函数修改或获取<code>pthread_attr_t</code>结构中的<code>detachstate</code>线程属性。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>pthread_attr_setdetachstate</span><span class=p>(</span><span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>,</span> <span class=kt>int</span> <span class=n>detachstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_getdetachstate</span><span class=p>(</span><span class=k>const</span> <span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>,</span> <span class=kt>int</span> <span class=o>*</span><span class=n>detachstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值：成功返回0，失败返回错误编号
+</span></span></span></code></pre></div><p><code>pthread_attr_getdetachstate</code>函数用于获取当前的<code>detachstate</code>线程属性。<code>detachstate</code>线程属性的取值有两种，分别是<code>PTHREAD_CREATE_DETACHED</code>与<code>PTHREAD_CREATE_JOINABLE</code>。</p><p>下面的示例给出了以分离状态创建线程：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=cm>/* Detach state.  */</span>
+</span></span><span class=line><span class=cl><span class=c1>// enum
+</span></span></span><span class=line><span class=cl><span class=c1>// {
+</span></span></span><span class=line><span class=cl><span class=c1>//   PTHREAD_CREATE_JOINABLE,
+</span></span></span><span class=line><span class=cl><span class=c1>// #define PTHREAD_CREATE_JOINABLE      PTHREAD_CREATE_JOINABLE
+</span></span></span><span class=line><span class=cl><span class=c1>//   PTHREAD_CREATE_DETACHED
+</span></span></span><span class=line><span class=cl><span class=c1>// #define PTHREAD_CREATE_DETACHED      PTHREAD_CREATE_DETACHED
+</span></span></span><span class=line><span class=cl><span class=c1>// };
+</span></span></span><span class=line><span class=cl><span class=c1>// 该函数会以分离状态创建线程
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>static</span> <span class=kt>int</span> <span class=nf>makepthread</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=p>(</span><span class=o>*</span><span class=n>fn</span><span class=p>)(</span><span class=kt>void</span><span class=o>*</span><span class=p>),</span> <span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>err</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pthread_t</span> <span class=n>tid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pthread_attr_t</span> <span class=n>attr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_attr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>err</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_attr_setdetachstate</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>PTHREAD_CREATE_DETACHED</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tid</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>fn</span><span class=p>,</span> <span class=n>arg</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>detachstate</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_attr_getdetachstate</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>detachstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;%d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>detachstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_attr_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>err</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span><span class=o>*</span> <span class=nf>thr_fn</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thr_fn</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nf>makepthread</span><span class=p>(</span><span class=n>thr_fn</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// $ ./makepthread_detachstate
+</span></span></span><span class=line><span class=cl><span class=c1>// 1
+</span></span></span><span class=line><span class=cl><span class=c1>// thr_fn
+</span></span></span></code></pre></div><h3 id=线程栈属性><a href=#%e7%ba%bf%e7%a8%8b%e6%a0%88%e5%b1%9e%e6%80%a7>线程栈属性</a></h3><p><strong>如果线程栈的虚拟地址空间不够用，那么可以通过使用线程的栈属性，为线程分配可替代的栈空间</strong>。</p><p>在编译阶段可以使用<code>_POSIX_THREAD_ATTR_STACKADDR</code>与<code>_POSIX_THREAD_ATTR_STACKSIZE</code>符号来检测系统是否支持线程栈属性。</p><p>可以使用函数<code>pthread_attr_getstack</code>与<code>pthread_attr_setstack</code>函数对线程栈属性进行管理（设置或获取线程栈地址与大小）。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_setstack</span><span class=p>(</span><span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                         <span class=kt>void</span> <span class=n>stackaddr</span><span class=p>[.</span><span class=n>stacksize</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                         <span class=kt>size_t</span> <span class=n>stacksize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_getstack</span><span class=p>(</span><span class=k>const</span> <span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=kr>restrict</span> <span class=n>attr</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                         <span class=kt>void</span> <span class=o>**</span><span class=kr>restrict</span> <span class=n>stackaddr</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                         <span class=kt>size_t</span> <span class=o>*</span><span class=kr>restrict</span> <span class=n>stacksize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值： 成功返回0 失败返回错误编号
+</span></span></span></code></pre></div><p><code>stackaddr</code>参数是分配的缓冲区的最低地址，<strong>也是线程栈的最低内存地址，但不一定是线程栈的开始位置</strong>，因为线程栈可能是从高地址向低地址方向增长的。</p><p><code>stackaddr</code>参数指定的缓冲区地址与系统寻址边界对齐。<code>malloc</code>函数返回的缓冲区默认是对其的。</p><p>如果仅修改默认线程栈的大小，而不处理线程栈的分配问题，可以使用函数<code>pthread_attr_getstacksize</code>与<code>pthread_attr_setstacksize</code>。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_setstacksize</span><span class=p>(</span><span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>,</span> <span class=kt>size_t</span> <span class=n>stacksize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_getstacksize</span><span class=p>(</span><span class=k>const</span> <span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=kr>restrict</span> <span class=n>attr</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                             <span class=kt>size_t</span> <span class=o>*</span><span class=kr>restrict</span> <span class=n>stacksize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值： 成功返回0，失败返回错误编号
+</span></span></span></code></pre></div><p><strong>设置线程栈大小时，<code>stacksize</code>不能小于系统限制值<code>PTHREAD_STACK_MIN</code></strong>。</p><p>下面的例子展示了设置以及获取线程栈属性</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#define _GNU_SOURCE
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span><span class=o>*</span> <span class=nf>thr_fn</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pthread_attr_t</span> <span class=n>attr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 在线程内部获取线程属性
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_getattr_np</span><span class=p>(</span><span class=nf>pthread_self</span><span class=p>(),</span> <span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span><span class=o>*</span> <span class=n>stackbase</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>size_t</span> <span class=n>stacksize</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>size_t</span> <span class=n>guardsize</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_attr_getstack</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>stackbase</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>stacksize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_attr_getguardsize</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>guardsize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;stackbase=%p stacksize=%zu guardsize=%zu</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>stackbase</span><span class=p>,</span> <span class=n>stacksize</span> <span class=o>/</span> <span class=mi>1024</span><span class=p>,</span> <span class=n>guardsize</span> <span class=o>/</span> <span class=mi>1024</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_attr_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pthread_t</span> <span class=n>pid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>err</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取默认栈属性及大小
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pid</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=n>thr_fn</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;create thread failed</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_join</span><span class=p>(</span><span class=n>pid</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=cp>#define STACKSIZE (20 * 1024 * 1024)  </span><span class=c1>// 20Mb
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 仅设置线程栈的大小
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_attr_t</span> <span class=n>attr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>pthread_attr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_attr_setstacksize</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>STACKSIZE</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pid</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>thr_fn</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;create thread failed</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_join</span><span class=p>(</span><span class=n>pid</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_attr_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 设置线程栈的位置及大小
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=nf>pthread_attr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>char</span><span class=o>*</span> <span class=n>stackbuf</span> <span class=o>=</span> <span class=p>(</span><span class=kt>char</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=k>sizeof</span><span class=p>(</span><span class=kt>char</span><span class=p>)</span> <span class=o>*</span> <span class=n>STACKSIZE</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_attr_setstack</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>stackbuf</span><span class=p>,</span> <span class=n>STACKSIZE</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pid</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>thr_fn</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;create thread failed</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_join</span><span class=p>(</span><span class=n>pid</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_attr_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// $ ./set_thread_stack_attr
+</span></span></span><span class=line><span class=cl><span class=c1>// stackbase=0x7f7489400000 stacksize=8192 guardsize=4
+</span></span></span><span class=line><span class=cl><span class=c1>// stackbase=0x7f7482c00000 stacksize=20480 guardsize=4
+</span></span></span><span class=line><span class=cl><span class=c1>// stackbase=0x7f74817fe010 stacksize=20480 guardsize=0
+</span></span></span></code></pre></div><h3 id=线程栈警戒缓冲区大小><a href=#%e7%ba%bf%e7%a8%8b%e6%a0%88%e8%ad%a6%e6%88%92%e7%bc%93%e5%86%b2%e5%8c%ba%e5%a4%a7%e5%b0%8f>线程栈警戒缓冲区大小</a></h3><p>线程栈警戒缓冲区大小<code>guardsize</code>控制着线程栈末尾之后用以<strong>避免栈溢出的扩展内存的大小</strong>。默认值为系统页大小<code>PAGE_SIZE</code>。</p><p>如果修改了线程栈地址，即<code>stackaddr</code>属性，则系统会认为应用程序来管理栈，进而使栈警戒缓冲机制无效，即将<code>guardsize</code>大小设置为0（如上面例子所示）。</p><p>下面两个函数用于获取与设置线程栈警戒缓冲区大小，即<code>guardsize</code>值：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_setguardsize</span><span class=p>(</span><span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>,</span> <span class=kt>size_t</span> <span class=n>guardsize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_attr_getguardsize</span><span class=p>(</span><span class=k>const</span> <span class=kt>pthread_attr_t</span> <span class=o>*</span><span class=kr>restrict</span> <span class=n>attr</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                             <span class=kt>size_t</span> <span class=o>*</span><span class=kr>restrict</span> <span class=n>guardsize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值：成功返回0，失败返回错误编号
+</span></span></span></code></pre></div><p><code>guardsize</code>的参数一般取值为系统页大小的整数倍，Linux下系统页大小为4096。</p><p>下面的例子中设置线程栈的警戒缓冲区大小为4096，即一个系统页大小。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=err>$</span> <span class=n>cat</span> <span class=n>set_thread_guardsize</span><span class=p>.</span><span class=n>c</span>
+</span></span><span class=line><span class=cl><span class=cp>#define _GNU_SOURCE
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span><span class=o>*</span> <span class=nf>thr_fn</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pthread_attr_t</span><span class=o>*</span> <span class=n>pAttr</span> <span class=o>=</span> <span class=p>(</span><span class=kt>pthread_attr_t</span><span class=o>*</span><span class=p>)</span><span class=n>arg</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pthread_attr_t</span> <span class=n>attr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span><span class=o>*</span> <span class=n>stackbase</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>size_t</span> <span class=n>stacksize</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_attr_getstack</span><span class=p>(</span><span class=n>pAttr</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>stackbase</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>stacksize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>size_t</span> <span class=n>guardsize</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_attr_getguardsize</span><span class=p>(</span><span class=n>pAttr</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>guardsize</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;stackbase=%p stacksize=%zu guardsize=%zu</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>stackbase</span><span class=p>,</span> <span class=n>stacksize</span> <span class=o>/</span> <span class=mi>1024</span><span class=p>,</span> <span class=n>guardsize</span> <span class=o>/</span> <span class=mi>1024</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pthread_t</span> <span class=n>pid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>err</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=cp>#define STACKSIZE (20 * 1024 * 1024)  </span><span class=c1>// 20Mb
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 仅设置线程栈的大小
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_attr_t</span> <span class=n>attr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 设置线程栈的位置及大小
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=nf>pthread_attr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>char</span><span class=o>*</span> <span class=n>stackbuf</span> <span class=o>=</span> <span class=p>(</span><span class=kt>char</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=k>sizeof</span><span class=p>(</span><span class=kt>char</span><span class=p>)</span> <span class=o>*</span> <span class=n>STACKSIZE</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_attr_setstack</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>stackbuf</span><span class=p>,</span> <span class=n>STACKSIZE</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_attr_setguardsize</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=mi>4096</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pid</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>thr_fn</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;create thread failed</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nf>_exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_join</span><span class=p>(</span><span class=n>pid</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nf>free</span><span class=p>(</span><span class=n>stackbuf</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pthread_attr_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// $ ./set_thread_guardsize
+</span></span></span><span class=line><span class=cl><span class=c1>// stackbase=0x7f736ebff010 stacksize=20480 guardsize=4
+</span></span></span></code></pre></div><h2 id=线程取消属性><a href=#%e7%ba%bf%e7%a8%8b%e5%8f%96%e6%b6%88%e5%b1%9e%e6%80%a7>线程取消属性</a></h2><p>下面的线程属性决定线程取消（即调用<code>pthread_cancel()</code>函数）时的行为。</p><h3 id=可取消状态><a href=#%e5%8f%af%e5%8f%96%e6%b6%88%e7%8a%b6%e6%80%81>可取消状态</a></h3><p>线程的<strong>可取消状态属性取值</strong>可以是<code>PTHREAD_CANCEL_ENABLE</code>与<code>PTHREAD_CANCEL_DISABLE</code>，默认为<code>PTHREAD_CANCEL_ENABLE</code>。</p><p>线程可以通过<code>pthread_setcancelstate</code>来修改其可取消状态。</p><p>线程可以通过调用<code>pthread_testcancel</code>函数来设置自定义取消点。执行<code>pthread_testcancel</code>函数时，如果可取消状态属性为<code>PTHREAD_CANCEL_DISABLE</code>，那么不会有任何效果。</p><p>线程取消原理：</p><ol><li>当前线程可以通过调用<code>pthread_cancel</code>函数来取消其他线程。</li><li>默认情况下，线程的可取消状态属性设置为<code>PTHREAD_CANCEL_ENABLE</code>，此时<strong>线程在收到取消请求之后，还会继续运行，直到线程到达某个取消点</strong>。</li><li><strong>取消点是线程检查它是否被取消的一个位置</strong>，如果有取消请求，则按照请求处理。</li><li>当线程可取消状态属性设置为<code>PTHREAD_CANCEL_DISABLE</code>时，如果其他线程调用<code>pthread_cancel</code>来取消当前线程，当前线程并不会立即被杀死。而是<strong>将取消请求挂起，直到当前线程的可取消状态属性值变为<code>PTHREAD_CANCEL_ENABLE</code>之后，才会在下一个取消点对所有取消请求进行处理</strong>。</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>pthread_setcancelstate</span><span class=p>(</span><span class=kt>int</span> <span class=n>state</span><span class=p>,</span> <span class=kt>int</span> <span class=o>*</span><span class=n>oldstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值：成功返回0，失败返回错误编号
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>void</span> <span class=nf>pthread_testcancel</span><span class=p>(</span><span class=kt>void</span><span class=p>);</span>
+</span></span></code></pre></div><h3 id=可取消类型><a href=#%e5%8f%af%e5%8f%96%e6%b6%88%e7%b1%bb%e5%9e%8b>可取消类型</a></h3><p>线程的可取消类型属性<strong>决定线程收到取消请求之后是立即取消还是到达取消点才能被取消</strong>。</p><p>线程的可取消类型属性可取值为<code>PTHREAD_CANCEL_DEFERRED</code>（推迟取消）与<code>PTHREAD_CANCEL_ASYNCHRONOUS</code>（异步取消）。默认取值为<code>PTHREAD_CANCEL_DEFERRED</code>。</p><p>当取值为<code>PTHREAD_CANCEL_ASYNCHRONOUS</code>异步取消时，线程可以在任意位置被取消，而不是等到取消点。</p><p>可以通过<code>pthread_setcanceltype</code>函数来设置线程的可取消类型属性。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>pthread_setcanceltype</span><span class=p>(</span><span class=kt>int</span> <span class=n>type</span><span class=p>,</span> <span class=kt>int</span> <span class=o>*</span><span class=n>oldtype</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值：成功返回0，失败返回错误编号
+</span></span></span></code></pre></div><p>下面的例子展示了在不同的可取消类型与可取消状态属性时线程的行为：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;string.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;time.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span><span class=o>*</span> <span class=nf>thr_fn1</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 线程1，可取消类型与可取消状态均为默认值，此时可取消类型为延迟取消、可取消状态为启用状态
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 即当线程收到取消请求时并不会立即取消，而是等到达取消点之后才会取消
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>oldstate</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>oldtype</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_setcancelstate</span><span class=p>(</span><span class=n>PTHREAD_CANCEL_ENABLE</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_setcanceltype</span><span class=p>(</span><span class=n>PTHREAD_CANCEL_DEFERRED</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldtype</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 判断线程时在执行循环时取消还是到达取消点才取消
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread1: for running</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>starttime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>endtime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread1: the timer started</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_MONOTONIC</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>starttime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread1: starttime: %ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>starttime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>100000</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=mi>100000</span><span class=p>;</span> <span class=n>j</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// printf函数中调用了系统接口write函数，因此也是取消点
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread1: for %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>i</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// clock_gettime 函数不是取消点
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_MONOTONIC</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>endtime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread1: endtime: %ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>endtime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread1: after %ld s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>endtime</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>-</span> <span class=n>starttime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread1: reach at cancel point</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// sleep函数为取消点
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span><span class=o>*</span> <span class=nf>thr_fn2</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 线程2，
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 可取消状态为默认值，即PTHREAD_CANCEL_EANBLE、启用状态。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 可取消类型为异步取消，即PTHREAD_CANCEL_ASYNCHRONOUS、当收到取消请求时立即取消，而非到达取消点
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>oldstate</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>oldtype</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_setcancelstate</span><span class=p>(</span><span class=n>PTHREAD_CANCEL_ENABLE</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_setcanceltype</span><span class=p>(</span><span class=n>PTHREAD_CANCEL_ASYNCHRONOUS</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldtype</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 判断线程时在执行循环时取消还是到达取消点才取消
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread2: for running</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>starttime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>endtime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread2: the timer started</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_MONOTONIC</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>starttime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread2: starttime: %ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>starttime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>100000</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=mi>100000</span><span class=p>;</span> <span class=n>j</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread2: for %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>i</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// clock_gettime 函数不是取消点
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_MONOTONIC</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>endtime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread2: endtime: %ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>endtime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread2: after %ld s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>endtime</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>-</span> <span class=n>starttime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread2: reach at cancel point</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// sleep函数为取消点
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span><span class=o>*</span> <span class=nf>thr_fn3</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 线程3
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 可取消状态为关闭状态，即PTHREAD_CANCEL_DISABLE
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 可取消类型为默认，即延迟取消状态，PTHREAD_CANCEL_DEFERRED
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>oldstate</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>oldtype</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_setcancelstate</span><span class=p>(</span><span class=n>PTHREAD_CANCEL_DISABLE</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &amp;oldtype);
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 判断线程时在执行循环时取消还是到达取消点才取消
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread3: for running</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>starttime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>endtime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread3: the timer started</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_MONOTONIC</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>starttime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread3: starttime: %ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>starttime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>100000</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=mi>100000</span><span class=p>;</span> <span class=n>j</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread3: for %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>i</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// clock_gettime 函数不是取消点
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_MONOTONIC</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>endtime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread3: endtime: %ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>endtime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 重新启用可取消状态，此时到达下一个取消点，线程会被取消
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_setcancelstate</span><span class=p>(</span><span class=n>PTHREAD_CANCEL_ENABLE</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldstate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread3: after %ld s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>endtime</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>-</span> <span class=n>starttime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;thread3: reach at cancel point</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// sleep函数为取消点
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pthread_t</span> <span class=n>td1</span><span class=p>,</span> <span class=n>td2</span><span class=p>,</span> <span class=n>td3</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span><span class=o>*</span> <span class=n>tdRet</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>err</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=n>td1</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=n>thr_fn1</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>_exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 休眠1s等待线程设置可取消类型与可取消状态，虽然设置的值与默认值一致
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 在线程执行for循环之间发送取消请求
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: cancel td1</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_cancel</span><span class=p>(</span><span class=n>td1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 等待线程取消结果
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: wait td1</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_join</span><span class=p>(</span><span class=n>td1</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>tdRet</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>tdRet</span> <span class=o>==</span> <span class=n>PTHREAD_CANCELED</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: join thread td1</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: join thread td1 failed</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>15</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=n>td2</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=n>thr_fn2</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>_exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 休眠1s等待线程设置可取消类型与可取消状态，虽然设置的值与默认值一致
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 在线程执行for循环之间发送取消请求
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: cancel td2</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_cancel</span><span class=p>(</span><span class=n>td2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 等待线程取消结果
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: wait td2</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_join</span><span class=p>(</span><span class=n>td2</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>tdRet</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>tdRet</span> <span class=o>==</span> <span class=n>PTHREAD_CANCELED</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: join thread td2</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: join thread td2 failed</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>15</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>err</span> <span class=o>=</span> <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=n>td3</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=n>thr_fn3</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>_exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 休眠1s等待线程设置可取消类型与可取消状态，虽然设置的值与默认值一致
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 在线程执行for循环之间发送取消请求
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: cancel td3</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_cancel</span><span class=p>(</span><span class=n>td3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 等待线程取消结果
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: wait td3</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>pthread_join</span><span class=p>(</span><span class=n>td3</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>tdRet</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>tdRet</span> <span class=o>==</span> <span class=n>PTHREAD_CANCELED</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: join thread td3</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;main thread: join thread td3 failed</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// thread1: for running
+</span></span></span><span class=line><span class=cl><span class=c1>// thread1: the timer started
+</span></span></span><span class=line><span class=cl><span class=c1>// thread1: starttime: 20983
+</span></span></span><span class=line><span class=cl><span class=c1>// thread1: for 0
+</span></span></span><span class=line><span class=cl><span class=c1>// thread1: for 1
+</span></span></span><span class=line><span class=cl><span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=c1>// thread1: for 7560
+</span></span></span><span class=line><span class=cl><span class=c1>// thread1: for 7561
+</span></span></span><span class=line><span class=cl><span class=c1>// thread1: for 7562
+</span></span></span><span class=line><span class=cl><span class=c1>// thread1: for 7563
+</span></span></span><span class=line><span class=cl><span class=c1>// main thread: join thread td1
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: for running
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: the timer started
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: starttime: 20999
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: for 0
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: for 1
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: for 2
+</span></span></span><span class=line><span class=cl><span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: for 6943
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: for 6944
+</span></span></span><span class=line><span class=cl><span class=c1>// thread2: for 6945
+</span></span></span><span class=line><span class=cl><span class=c1>// main thread: cancel td2 在for循环过程中，线程2收到取消请求立即取消，而非等待到达取消点
+</span></span></span><span class=line><span class=cl><span class=c1>// main thread: wait td2
+</span></span></span><span class=line><span class=cl><span class=c1>// main thread: join thread td2
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for running
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: the timer started
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: starttime: 21015
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 0
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 1
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 2
+</span></span></span><span class=line><span class=cl><span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 6954
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 6955
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 6956
+</span></span></span><span class=line><span class=cl><span class=c1>// main thread: cancel td3 循环过程中，线程3收到取消请求并没有处理，直到设置可取消状态为PTHREAD_CANCEL_ENABLE
+</span></span></span><span class=line><span class=cl><span class=c1>// main thread: wait td3
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 6957
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 6958
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 6959
+</span></span></span><span class=line><span class=cl><span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 99997
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 99998
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: for 99999
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: endtime: 21029 // 在这里重新设置可取消状态为PTHREAD_CANCEL_ENABLE，之后的printf是取消点，处理取消请求
+</span></span></span><span class=line><span class=cl><span class=c1>// thread3: after 14 s
+</span></span></span><span class=line><span class=cl><span class=c1>// main thread: join thread td3
+</span></span></span></code></pre></div></div><div class=post-archive><ul class=post-copyright><li><strong>原文作者：</strong><a rel=author href=https://DBL2017.github.io/>生如夏花</a></li><li style=word-break:break-all><strong>原文链接：</strong><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7/>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7/</a></li><li><strong>版权声明：</strong>本作品采用<a rel=license href=https://creativecommons.org/licenses/by-nc-nd/4.0/>知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li></ul></div><br><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E5%B1%8F%E9%9A%9C/>线程同步之屏障</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F/>线程同步之条件变量</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E8%AF%BB%E5%86%99%E9%94%81/>线程同步之读写锁</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E9%87%8F/>线程同步之互斥量</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%85%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/>线程的全生命周期</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=/tags/apue>APUE</a></li><li><a href=/tags/%E7%BA%BF%E7%A8%8B>线程</a></li><li><a href=/tags/%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7>线程属性</a></li><li><a href=/tags/%E7%BA%BF%E7%A8%8B%E9%99%90%E5%88%B6>线程限制</a></li><li><a href=/tags/pthread_attr_t>pthread_attr_t</a></li></ul></div></article><div class="post bg-white"><div><h2>评论</h2></div><div id=comments></div></div><script>new Valine({el:"#comments",appId:"E7COm5iHDM70WhcFfoYyAcH7-gzGzoHsz",appKey:"KoQ86O8YhLSQvyTavTCZdWbe",placeholder:"请写下你的建议！",avatar:"",avatarForce:!0,recordIP:!0,enableQQ:!0,requiredFields:["nick","mail"],meta:["nick","mail"]})</script></div></div></div><div class=content-right><div class=sidebar><section class=widget><form id=form-search action=https://DBL2017.github.io/search/ method=get accept-charset=utf-8 _lpchecked=1><input type=text name=q maxlength=20 placeholder=请输入查找关键字 required>
+<button type=submit class=submit title=提交><svg t="1714448321870" class="icon" style="width:22px;height:22px" viewBox="0 0 1024 1024" p-id="1771" width="200" height="200"><path d="M781.9264 691.1232l236.928 236.9216-90.816 90.8032-236.9152-236.9216c-72.032 53.3568-161.184 84.9088-257.7088 84.9088C194.048 866.8352.0 672.7872.0 433.408.0 194.048 194.048.0 433.4144.0c239.3728.0 433.4208 194.048 433.4208 433.4144.0 96.5248-31.552 185.6768-84.9088 257.7088zm-348.512 47.2896c168.448.0 304.9984-136.5504 304.9984-304.9984s-136.5504-304.992-304.9984-304.992-304.992 136.5504-304.992 304.9856c0 168.448 136.5504 304.9984 304.992 304.9984z" fill="#4a4a4a" p-id="1772"/></svg></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/iptables%E8%87%AA%E5%AE%9A%E4%B9%89%E9%93%BE/ title=iptables自定义链>iptables自定义链</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/ubuntu24.04-apt-upgrade%E6%8F%90%E7%A4%BAesm-apps/ title="Ubuntu24.04 apt upgrade提示esm-apps">Ubuntu24.04 apt upgrade提示esm-apps</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/ubuntu24.04%E6%90%AD%E5%BB%BApppoe-server%E5%B9%B6%E8%BF%9B%E8%A1%8C%E6%8B%A8%E5%8F%B7%E6%B5%8B%E8%AF%95/ title="Ubuntu24.04搭建PPPoE Server并进行拨号测试">Ubuntu24.04搭建PPPoE Server并进行拨号测试</a></li><li><a href=https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91%E4%BB%A5%E5%8F%8A%E5%9C%A8vmware%E4%B8%8A%E8%BF%90%E8%A1%8C/ title=OpenWrt下载编译以及在VMWare上运行>OpenWrt下载编译以及在VMWare上运行</a></li><li><a href=https://DBL2017.github.io/post/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/ubuntu24.04%E7%8E%AF%E5%A2%83%E7%BC%96%E8%AF%91glibc-2.40%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/ title=Ubuntu24.04环境编译glibc-2.40错误记录>Ubuntu24.04环境编译glibc-2.40错误记录</a></li><li><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/unix%E5%9F%9F%E5%A5%97%E6%8E%A5%E5%AD%97/ title=UNIX域套接字>UNIX域套接字</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/job-systemd-networkd-wait-online.service-start-running/ title="Job systemd-networkd-wait-online.service start running">Job systemd-networkd-wait-online.service start running</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/fdisk%E5%88%9B%E5%BB%BA%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E5%B9%B6%E6%A0%BC%E5%BC%8F%E5%8C%96/ title=fdisk创建磁盘分区并格式化>fdisk创建磁盘分区并格式化</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/vmware%E8%99%9A%E6%8B%9F%E6%9C%BAubuntu24.04%E6%A1%A5%E6%8E%A5%E5%88%B0%E5%AE%BF%E4%B8%BB%E6%9C%BA%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E4%B8%8A%E7%BD%91/ title=VMware虚拟机Ubuntu24.04桥接到宿主机无线网卡上网>VMware虚拟机Ubuntu24.04桥接到宿主机无线网卡上网</a></li><li><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/io%E5%A4%9A%E8%B7%AF%E8%BD%AC%E6%8E%A5%E4%B9%8Bpoll%E5%87%BD%E6%95%B0/ title=I/O多路转接之poll函数>I/O多路转接之poll函数</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list><li><a href=https://DBL2017.github.io/categories/kindle/>KINDLE (1)</a></li><li><a href=https://DBL2017.github.io/categories/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/>传输协议 (11)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/>工具使用 (19)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/>开源三方 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/>操作系统 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/>数字安全 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/>数据结构和算法 (5)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/>编程语言 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88/>网络工程师 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/>读书笔记 (56)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/>问题排查 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%BB%98%E8%AE%A4/>默认 (2)</a></li></ul></section><section class=widget><h3 class=widget-title>友情链接</h3><ul class=widget-list><li><a target=_blank href=https://mermaid.live/ title=Mermaid>Mermaid 编辑</a></li><li><a target=_blank href=https://excalidraw.com/ title=EXCALIDRAW>Excalidraw 绘图</a></li><li><a target=_blank href=https://git-scm.com/docs title=Git命令参考手册>Git命令参考手册</a></li><li><a target=_blank href=https://www.gnu.org/software/make/manual/make.html title="GNU make官方文档">GNU make官方文档</a></li><li><a target=_blank href=https://www.emojiall.com/ title=Emojiall表情网站>Emojiall表情网站</a></li></ul></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/index.xml>文章 RSS</a></li></ul></section></div></div></div><div class=container-footer><footer id=footer><div>&copy; 2024 <a href=https://DBL2017.github.io/>生如夏花的博客 By
+生如夏花</a>
+| <a rel=nofollow target=_blank href=http://beian.miit.gov.cn/>广电总局</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered
+by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://DBL2017.github.io/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">生如夏花的博客</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],displayMath:[["$$","$$"]],processEscapes:!0,processEnvironments:!0,skipTags:["script","noscript","style","textarea","pre"]}}</script><script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src=/js/jquery.fancybox.min.min.9040007c0fd2a6cdc356495acb1c45ba3328b261b0d9f75d3da19bc47229189108aab8ca043864c1801d59431de72dec8d51ae50539f9ce1f5964bf5f38786c3.js integrity="sha512-kEAAfA/Sps3DVklayxxFujMosmGw2fddPaGbxHIpGJEIqrjKBDhkwYAdWUMd5y3sjVGuUFOfnOH1lkv184eGww==" crossorigin=anonymous></script><a id=rocket href=#top></a><script src=/js/totop.min.8c7573186baa30f09c49b5cf3176c3b105785324d961b3d5c2f7f099d14673160a29aeebdec25909d046aa14936cd43451e17664662d518550d5e8998dbec670.js integrity="sha512-jHVzGGuqMPCcSbXPMXbDsQV4UyTZYbPVwvfwmdFGcxYKKa7r3sJZCdBGqhSTbNQ0UeF2ZGYtUYVQ1eiZjb7GcA==" crossorigin=anonymous></script><script src=/js/clipboard.min.0765794be1674926c1a3810afcf039f605f367cb11cef727ad49e6aa70f9fca0a37d329d64c55822896869eb0960763e73e085ee7675cbc497e4d3256a6e6a67.js integrity="sha512-B2V5S+FnSSbBo4EK/PA59gXzZ8sRzvcnrUnmqnD5/KCjfTKdZMVYIoloaesJYHY+c+CF7nZ1y8SX5NMlam5qZw==" crossorigin=anonymous></script><script>var spy=new Gumshoe("#TableOfContents a",{nested:!0,nestedClass:"active"})</script><script>hljs.highlightAll()</script></div></div></body></html>

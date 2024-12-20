@@ -1,0 +1,524 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>可靠信号 | 生如夏花的博客</title>
+<meta property="og:title" content="可靠信号 - 生如夏花的博客"><meta property="og:type" content="article"><meta property="article:published_time" content='2024-01-14T23:18:50+08:00'><meta property="article:modified_time" content='2024-01-25T00:13:15+08:00'><meta name=Keywords content="C语言,Linux系统开发,物联网,博客,项目管理,软件架构"><meta name=description content="可靠信号"><meta name=author content><meta property="og:url" content="https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E5%8F%AF%E9%9D%A0%E4%BF%A1%E5%8F%B7/"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css integrity="sha512-RLF8eOxhuwsRINc7r56dpl9a3VStqrXD+udWahutJrYdyh++2Ghnf+s4jFsOyryKZt/GNjPwbXVPH3MJpKrn2g==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=/css/badge.min.dc57f0a9d275742b1e2d17f204ae0b829361b5dd0df99d3d356615830fb223936c054d31a888c5f369975da90586601e2666ddbbbb36e98510b814a70826e874.css integrity="sha512-3FfwqdJ1dCseLRfyBK4LgpNhtd0N+Z09NWYVgw+yI5NsBU0xqIjF82mXXakFhmAeJmbdu7s26YUQuBSnCCbodA==" crossorigin=anonymous><link rel=stylesheet href=/css/header.min.9e74ad2f7e23fb54e2da3ef2f1eb6498897cd4139d181133b5e641f107980364ccfbcea731badb693b4a50819c388b6f8cab037346daf142114f86f14faa8766.css integrity="sha512-nnStL34j+1Ti2j7y8etkmIl81BOdGBEzteZB8QeYA2TM+86nMbrbaTtKUIGcOItvjKsDc0ba8UIRT4bxT6qHZg==" crossorigin=anonymous><link rel=stylesheet href=/css/table.min.032852d8d049c55be5cd0a27bf8c7b09c8ea549fb719c2fd0231ebd262fdddb5aaaf391dabeb89ce33bcbe49f13ee8a530822a26f76b675af23473ed07b95d2e.css integrity="sha512-AyhS2NBJxVvlzQonv4x7CcjqVJ+3GcL9AjHr0mL93bWqrzkdq+uJzjO8vknxPuilMIIqJvdrZ1ryNHPtB7ldLg==" crossorigin=anonymous><link rel=stylesheet href=/css/baseof.min.5e04a6c8338c3c57aedaaae91320971e148651ac160d51bb58ebfec7757346a177331ac5646bbb1b2664b1c8cc405939125785c138935bc0d29a805b11791691.css integrity="sha512-XgSmyDOMPFeu2qrpEyCXHhSGUawWDVG7WOv+x3VzRqF3MxrFZGu7GyZkscjMQFk5EleFwTiTW8DSmoBbEXkWkQ==" crossorigin=anonymous><link rel=stylesheet href=/css/rocket.min.96a6be31cd3df9dcd4e7e131e9fcb0e63149da1da6a23df5ed8c8e0ccf0436f4c95aad5ded6a69e7fba5c051f8cc00466fcedaa07e4c7f59492d4a15aba2e936.css integrity="sha512-lqa+Mc09+dzU5+Ex6fyw5jFJ2h2moj317YyODM8ENvTJWq1d7Wpp5/ulwFH4zABGb87aoH5Mf1lJLUoVq6LpNg==" crossorigin=anonymous><link rel=stylesheet href=/css/toc.min.6d85af7b55a06a3c1672914851ad8f64e3e4de3a81435cc45b05f1b71fb4bde6d0f00597b4f316d214809e3597a66516d7651772c9da8d8e42bf188fb3df5a85.css integrity="sha512-bYWve1WgajwWcpFIUa2PZOPk3jqBQ1zEWwXxtx+0vebQ8AWXtPMW0hSAnjWXpmUW12UXcsnajY5CvxiPs99ahQ==" crossorigin=anonymous><link rel=stylesheet href=/css/clipboard.min.5e6a0198e50c850ced7dc2ba6f282ecaab21a8daad9eee626b990120818361b4b0007128d73957d5682346c88a6f9831f5872051e5f12da830cc29ca75676403.css integrity="sha512-XmoBmOUMhQztfcK6byguyqshqNqtnu5ia5kBIIGDYbSwAHEo1zlX1WgjRsiKb5gx9YcgUeXxLagwzCnKdWdkAw==" crossorigin=anonymous><link rel=stylesheet href=/css/style.min.2af5fd807ef34ec700d21d326733adff6177ee5261d0810a5357fe02d9508bd54418aff2317c7d8761548124f1f7befd087353c6308ec3795a1dafbfba4b7193.css integrity="sha512-KvX9gH7zTscA0h0yZzOt/2F37lJh0IEKU1f+AtlQi9VEGK/yMXx9h2FUgSTx9779CHNTxjCOw3laHa+/uktxkw==" crossorigin=anonymous><link rel="shortcut icon" href=/img/favicon.png type=image/x-icon><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin=anonymous referrerpolicy=no-referrer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/vim.min.js></script><script src=/js/gumshoe.min.min.9dec1df0371d73b03324ed4bb78a6d5b2e84af6a37b11ce799808a26d70dfd156595f8d23c42db9e4866f12b4c0de664cfd032fa6f95bdaaada1bacdb235e79e.js integrity="sha512-newd8Dcdc7AzJO1Lt4ptWy6Er2o3sRznmYCKJtcN/RVllfjSPELbnkhm8StMDeZkz9Ay+m+VvaqtobrNsjXnng==" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.1/Valine.min.js integrity="sha512-FxPzcGnQGjqsUr1ofvicx9Y7T53thxBSvYCBdKeW/Sfr5dQVEkh70r7sl1TMsEVheXsoOTqXZ9z2t75JNeak/g==" crossorigin=anonymous referrerpolicy=no-referrer></script></head><body><div class=container><div class=container-header><header><div class=header-main><div class=header-site-name><a id=header-title href=https://DBL2017.github.io/>生如夏花的博客</a><p class=description>专注于工业物联网行业数据采集，嵌入式Linux系统裁剪，5G智慧网关软件开发等</p></div><div class=header-menu><nav id=header-nav-menu><a href=https://DBL2017.github.io/>首页</a>
+<a href=https://DBL2017.github.io/series/ title=系列>系列</a>
+<a href=https://DBL2017.github.io/categories/ title=分类>分类</a>
+<a href=https://DBL2017.github.io/tags/ title=标签>标签</a>
+<a href=https://DBL2017.github.io/archives/ title=归档>归档</a>
+<a href=https://DBL2017.github.io/about/ title=关于>关于</a></nav></div></div></header></div><div class=container-content><div class=content-center><div class=main-single><div class=single-toc><div class=post-toc><h2 class=post-toc-title><a href=#>目录</a></h2><div class=post-toc-content><nav id=TableOfContents><ul><li><a href=#可靠信号>可靠信号</a></li><li><a href=#产生信号的函数>产生信号的函数</a><ul><li><a href=#kill函数><code>kill</code>函数</a></li><li><a href=#raise函数><code>raise</code>函数</a></li><li><a href=#alarm函数><code>alarm</code>函数</a></li><li><a href=#pause函数><code>pause</code>函数</a></li><li><a href=#abort函数><code>abort</code>函数</a></li><li><a href=#system函数><code>system</code>函数</a></li><li><a href=#sleep函数><code>sleep</code>函数</a></li></ul></li><li><a href=#示例>示例</a><ul><li><a href=#使用alarm与pause进程使自己休眠一段指定的时间>使用<code>alarm</code>与<code>pause</code>，进程使自己休眠一段指定的时间</a></li><li><a href=#使用setjmp与longjmp避免竞争条件>使用<code>setjmp</code>与<code>longjmp</code>避免竞争条件</a></li><li><a href=#使用alarm对可能阻塞的操作设置上限值>使用<code>alarm</code>对可能阻塞的操作设置上限值</a></li></ul></li></ul></nav></div></div></div><div class=single-article><article class=post><header><h1 class=post-title>可靠信号</h1></header><date class="post-meta meta-date"><span class=meta-category><a href=/archives/#2024>2024年1月14日</a></span></date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/categories/#%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0>读书笔记</a></span></div><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/series/#APUE>APUE</a></span></div><div class=post-meta><span>|</span>
+<span>共6656字</span></div><div class=post-meta><span>|</span>
+<span>阅读时长(14分钟)</span></div><div class=clear style=display:none><div class=toc-article><div class=toc-title>文章目录</div></div></div><div class=post-content><p>可靠信号的处理有两个过程如下：</p><ol><li><strong>信号产生</strong>：当这些事件（<strong>硬件异常（如除以0）、软件条件（如alarm定时器超时）、终端产生的信号或调用<code>kill</code>函数</strong>）发生时，内核会为进程产生一个信号，同时在进程表中设置一个标志。</li><li><strong>信号递送</strong>：内核使<strong>目标进程对该信号作出反应</strong>称为信号递送：或是改变目标进程的执行状态（默认动作），或是开始执行信号处理程序，或两者都是。</li></ol><h2 id=可靠信号><a href=#%e5%8f%af%e9%9d%a0%e4%bf%a1%e5%8f%b7>可靠信号</a></h2><p>信号产生到信号递送的时间间隔内，信号的状态是<strong>未决的</strong>（pending）。</p><p>如果进程<strong>对信号设置阻塞递送</strong>，而且对该信号的动作是<strong>系统默认动作或捕捉该信号</strong>，那么内核会为该进程将此信号保持为未决状态，直到进程解除阻塞或忽略该信号。</p><p>进程在信号递送给其之前可以改变对信号的处理动作。<code>sigpending</code>函数可以判定哪些信号是阻塞并处于未决状态。</p><p><strong>在对信号阻塞期间，该信号产生了多次，POSIX.1允许系统递送该信号一次或多次</strong>。如果递送多次，会对该信号进行排队。</p><p>事实上，只有POSIX.1的实时扩展信号才会递送多次并且排队，其他信号并不会排队且只递送一次。</p><p>每个进程都有一个<strong>信号屏蔽字</strong>，规定了当前要阻塞递送到该进程的信号集。进程可以调用<code>sigpromask</code>函数来检测和更新其当前信号屏蔽字。</p><p>POSIX.1定义了一个新数据类型<code>sigset_t</code>，来表示<strong>信号集</strong>。信号屏蔽字也使用信号集来表示。</p><h2 id=产生信号的函数><a href=#%e4%ba%a7%e7%94%9f%e4%bf%a1%e5%8f%b7%e7%9a%84%e5%87%bd%e6%95%b0>产生信号的函数</a></h2><h3 id=kill函数><a href=#kill%e5%87%bd%e6%95%b0><code>kill</code>函数</a></h3><p><code>kill</code>函数将信号发送进程或进程组：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;signal.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>kill</span><span class=p>(</span><span class=kt>pid_t</span> <span class=n>pid</span><span class=p>,</span> <span class=kt>int</span> <span class=n>signo</span><span class=p>);</span>
+</span></span></code></pre></div><p><code>pid>0</code>时，将信号发送给进程ID为<code>pid</code>的进程。</p><p><code>pid==0</code>时，将信号发送给与调用进程属于统一进程组的所有进程（调用进程需要具有相应权限），系统进程除外。</p><p><code>pid&lt;0</code>时，将信号发送给进程组ID与<code>pid</code>绝对值相等的进程组中所有进程（调用进程需要具有相应权限），系统进程除外。</p><p><code>pid==-1</code>时，将信号发送给调用进程有权限向其发送信号的所有进程，系统进程除外。</p><p>权限说明如下：</p><ol><li>超级用户可将信号发送给任一进程。</li><li>非超级用户，发送进程的实际用户ID或有效用户ID与接收进程的实际用户ID或有效用户ID相等。</li><li>如果实现支持_POSIX_SAVED_IDS，则检查接收者的保存设置用户ID（而非有效用户ID）。保存设置用户ID通常是进程的有效用户ID，只有当提升权限或者降低权限时，才会将有效用户ID改为其他值。</li><li>如果发送的信号是SIGCONT，则可将其发送给同会话的任一进程。</li></ol><p>POSIX.1将信号编号0定义为空信号，如果<code>kill</code>函数的<code>signo</code>参数为0， 则执行正常的错误检查但不发送信号。</p><p>如果信号不阻塞，那么<code>kill</code>返回之前信号就已经递送给目标进程。</p><h3 id=raise函数><a href=#raise%e5%87%bd%e6%95%b0><code>raise</code>函数</a></h3><p><code>raise</code>函数允许进程向自身发送信号。</p><p>等价于<code>kill(getpid(), signo)</code>。</p><h3 id=alarm函数><a href=#alarm%e5%87%bd%e6%95%b0><code>alarm</code>函数</a></h3><p><code>alarm</code>函数可以设置一个定时器，在定时器超时时，会产生<code>SIGALRM</code>信号。如果忽略或不捕捉此信号，默认动作是终止调用进程。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>unsigned</span> <span class=kt>int</span> <span class=nf>alarm</span><span class=p>(</span><span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值：0或以前设置的闹钟时间的余留秒数
+</span></span></span></code></pre></div><p><code>seconds</code>指产生信号<code>SIGALRM</code>需要经过的秒数。<code>SIGALRM</code>信号由内核产生，到调度进程执行信号处理函数还需要一个时间间隔。</p><p>每个进程只能有一个闹钟时间。</p><p><strong>如果调用<code>alarm</code>函数时，之前调用<code>alarm</code>设置的闹钟时间还未超时，则会将其余留值作为本次调用的返回值。</strong> 同时如果这次调用<code>alarm</code>函数的参数为0，则仅取消之前的闹钟时间，不会产生新的。</p><h3 id=pause函数><a href=#pause%e5%87%bd%e6%95%b0><code>pause</code>函数</a></h3><p><code>pause</code>函数会使调用进程挂起，直到捕捉到一个信号。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>pause</span><span class=p>(</span><span class=kt>void</span><span class=p>);</span>
+</span></span></code></pre></div><p>只有执行了一个信号处理程序并从其返回时，<code>pause</code>函数才会返回。</p><p>这种情况下，<code>pause</code>函数返回-1，<code>errno</code>被设置为<code>EINTR</code>。</p><h3 id=abort函数><a href=#abort%e5%87%bd%e6%95%b0><code>abort</code>函数</a></h3><p><code>abort</code>函数的作用是使进程异常终止。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=p>[[</span><span class=n>noreturn</span><span class=p>]]</span> <span class=kt>void</span> <span class=nf>abort</span><span class=p>(</span><span class=kt>void</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 无返回值
+</span></span></span></code></pre></div><p>ISO C要求该函数<strong>即使捕捉到信号而且从响应信号处理程序返回，<code>abort</code>函数也不能返回到其调用者</strong>。</p><p>POSIX对其的进一步要求是：</p><ol><li><code>abort</code>函数并不理会进程对<code>SIGABRT</code>信号的忽略或阻塞（仅剩两种动作即默认或者自定义）。</li><li>当捕捉到<code>SIGABRT</code>信号并从其信号处理程序返回时（信号处理程序中没有终止进程），<code>abort</code>函数本身也要终止该进程（执行<code>SIGABRT</code>信号默认动作或者直接退出进程）。</li><li><code>abort</code>函数终止进程时，应该在终止前执行与<code>fclose</code>相同的操作（即刷洗I/O流）。</li></ol><p>下面是依据POSIX标准实现的<code>abort</code>函数示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;signal.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>abort1</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>sigaction</span> <span class=n>action</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 如果进程对SIGABRT信号的动作是忽略，则重新设置为默认
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGABRT</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>action</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>action</span><span class=p>.</span><span class=n>sa_handler</span> <span class=o>==</span> <span class=n>SIG_IGN</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>action</span><span class=p>.</span><span class=n>sa_handler</span> <span class=o>=</span> <span class=n>SIG_DFL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGABRT</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>action</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 如果是默认则刷洗所有I/O流，否则由用户自定义的信号处理程序来决定
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=n>action</span><span class=p>.</span><span class=n>sa_handler</span> <span class=o>==</span> <span class=n>SIG_DFL</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 为什么要在这儿刷洗I/O流呢，因为后面接收到SIGABRT信号会导致进程直接退出
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>fflush</span><span class=p>(</span><span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 如果进程阻塞SIGABR信号，则解除阻塞
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>sigset_t</span> <span class=n>mask</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigfillset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mask</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigdelset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mask</span><span class=p>,</span> <span class=n>SIGABRT</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigprocmask</span><span class=p>(</span><span class=n>SIG_SETMASK</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>mask</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 向进程自己发送SIGABRT信号
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 此时在kill返回前产生SIGABRT信号，处理方式是默认行为或者用户自定义动作, 默认方式会终止进程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>kill</span><span class=p>(</span><span class=nf>getpid</span><span class=p>(),</span> <span class=n>SIGABRT</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 如果执行到这里，说明SIGABRT是用户自定义信号处理程序，表明已经从信号处理程序返回
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 同时也说明在其信号处理程序中没有退出进程，因此这里就要刷洗I/O流并退出进程（根据POSIX要求）
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 刷洗所有流
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>fflush</span><span class=p>(</span><span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 设置SIGABRT信号处理程序为默认，并发送SIGABRT信号，让进程退出，如果不退出则执行exit强行退出
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>action</span><span class=p>.</span><span class=n>sa_handler</span> <span class=o>=</span> <span class=n>SIG_DFL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGABRT</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>action</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigprocmask</span><span class=p>(</span><span class=n>SIG_SETMASK</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>mask</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 发送SIGABRT信号，调用系统默认行为
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>kill</span><span class=p>(</span><span class=nf>getpid</span><span class=p>(),</span> <span class=n>SIGABRT</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 退出进程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>exit</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>事实上，对于<code>SIGABRT</code>信号只有两种处理方式，分别是 <strong><code>SIG_DFL</code>或者自定义处理函数</strong>，<code>abort</code>函数则需要在<code>SIG_DFL</code>时刷洗流，或者在用户自定义程序不退出的时候进行善后（刷洗流以及退出进程）。</p><h3 id=system函数><a href=#system%e5%87%bd%e6%95%b0><code>system</code>函数</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>system</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span> <span class=o>*</span><span class=n>command</span><span class=p>);</span>
+</span></span></code></pre></div><p><code>system</code>函数的执行流程是:</p><ol><li><code>system</code>函数的调用进程<code>fork</code>一个子进程，然后调用<code>exec</code>函数执行一个<code>shell</code>程序。</li><li>该<code>shell</code>进程再<code>fork</code>一个子进程，通过<code>exec</code>函数来执行传入<code>system</code>函数的命令字符串。</li><li><strong><code>system</code>函数返回的是<code>shell</code>进程的终止状态，仅当<code>shell</code>进程异常终止时，<code>system</code>函数的返回值才会报告一个异常终止</strong>。</li><li><strong><code>shell</code>进程会以执行命令字符串进程的终止状态作为其返回值，但如果执行命令字符串带有符号&表示后台执行，则shell进程会立即返回，并且不会将执行命令字符串进程的终止状态作为其返回值</strong>。</li></ol><p>POSIX.1规定<code>system</code>函数<strong>忽略<code>SIGINT</code>与<code>SIGQUIT</code>信号，阻塞<code>SIGCHLD</code>信号</strong>（这里指的是<code>system</code>函数的调用进程，而非创建的子进程）。</p><p>阻塞<code>SIGCHLD</code>信号的原因在于<strong>如果不阻塞<code>SIGCHLD</code>信号，那么当<code>system</code>创建的子进程结束时，<code>system</code>函数的调用进程就可能会认为自己的子进程结束了（如果该调用进程之前有过创建子进程的话），然后调用<code>wait</code>函数获取子进程的终止状态，导致<code>system</code>函数无法获得其子进程终止状态作为它的返回值</strong>。</p><p>忽略<code>SIGINT</code>与<code>SIGQUIT</code>信号的原因在于<strong>使用<code>system</code>函数执行命令时，如果不忽略这两个信号，<code>system</code>函数的调用进程就可能被这两个信号中断或这导致进程退出，造成命令的不完整执行</strong>。</p><p>下面是依据POSIX.1 标准实现的<code>system</code>函数</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;asm-generic/errno-base.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;errno.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;signal.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/wait.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>system2</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>cmdstring</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>pid_t</span> <span class=n>pid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>status</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>cmdstring</span> <span class=o>==</span> <span class=nb>NULL</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 忽略SIGINT与SIGQUIT，阻塞SIGCHLD
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>struct</span> <span class=n>sigaction</span> <span class=n>ignore</span><span class=p>,</span> <span class=n>saveintr</span><span class=p>,</span> <span class=n>savequit</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>sigset_t</span> <span class=n>chldmask</span><span class=p>,</span> <span class=n>savemask</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>ignore</span><span class=p>.</span><span class=n>sa_handler</span> <span class=o>=</span> <span class=n>SIG_IGN</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigemptyset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>ignore</span><span class=p>.</span><span class=n>sa_mask</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>ignore</span><span class=p>.</span><span class=n>sa_flags</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGINT</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>ignore</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>saveintr</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGQUIT</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>ignore</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>savequit</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 阻塞SIGCHLD信号，并保存之前的信号屏蔽字到savemask中，用于之后恢复
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sigemptyset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>chldmask</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigaddset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>chldmask</span><span class=p>,</span> <span class=n>SIGCHLD</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>sigprocmask</span><span class=p>(</span><span class=n>SIG_BLOCK</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>chldmask</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>savemask</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 创建子进程执行命令
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>((</span><span class=n>pid</span> <span class=o>=</span> <span class=nf>fork</span><span class=p>())</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>status</span> <span class=o>=</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>pid</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 子进程
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=c1>// 恢复SIGINT与SIGQUIT的默认动作，并且取消阻塞SIGCHLD
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGINT</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>saveintr</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGQUIT</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>savequit</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>sigprocmask</span><span class=p>(</span><span class=n>SIG_SETMASK</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>savemask</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// exec函数执行成功之后不会返回
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=c1>// shell程序替换子进程的执行内容，至于shell进程如何执行命令字符串，那就由shell进程来决定了
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=c1>// 正常情况下，shell进程会将执行命令字符串进程的终止状态作为其终止状态
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=c1>// 但如果命令字符串是后台执行，那么shell进程就会直接返回。
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>execl</span><span class=p>(</span><span class=s>&#34;/bin/sh&#34;</span><span class=p>,</span> <span class=s>&#34;sh&#34;</span><span class=p>,</span> <span class=s>&#34;-c&#34;</span><span class=p>,</span> <span class=n>cmdstring</span><span class=p>,</span> <span class=p>(</span><span class=kt>char</span><span class=o>*</span><span class=p>)</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 失败之后会执行下面
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>_exit</span><span class=p>(</span><span class=mi>127</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 父进程不恢复SIGINT与SIGQUIT，是为了防止接收到这两个命令导致进程退出，造成子进程执行命令不完整。
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=c1>// waitpid函数获取子进程的终止状态，即shell进程的终止状态
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>while</span> <span class=p>(</span><span class=nf>waitpid</span><span class=p>(</span><span class=n>pid</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>status</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>errno</span> <span class=o>!=</span> <span class=n>EINTR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>status</span> <span class=o>=</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>  <span class=c1>// 其他异常错误，如果被其他信号中断，则会返回继续等待
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 恢复SIGINT与SIGQUIT的默认动作和解除阻塞SIGCHLD
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGINT</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>saveintr</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGQUIT</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>savequit</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 解除对SIGCHLD信号的阻塞，在waitpid获取其子进程状态之后，可以防止调用进程获取system函数的子进程的终止状态
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=nf>sigprocmask</span><span class=p>(</span><span class=n>SIG_SETMASK</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>savemask</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>status</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nf>system2</span><span class=p>(</span><span class=s>&#34;date&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>执行结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>$ ./system2
+</span></span><span class=line><span class=cl>Mon Jan <span class=m>22</span> 00:04:09 CST <span class=m>2024</span>
+</span></span></code></pre></div><h3 id=sleep函数><a href=#sleep%e5%87%bd%e6%95%b0><code>sleep</code>函数</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>unsigned</span> <span class=kt>int</span> <span class=nf>sleep</span><span class=p>(</span><span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=c1>// 返回值： 如果请求休眠的时间达到，返回0；如果被信号处理程序中断，则返回剩余的时间
+</span></span></span></code></pre></div><p><code>sleep</code>函数是进程挂起直到满足下面两个条件：</p><ol><li>经过了参数<code>seconds</code>指定的时钟时间。</li><li>调用进程捕捉到一个信号并从信号处理程序返回（被信号中断）。</li></ol><p>可以使用<code>alarm</code>函数来实现<code>sleep</code>函数，但是存在问题是无法处理这两个函数之间的影响，以及<code>SIGALRM</code>信号产生的影响。</p><p>下面是使用<code>alarm</code>函数实现的<code>sleep</code>函数：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>unsigned</span> <span class=kt>int</span> <span class=nf>sleep3</span><span class=p>(</span><span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>seconds</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>sigaction</span> <span class=n>newact</span><span class=p>,</span> <span class=n>oldact</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>sigset_t</span> <span class=n>newmask</span><span class=p>,</span> <span class=n>oldmask</span><span class=p>,</span> <span class=n>suspmask</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>unslept</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>newact</span><span class=p>.</span><span class=n>sa_handler</span> <span class=o>=</span> <span class=n>sig_alrm1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigemptyset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>newact</span><span class=p>.</span><span class=n>sa_mask</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 1. 设置SIGALRM的信号处理程序
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>newact</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldact</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>seconds</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>sigemptyset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>newmask</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigaddset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>newmask</span><span class=p>,</span> <span class=n>SIGALRM</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 2. 阻塞SIGALRM信号
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=nf>sigprocmask</span><span class=p>(</span><span class=n>SIG_BLOCK</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>newmask</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldmask</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>seconds</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 3. 设置时钟，seconds秒后产生SIGALRM信号
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>alarm</span><span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 4. 从原有的信号屏蔽字中去除SIGALRM，解除SIGALRM阻塞，并并暂停进程等待接收信号
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>suspmask</span> <span class=o>=</span> <span class=n>oldmask</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigdelset</span><span class=p>(</span><span class=o>&amp;</span><span class=n>suspmask</span><span class=p>,</span> <span class=n>SIGALRM</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>sigsuspend</span><span class=p>(</span><span class=o>&amp;</span><span class=n>suspmask</span><span class=p>);</span> <span class=c1>// 原子操作，解除阻塞到进程休眠是原子操作，不会导致信号丢失
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 5. 检测休眠剩余描述
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>unslept</span> <span class=o>=</span> <span class=nf>alarm</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 6. 恢复之前的信号处理程序
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sigaction</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldact</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 7. 恢复之前的信号屏蔽字
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sigprocmask</span><span class=p>(</span><span class=n>SIG_SETMASK</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>oldmask</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>unslept</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p><strong>问题1</strong>：如果调用进程在调用该<code>sleep</code>函数之前，调用过<code>alarm</code>函数，并且恰好在步骤1和2之间产生了<code>SIGALRM</code>信号，这就会导致无法执行用户设定的信号处理函数。</p><p><strong>问题2</strong>：如果在步骤2和3之间，调用进程之前调用<code>alarm</code>函数而产生的<code>SIGALRM</code>刚好被阻塞，那么步骤4中的<code>sigsuspend</code>函数就会立即返回，而不是等待步骤3中的<code>alarm</code>函数超时。</p><p>基于这些问题，现在<code>sleep</code>函数一般都由<code>nanosleep</code>函数来实现。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;time.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>nanosleep</span><span class=p>(</span><span class=k>const</span> <span class=k>struct</span> <span class=n>timespec</span> <span class=o>*</span><span class=n>req</span><span class=p>,</span> <span class=k>struct</span> <span class=n>timespec</span> <span class=o>*</span> <span class=n>rem</span><span class=p>);</span>
+</span></span></code></pre></div><p><code>nanosleep</code>函数直到参数<code>req</code>指定的时间过去或者被信号中断，才会返回。如果被信号处理程序中断则将剩余时间写入参数<code>rem</code>中，前提是<code>rem!=NULL</code>。</p><p><code>nanosleep</code>函数不会产生任何信号，因此没有上面<code>sleep3</code>函数的问题。</p><p><code>nanosleep</code>函数采用的时钟是<code>CLOCK_REALTIME</code>，该时钟时间可能不会被修改，但是系统会进行实时性保证（比如休眠期间时间被NTP修改，系统会忽略这种修改直到休眠指定时长）。</p><p>函数<code>clock_nanosleep</code>函数可以指定采用哪种时钟（不同时钟的精度不同），同时也可以指定相对时间休眠或绝对时间休眠。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl> <span class=cp>#include</span> <span class=cpf>&lt;time.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>clock_nanosleep</span><span class=p>(</span><span class=kt>clockid_t</span> <span class=n>clockid</span><span class=p>,</span> <span class=kt>int</span> <span class=n>flags</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                   <span class=k>const</span> <span class=k>struct</span> <span class=n>timespec</span> <span class=o>*</span><span class=n>req</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                   <span class=k>struct</span> <span class=n>timespec</span> <span class=o>*</span> <span class=n>rem</span><span class=p>);</span>
+</span></span></code></pre></div><p>参数<code>flag</code>取值为0表示相对时间，取值为<code>TIMER_ABSTIME</code>表示绝对时间。<code>req</code>与<code>rem</code>参数与<code>nanosleep</code>函数保持一致。</p><p>参数<code>clockid</code>的取值如下所示：</p><table><thead><tr><th>时钟类型</th><th>说明</th><th>用途</th></tr></thead><tbody><tr><td><code>CLOCK_REALTIME</code></td><td>表示系统的实时时间，即当前的日历时间，会受到系统时间调整的影响。</td><td>用于获取当前的绝对时间</td></tr><tr><td><code>CLOCK_MONOTONIC</code></td><td>表示一个单调递增的时钟，不受系统时间调整的影响。</td><td>用于测量时间间隔和计时</td></tr><tr><td><code>CLOCK_PROCESS_CPUTIME_ID</code></td><td>表示当前进程的CPU时间。</td><td>测量进程使用的CPU时间</td></tr><tr><td><code>CLOCK_THREAD_CPUTIME_ID</code></td><td>表示当前线程的CPU时间。</td><td>测量线程使用的CPU时间</td></tr></tbody></table><p>下面的例子说明了这些时钟的用法：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=c1>// 示例1，使用CLOCK_REALTIME获取系统当前时间
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;time.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>currentTime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取当前绝对时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_REALTIME</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>currentTime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 将秒和纳秒打印出来
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;当前绝对时间：秒：%ld，纳秒：%ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>currentTime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>,</span> <span class=n>currentTime</span><span class=p>.</span><span class=n>tv_nsec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// $ ./get_current_time_by_CLOCK_REALTIME
+</span></span></span><span class=line><span class=cl><span class=c1>// 当前绝对时间：秒：1705936900，纳秒：59752278
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=c1>// 示例2展示了进程占用的CPU时间、线程占用的CPU时间、以及测量的时间间隔
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1>// 线程函数
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>void</span><span class=o>*</span> <span class=nf>threadFunc</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>startTime</span><span class=p>,</span> <span class=n>endTime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>long</span> <span class=n>elapsedTime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取起始时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_THREAD_CPUTIME_ID</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>startTime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 执行一些操作
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>50000</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=mi>4000</span><span class=p>;</span> <span class=n>j</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取结束时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_THREAD_CPUTIME_ID</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>endTime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 计算CPU时间（秒）
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>elapsedTime</span> <span class=o>=</span> <span class=p>(</span><span class=n>endTime</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>-</span> <span class=n>startTime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>)</span> <span class=o>*</span> <span class=mi>1000000000</span> <span class=o>+</span> <span class=p>(</span><span class=n>endTime</span><span class=p>.</span><span class=n>tv_nsec</span> <span class=o>-</span> <span class=n>startTime</span><span class=p>.</span><span class=n>tv_nsec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;线程使用CPU时间：%ld 纳秒</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>elapsedTime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>startTime</span><span class=p>,</span> <span class=n>endTime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>long</span> <span class=n>elapsedTime</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取起始时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_MONOTONIC</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>startTime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 执行一些操作
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>struct</span> <span class=n>timespec</span> <span class=n>startTime1</span><span class=p>,</span> <span class=n>endTime1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kt>long</span> <span class=n>elaspedTime1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// 获取起始时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_PROCESS_CPUTIME_ID</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>startTime1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// 执行一些操作
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=kt>pthread_t</span> <span class=kr>thread</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=c1>// 创建线程
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>pthread_create</span><span class=p>(</span><span class=o>&amp;</span><span class=kr>thread</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=n>threadFunc</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=c1>// 等待线程结束
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>pthread_join</span><span class=p>(</span><span class=kr>thread</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// 获取结束时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_PROCESS_CPUTIME_ID</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>endTime1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// 计算CPU时间（秒）
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>elaspedTime1</span> <span class=o>=</span> <span class=p>(</span><span class=n>endTime1</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>-</span> <span class=n>startTime1</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>)</span> <span class=o>*</span> <span class=mi>1000000000</span> <span class=o>+</span> <span class=p>(</span><span class=n>endTime1</span><span class=p>.</span><span class=n>tv_nsec</span> <span class=o>-</span> <span class=n>startTime1</span><span class=p>.</span><span class=n>tv_nsec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;进程使用CPU时间：%ld 纳秒</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>elaspedTime1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取结束时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_MONOTONIC</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>endTime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 计算时间间隔（毫秒）
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>elapsedTime</span> <span class=o>=</span> <span class=p>(</span><span class=n>endTime</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>-</span> <span class=n>startTime</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>)</span> <span class=o>*</span> <span class=mi>1000000000</span> <span class=o>+</span> <span class=p>(</span><span class=n>endTime</span><span class=p>.</span><span class=n>tv_nsec</span> <span class=o>-</span> <span class=n>startTime</span><span class=p>.</span><span class=n>tv_nsec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;时间间隔：%ld 纳秒</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>elapsedTime</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// 执行结果如下：
+</span></span></span><span class=line><span class=cl><span class=c1>// $ ./get_thread_cpu_time
+</span></span></span><span class=line><span class=cl><span class=c1>// 线程使用CPU时间：281239559 纳秒
+</span></span></span><span class=line><span class=cl><span class=c1>// 进程使用CPU时间：281451290 纳秒
+</span></span></span><span class=line><span class=cl><span class=c1>// 时间间隔：281492002 纳秒
+</span></span></span><span class=line><span class=cl><span class=c1>// 可以看到这些时间之间存在微小的变化
+</span></span></span></code></pre></div><h2 id=示例><a href=#%e7%a4%ba%e4%be%8b>示例</a></h2><h3 id=使用alarm与pause进程使自己休眠一段指定的时间><a href=#%e4%bd%bf%e7%94%a8alarm%e4%b8%8epause%e8%bf%9b%e7%a8%8b%e4%bd%bf%e8%87%aa%e5%b7%b1%e4%bc%91%e7%9c%a0%e4%b8%80%e6%ae%b5%e6%8c%87%e5%ae%9a%e7%9a%84%e6%97%b6%e9%97%b4>使用<code>alarm</code>与<code>pause</code>，进程使自己休眠一段指定的时间</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;signal.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/time.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>sig_alrm1</span><span class=p>(</span><span class=kt>int</span> <span class=n>signo</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timeval</span> <span class=n>tv</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>gettimeofday</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tv</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;date:%ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>tv</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;sig alrm1</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>sig_alrm2</span><span class=p>(</span><span class=kt>int</span> <span class=n>signo</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timeval</span> <span class=n>tv</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>gettimeofday</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tv</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;date:%ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>tv</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;sig alrm2</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>unsigned</span> <span class=kt>int</span> <span class=nf>sleep1</span><span class=p>(</span><span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>seconds</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 1. 根据alarm返回检查之前是否有设置alarm
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>leftseconds</span> <span class=o>=</span> <span class=nf>alarm</span><span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;leftseconds=%u</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>leftseconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>leftseconds</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 之前的alarm还有leftseconds 秒超时
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>diff</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>leftseconds</span> <span class=o>&lt;</span> <span class=n>seconds</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// 使用两段休眠，先使之前alarm超时, 在重新设置剩余时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>alarm</span><span class=p>(</span><span class=n>leftseconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nf>pause</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=c1>// 计算第二段需要休眠的时间并重新设置信号处理程序
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=n>diff</span> <span class=o>=</span> <span class=n>seconds</span> <span class=o>-</span> <span class=n>leftseconds</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;diff=%u</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>diff</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nf>signal</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=n>sig_alrm2</span><span class=p>)</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=p>(</span><span class=n>diff</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nf>alarm</span><span class=p>(</span><span class=n>diff</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nf>pause</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=p>(</span><span class=nf>alarm</span><span class=p>(</span><span class=mi>0</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// 之前设置的alarm的剩余时间大于现在设置，采用两段休眠
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=c1>// 备份之前的信号处理函数，退出之前恢复
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=kt>void</span><span class=o>*</span> <span class=n>prev</span> <span class=o>=</span> <span class=nf>signal</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=n>sig_alrm2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>prev</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nf>alarm</span><span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nf>pause</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=c1>// 恢复之前信号处理配置以及剩余时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=n>diff</span> <span class=o>=</span> <span class=n>leftseconds</span> <span class=o>-</span> <span class=n>seconds</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;diff=%u</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>diff</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nf>signal</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=n>prev</span><span class=p>)</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>  <span class=c1>// 恢复之前的信号处理程序失败
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=k>return</span> <span class=p>(</span><span class=nf>alarm</span><span class=p>(</span><span class=n>diff</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// 这里不用pause，是用来恢复之前设置的alarm
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// alarm返回0，之前没有设置alarm
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kt>void</span><span class=o>*</span> <span class=n>prev</span> <span class=o>=</span> <span class=nf>signal</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=n>sig_alrm2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>prev</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>alarm</span><span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pause</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=p>(</span><span class=nf>alarm</span><span class=p>(</span><span class=mi>0</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>signal</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=n>sig_alrm1</span><span class=p>)</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;signal&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timeval</span> <span class=n>tv</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>gettimeofday</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tv</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;date:%ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>tv</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 第一次设置alarm
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>alarm</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>sleep</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;before sleep</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 里面会是第二次设置alarm，看看退出时会不会恢复
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>sleep1</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;after sleep</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>gettimeofday</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tv</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;date:%ld</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>tv</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>执行结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>$ ./sleep1
+</span></span><span class=line><span class=cl>date:1705091044
+</span></span><span class=line><span class=cl>before sleep
+</span></span><span class=line><span class=cl><span class=nv>leftseconds</span><span class=o>=</span><span class=m>15</span>
+</span></span><span class=line><span class=cl>date:1705091059
+</span></span><span class=line><span class=cl>sig alrm2
+</span></span><span class=line><span class=cl><span class=nv>diff</span><span class=o>=</span><span class=m>5</span>
+</span></span><span class=line><span class=cl>after sleep
+</span></span><span class=line><span class=cl>date:1705091059
+</span></span><span class=line><span class=cl>date:1705091064
+</span></span><span class=line><span class=cl>sig alrm1
+</span></span><span class=line><span class=cl>^C
+</span></span></code></pre></div><p>在<code>sleep1</code>函数中会检查第一次调用<code>alarm</code>的返回值：</p><ol><li>如果其值大于0并且小于本次调用<code>alarm</code>的值，则恢复之前的闹钟并等其超时，然后设置差值作为本次<code>alarm</code>参数值；</li><li>如果其值大于本次设置值，则会使用本次设置值先调用<code>alarm</code>，再在<code>sleep1</code>函数之前使用差值来重置之前的闹钟（包括信号处理程序）。</li></ol><p>存在问题：<strong>在<code>alarm</code>与<code>pause</code>函数之间存在竞争条件，如果<code>alarm</code>函数在调用<code>pause</code>之前超时，并调用了信号处理程序，则<code>pause</code>会使进程永久阻塞。</strong></p><h3 id=使用setjmp与longjmp避免竞争条件><a href=#%e4%bd%bf%e7%94%a8setjmp%e4%b8%8elongjmp%e9%81%bf%e5%85%8d%e7%ab%9e%e4%ba%89%e6%9d%a1%e4%bb%b6>使用<code>setjmp</code>与<code>longjmp</code>避免竞争条件</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;setjmp.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;signal.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/time.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>static</span> <span class=n>jmp_buf</span> <span class=n>env_alrm</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>sig_alrm1</span><span class=p>(</span><span class=kt>int</span> <span class=n>signo</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;sig alrm1</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>longjmp</span><span class=p>(</span><span class=n>env_alrm</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>  <span class=c1>// 设置setjmp的返回值为1
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>unsigned</span> <span class=kt>int</span> <span class=nf>sleep2</span><span class=p>(</span><span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>seconds</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>signal</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=n>sig_alrm1</span><span class=p>)</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>setjmp</span><span class=p>(</span><span class=n>env_alrm</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>alarm</span><span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pause</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=nf>alarm</span><span class=p>(</span><span class=mi>0</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>sig_int</span><span class=p>(</span><span class=kt>int</span> <span class=n>signo</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>i</span><span class=p>,</span> <span class=n>j</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>volatile</span> <span class=kt>int</span> <span class=n>k</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;</span><span class=se>\n</span><span class=s>sig_int starting</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>300000</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=mi>300000</span><span class=p>;</span> <span class=n>j</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>k</span> <span class=o>=</span> <span class=n>i</span> <span class=o>+</span> <span class=n>j</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;sig_int finished</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>unslept</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>signal</span><span class=p>(</span><span class=n>SIGINT</span><span class=p>,</span> <span class=n>sig_int</span><span class=p>)</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;signal&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>unslept</span> <span class=o>=</span> <span class=nf>sleep2</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;sleep2 returned: %u</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>unslept</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>执行结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>$ ./sleep2
+</span></span><span class=line><span class=cl>^C
+</span></span><span class=line><span class=cl>sig_int starting <span class=c1># sig_int信号处理程序中断</span>
+</span></span><span class=line><span class=cl>sig alrm1 <span class=c1># longjmp执行完之后不会恢复之前中断的sig_int信号处理程序</span>
+</span></span><span class=line><span class=cl>sleep2 returned: <span class=m>0</span>
+</span></span></code></pre></div><p>在这个例子中，使用<code>setjmp</code>和<code>longjmp</code>函数解决上个例子中的竞争问题。</p><p>但是如果<code>SIGALRM</code>中断了其他信号处理函数，<code>longjmp</code>执行之后，就会提前终止该信号处理程序，因为<code>longjmp</code>函数会清理栈空间。</p><p>这两个例子说明<strong>在涉及信号处理时，需要考虑周到、不影响其他代码段才行</strong>。</p><h3 id=使用alarm对可能阻塞的操作设置上限值><a href=#%e4%bd%bf%e7%94%a8alarm%e5%af%b9%e5%8f%af%e8%83%bd%e9%98%bb%e5%a1%9e%e7%9a%84%e6%93%8d%e4%bd%9c%e8%ae%be%e7%bd%ae%e4%b8%8a%e9%99%90%e5%80%bc>使用<code>alarm</code>对可能阻塞的操作设置上限值</a></h3><p>下面的例子是从标准输入读一行（低速系统调用，可能阻塞），然后写入到标准输出中。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;setjmp.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;signal.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/time.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>static</span> <span class=n>jmp_buf</span> <span class=n>env_alrm</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>sig_alrm1</span><span class=p>(</span><span class=kt>int</span> <span class=n>signo</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;sig alrm1</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>longjmp</span><span class=p>(</span><span class=n>env_alrm</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>  <span class=c1>// 设置setjmp的返回值为1
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>unsigned</span> <span class=kt>int</span> <span class=nf>sleep2</span><span class=p>(</span><span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>seconds</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>signal</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=n>sig_alrm1</span><span class=p>)</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>setjmp</span><span class=p>(</span><span class=n>env_alrm</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>alarm</span><span class=p>(</span><span class=n>seconds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>pause</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=nf>alarm</span><span class=p>(</span><span class=mi>0</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>n</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>char</span> <span class=n>line</span><span class=p>[</span><span class=mi>1024</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>signal</span><span class=p>(</span><span class=n>SIGALRM</span><span class=p>,</span> <span class=n>sig_alrm1</span><span class=p>)</span> <span class=o>==</span> <span class=n>SIG_ERR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;signal&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>exit</span><span class=p>(</span><span class=mo>00</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>setjmp</span><span class=p>(</span><span class=n>env_alrm</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;read timeout&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=nf>alarm</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>((</span><span class=n>n</span> <span class=o>=</span> <span class=nf>read</span><span class=p>(</span><span class=n>STDIN_FILENO</span><span class=p>,</span> <span class=n>line</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>line</span><span class=p>)))</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;read&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>alarm</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>write</span><span class=p>(</span><span class=n>STDOUT_FILENO</span><span class=p>,</span> <span class=n>line</span><span class=p>,</span> <span class=n>n</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>执行结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>$ ./read_timeout_longjmp
+</span></span><span class=line><span class=cl><span class=m>12</span>
+</span></span><span class=line><span class=cl><span class=m>12</span>
+</span></span><span class=line><span class=cl>$ ./read_timeout_longjmp
+</span></span><span class=line><span class=cl>sig alrm1
+</span></span><span class=line><span class=cl><span class=nb>read</span> timeout
+</span></span></code></pre></div><p>该实例与上个示例存在相同的问题，<strong>与其他信号处理程序交互会导致其他信号处理程序不正常退出</strong>。</p></div><div class=post-archive><ul class=post-copyright><li><strong>原文作者：</strong><a rel=author href=https://DBL2017.github.io/>生如夏花</a></li><li style=word-break:break-all><strong>原文链接：</strong><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E5%8F%AF%E9%9D%A0%E4%BF%A1%E5%8F%B7/>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E5%8F%AF%E9%9D%A0%E4%BF%A1%E5%8F%B7/</a></li><li><strong>版权声明：</strong>本作品采用<a rel=license href=https://creativecommons.org/licenses/by-nc-nd/4.0/>知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li></ul></div><br><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E4%B8%8D%E5%8F%AF%E9%9D%A0%E4%BF%A1%E5%8F%B7%E7%9A%84%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/>不可靠信号的相关问题</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E4%BF%A1%E5%8F%B7%E6%A6%82%E8%BF%B0/>信号概述</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E8%BF%9B%E7%A8%8B%E7%8E%AF%E5%A2%83/>进程环境</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E6%A0%87%E5%87%86io/>标准IO</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E6%96%87%E4%BB%B6io/>文件IO</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=/tags/apue>APUE</a></li><li><a href=/tags/unix>Unix</a></li><li><a href=/tags/%E4%BF%A1%E5%8F%B7>信号</a></li><li><a href=/tags/unix%E7%8E%AF%E5%A2%83%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B>Unix环境高级编程</a></li><li><a href=/tags/%E5%8F%AF%E9%9D%A0%E4%BF%A1%E5%8F%B7>可靠信号</a></li><li><a href=/tags/%E4%BF%A1%E5%8F%B7%E9%80%92%E9%80%81>信号递送</a></li><li><a href=/tags/kill>kill</a></li><li><a href=/tags/pause>pause</a></li><li><a href=/tags/alarm>alarm</a></li></ul></div></article><div class="post bg-white"><div><h2>评论</h2></div><div id=comments></div></div><script>new Valine({el:"#comments",appId:"E7COm5iHDM70WhcFfoYyAcH7-gzGzoHsz",appKey:"KoQ86O8YhLSQvyTavTCZdWbe",placeholder:"请写下你的建议！",avatar:"",avatarForce:!0,recordIP:!0,enableQQ:!0,requiredFields:["nick","mail"],meta:["nick","mail"]})</script></div></div></div><div class=content-right><div class=sidebar><section class=widget><form id=form-search action=https://DBL2017.github.io/search/ method=get accept-charset=utf-8 _lpchecked=1><input type=text name=q maxlength=20 placeholder=请输入查找关键字 required>
+<button type=submit class=submit title=提交><svg t="1714448321870" class="icon" style="width:22px;height:22px" viewBox="0 0 1024 1024" p-id="1771" width="200" height="200"><path d="M781.9264 691.1232l236.928 236.9216-90.816 90.8032-236.9152-236.9216c-72.032 53.3568-161.184 84.9088-257.7088 84.9088C194.048 866.8352.0 672.7872.0 433.408.0 194.048 194.048.0 433.4144.0c239.3728.0 433.4208 194.048 433.4208 433.4144.0 96.5248-31.552 185.6768-84.9088 257.7088zm-348.512 47.2896c168.448.0 304.9984-136.5504 304.9984-304.9984s-136.5504-304.992-304.9984-304.992-304.992 136.5504-304.992 304.9856c0 168.448 136.5504 304.9984 304.992 304.9984z" fill="#4a4a4a" p-id="1772"/></svg></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/iptables%E8%87%AA%E5%AE%9A%E4%B9%89%E9%93%BE/ title=iptables自定义链>iptables自定义链</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/ubuntu24.04-apt-upgrade%E6%8F%90%E7%A4%BAesm-apps/ title="Ubuntu24.04 apt upgrade提示esm-apps">Ubuntu24.04 apt upgrade提示esm-apps</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/ubuntu24.04%E6%90%AD%E5%BB%BApppoe-server%E5%B9%B6%E8%BF%9B%E8%A1%8C%E6%8B%A8%E5%8F%B7%E6%B5%8B%E8%AF%95/ title="Ubuntu24.04搭建PPPoE Server并进行拨号测试">Ubuntu24.04搭建PPPoE Server并进行拨号测试</a></li><li><a href=https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91%E4%BB%A5%E5%8F%8A%E5%9C%A8vmware%E4%B8%8A%E8%BF%90%E8%A1%8C/ title=OpenWrt下载编译以及在VMWare上运行>OpenWrt下载编译以及在VMWare上运行</a></li><li><a href=https://DBL2017.github.io/post/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/ubuntu24.04%E7%8E%AF%E5%A2%83%E7%BC%96%E8%AF%91glibc-2.40%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/ title=Ubuntu24.04环境编译glibc-2.40错误记录>Ubuntu24.04环境编译glibc-2.40错误记录</a></li><li><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/unix%E5%9F%9F%E5%A5%97%E6%8E%A5%E5%AD%97/ title=UNIX域套接字>UNIX域套接字</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/job-systemd-networkd-wait-online.service-start-running/ title="Job systemd-networkd-wait-online.service start running">Job systemd-networkd-wait-online.service start running</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/fdisk%E5%88%9B%E5%BB%BA%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E5%B9%B6%E6%A0%BC%E5%BC%8F%E5%8C%96/ title=fdisk创建磁盘分区并格式化>fdisk创建磁盘分区并格式化</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/vmware%E8%99%9A%E6%8B%9F%E6%9C%BAubuntu24.04%E6%A1%A5%E6%8E%A5%E5%88%B0%E5%AE%BF%E4%B8%BB%E6%9C%BA%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E4%B8%8A%E7%BD%91/ title=VMware虚拟机Ubuntu24.04桥接到宿主机无线网卡上网>VMware虚拟机Ubuntu24.04桥接到宿主机无线网卡上网</a></li><li><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/io%E5%A4%9A%E8%B7%AF%E8%BD%AC%E6%8E%A5%E4%B9%8Bpoll%E5%87%BD%E6%95%B0/ title=I/O多路转接之poll函数>I/O多路转接之poll函数</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list><li><a href=https://DBL2017.github.io/categories/kindle/>KINDLE (1)</a></li><li><a href=https://DBL2017.github.io/categories/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/>传输协议 (11)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/>工具使用 (19)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/>开源三方 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/>操作系统 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/>数字安全 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/>数据结构和算法 (5)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/>编程语言 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88/>网络工程师 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/>读书笔记 (56)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/>问题排查 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%BB%98%E8%AE%A4/>默认 (2)</a></li></ul></section><section class=widget><h3 class=widget-title>友情链接</h3><ul class=widget-list><li><a target=_blank href=https://mermaid.live/ title=Mermaid>Mermaid 编辑</a></li><li><a target=_blank href=https://excalidraw.com/ title=EXCALIDRAW>Excalidraw 绘图</a></li><li><a target=_blank href=https://git-scm.com/docs title=Git命令参考手册>Git命令参考手册</a></li><li><a target=_blank href=https://www.gnu.org/software/make/manual/make.html title="GNU make官方文档">GNU make官方文档</a></li><li><a target=_blank href=https://www.emojiall.com/ title=Emojiall表情网站>Emojiall表情网站</a></li></ul></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/index.xml>文章 RSS</a></li></ul></section></div></div></div><div class=container-footer><footer id=footer><div>&copy; 2024 <a href=https://DBL2017.github.io/>生如夏花的博客 By
+生如夏花</a>
+| <a rel=nofollow target=_blank href=http://beian.miit.gov.cn/>广电总局</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered
+by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://DBL2017.github.io/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">生如夏花的博客</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],displayMath:[["$$","$$"]],processEscapes:!0,processEnvironments:!0,skipTags:["script","noscript","style","textarea","pre"]}}</script><script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src=/js/jquery.fancybox.min.min.9040007c0fd2a6cdc356495acb1c45ba3328b261b0d9f75d3da19bc47229189108aab8ca043864c1801d59431de72dec8d51ae50539f9ce1f5964bf5f38786c3.js integrity="sha512-kEAAfA/Sps3DVklayxxFujMosmGw2fddPaGbxHIpGJEIqrjKBDhkwYAdWUMd5y3sjVGuUFOfnOH1lkv184eGww==" crossorigin=anonymous></script><a id=rocket href=#top></a><script src=/js/totop.min.8c7573186baa30f09c49b5cf3176c3b105785324d961b3d5c2f7f099d14673160a29aeebdec25909d046aa14936cd43451e17664662d518550d5e8998dbec670.js integrity="sha512-jHVzGGuqMPCcSbXPMXbDsQV4UyTZYbPVwvfwmdFGcxYKKa7r3sJZCdBGqhSTbNQ0UeF2ZGYtUYVQ1eiZjb7GcA==" crossorigin=anonymous></script><script src=/js/clipboard.min.0765794be1674926c1a3810afcf039f605f367cb11cef727ad49e6aa70f9fca0a37d329d64c55822896869eb0960763e73e085ee7675cbc497e4d3256a6e6a67.js integrity="sha512-B2V5S+FnSSbBo4EK/PA59gXzZ8sRzvcnrUnmqnD5/KCjfTKdZMVYIoloaesJYHY+c+CF7nZ1y8SX5NMlam5qZw==" crossorigin=anonymous></script><script>var spy=new Gumshoe("#TableOfContents a",{nested:!0,nestedClass:"active"})</script><script>hljs.highlightAll()</script></div></div></body></html>

@@ -1,0 +1,1081 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>OpenSSL生成SM2证书链 | 生如夏花的博客</title>
+<meta property="og:title" content="OpenSSL生成SM2证书链 - 生如夏花的博客"><meta property="og:type" content="article"><meta property="article:published_time" content='2024-04-12T14:26:50+08:00'><meta property="article:modified_time" content='2024-04-13T15:28:20+08:00'><meta name=Keywords content="C语言,Linux系统开发,物联网,博客,项目管理,软件架构"><meta name=description content="使用openssl工具并采用国密SM2算法生成证书链，包括根证书CA、二级CA、三级CA、服务端证书server.crt以及客户端证书client.crt。"><meta name=author content><meta property="og:url" content="https://DBL2017.github.io/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/openssl%E7%94%9F%E6%88%90sm2%E8%AF%81%E4%B9%A6%E9%93%BE/"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css integrity="sha512-RLF8eOxhuwsRINc7r56dpl9a3VStqrXD+udWahutJrYdyh++2Ghnf+s4jFsOyryKZt/GNjPwbXVPH3MJpKrn2g==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=/css/badge.min.dc57f0a9d275742b1e2d17f204ae0b829361b5dd0df99d3d356615830fb223936c054d31a888c5f369975da90586601e2666ddbbbb36e98510b814a70826e874.css integrity="sha512-3FfwqdJ1dCseLRfyBK4LgpNhtd0N+Z09NWYVgw+yI5NsBU0xqIjF82mXXakFhmAeJmbdu7s26YUQuBSnCCbodA==" crossorigin=anonymous><link rel=stylesheet href=/css/header.min.9e74ad2f7e23fb54e2da3ef2f1eb6498897cd4139d181133b5e641f107980364ccfbcea731badb693b4a50819c388b6f8cab037346daf142114f86f14faa8766.css integrity="sha512-nnStL34j+1Ti2j7y8etkmIl81BOdGBEzteZB8QeYA2TM+86nMbrbaTtKUIGcOItvjKsDc0ba8UIRT4bxT6qHZg==" crossorigin=anonymous><link rel=stylesheet href=/css/table.min.032852d8d049c55be5cd0a27bf8c7b09c8ea549fb719c2fd0231ebd262fdddb5aaaf391dabeb89ce33bcbe49f13ee8a530822a26f76b675af23473ed07b95d2e.css integrity="sha512-AyhS2NBJxVvlzQonv4x7CcjqVJ+3GcL9AjHr0mL93bWqrzkdq+uJzjO8vknxPuilMIIqJvdrZ1ryNHPtB7ldLg==" crossorigin=anonymous><link rel=stylesheet href=/css/baseof.min.5e04a6c8338c3c57aedaaae91320971e148651ac160d51bb58ebfec7757346a177331ac5646bbb1b2664b1c8cc405939125785c138935bc0d29a805b11791691.css integrity="sha512-XgSmyDOMPFeu2qrpEyCXHhSGUawWDVG7WOv+x3VzRqF3MxrFZGu7GyZkscjMQFk5EleFwTiTW8DSmoBbEXkWkQ==" crossorigin=anonymous><link rel=stylesheet href=/css/rocket.min.96a6be31cd3df9dcd4e7e131e9fcb0e63149da1da6a23df5ed8c8e0ccf0436f4c95aad5ded6a69e7fba5c051f8cc00466fcedaa07e4c7f59492d4a15aba2e936.css integrity="sha512-lqa+Mc09+dzU5+Ex6fyw5jFJ2h2moj317YyODM8ENvTJWq1d7Wpp5/ulwFH4zABGb87aoH5Mf1lJLUoVq6LpNg==" crossorigin=anonymous><link rel=stylesheet href=/css/toc.min.6d85af7b55a06a3c1672914851ad8f64e3e4de3a81435cc45b05f1b71fb4bde6d0f00597b4f316d214809e3597a66516d7651772c9da8d8e42bf188fb3df5a85.css integrity="sha512-bYWve1WgajwWcpFIUa2PZOPk3jqBQ1zEWwXxtx+0vebQ8AWXtPMW0hSAnjWXpmUW12UXcsnajY5CvxiPs99ahQ==" crossorigin=anonymous><link rel=stylesheet href=/css/clipboard.min.5e6a0198e50c850ced7dc2ba6f282ecaab21a8daad9eee626b990120818361b4b0007128d73957d5682346c88a6f9831f5872051e5f12da830cc29ca75676403.css integrity="sha512-XmoBmOUMhQztfcK6byguyqshqNqtnu5ia5kBIIGDYbSwAHEo1zlX1WgjRsiKb5gx9YcgUeXxLagwzCnKdWdkAw==" crossorigin=anonymous><link rel=stylesheet href=/css/style.min.2af5fd807ef34ec700d21d326733adff6177ee5261d0810a5357fe02d9508bd54418aff2317c7d8761548124f1f7befd087353c6308ec3795a1dafbfba4b7193.css integrity="sha512-KvX9gH7zTscA0h0yZzOt/2F37lJh0IEKU1f+AtlQi9VEGK/yMXx9h2FUgSTx9779CHNTxjCOw3laHa+/uktxkw==" crossorigin=anonymous><link rel="shortcut icon" href=/img/favicon.png type=image/x-icon><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin=anonymous referrerpolicy=no-referrer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/vim.min.js></script><script src=/js/gumshoe.min.min.9dec1df0371d73b03324ed4bb78a6d5b2e84af6a37b11ce799808a26d70dfd156595f8d23c42db9e4866f12b4c0de664cfd032fa6f95bdaaada1bacdb235e79e.js integrity="sha512-newd8Dcdc7AzJO1Lt4ptWy6Er2o3sRznmYCKJtcN/RVllfjSPELbnkhm8StMDeZkz9Ay+m+VvaqtobrNsjXnng==" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.1/Valine.min.js integrity="sha512-FxPzcGnQGjqsUr1ofvicx9Y7T53thxBSvYCBdKeW/Sfr5dQVEkh70r7sl1TMsEVheXsoOTqXZ9z2t75JNeak/g==" crossorigin=anonymous referrerpolicy=no-referrer></script></head><body><div class=container><div class=container-header><header><div class=header-main><div class=header-site-name><a id=header-title href=https://DBL2017.github.io/>生如夏花的博客</a><p class=description>专注于工业物联网行业数据采集，嵌入式Linux系统裁剪，5G智慧网关软件开发等</p></div><div class=header-menu><nav id=header-nav-menu><a href=https://DBL2017.github.io/>首页</a>
+<a href=https://DBL2017.github.io/series/ title=系列>系列</a>
+<a href=https://DBL2017.github.io/categories/ title=分类>分类</a>
+<a href=https://DBL2017.github.io/tags/ title=标签>标签</a>
+<a href=https://DBL2017.github.io/archives/ title=归档>归档</a>
+<a href=https://DBL2017.github.io/about/ title=关于>关于</a></nav></div></div></header></div><div class=container-content><div class=content-center><div class=main-single><div class=single-toc><div class=post-toc><h2 class=post-toc-title><a href=#>目录</a></h2><div class=post-toc-content><nav id=TableOfContents><ul><li><a href=#openssl配置>OpenSSL配置</a></li><li><a href=#rootca>RootCA</a></li><li><a href=#二级ca>二级CA</a></li><li><a href=#三级ca>三级CA</a></li><li><a href=#服务端证书>服务端证书</a></li><li><a href=#客户端证书>客户端证书</a></li></ul></nav></div></div></div><div class=single-article><article class=post><header><h1 class=post-title>OpenSSL生成SM2证书链</h1></header><date class="post-meta meta-date"><span class=meta-category><a href=/archives/#2024>2024年4月12日</a></span></date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/categories/#%e6%95%b0%e5%ad%97%e5%ae%89%e5%85%a8>数字安全</a></span></div><div class=post-meta><span>|</span>
+<span>共5523字</span></div><div class=post-meta><span>|</span>
+<span>阅读时长(12分钟)</span></div><div class=clear style=display:none><div class=toc-article><div class=toc-title>文章目录</div></div></div><div class=post-content><p>本文使用OpenSSL工具生成国密算法SM2的三级CA证书，组成证书链，并使用证书链签名客户端证书和服务端证书。</p><p>可以通过证书链对生成的客户端和服务端证书进行校验。</p><p><strong>虽然OpenSSL工具可以使用SM2算法来生成并校验证书，但是在TLS握手过程中主要支持RSA和ECC算法作为公钥加密算法，不支持SM2算法</strong>，因此无法在TLS加密连接中使用SM2证书。</p><p>SSL/TLS协议主要使用RSA和ECC（椭圆曲线密码学）算法作为公钥加密算法，而SM2算法属于ECC算法的一种。<a href=https://www.rfc-editor.org/rfc/rfc8998>RFC8898</a></p><h2 id=openssl配置><a href=#openssl%e9%85%8d%e7%bd%ae>OpenSSL配置</a></h2><p>openssl.cnf配置文件节选内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=line><span class=cl><span class=c1>####################################################################</span>
+</span></span><span class=line><span class=cl><span class=k>[ ca ]</span>
+</span></span><span class=line><span class=cl><span class=na>default_ca</span>      <span class=o>=</span> <span class=s>CA_default            # The default ca section</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>####################################################################</span>
+</span></span><span class=line><span class=cl><span class=k>[ CA_default ]</span>
+</span></span><span class=line><span class=cl><span class=c1># 默认CA配置</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=na>dir</span>             <span class=o>=</span> <span class=s>/home/xxx/CA                  # Where everything is kept 存放CA相关信息的总目录</span>
+</span></span><span class=line><span class=cl><span class=na>certs</span>           <span class=o>=</span> <span class=s>$dir/certs                    # Where the issued certs are kept 颁发证书存放目录</span>
+</span></span><span class=line><span class=cl><span class=na>crl_dir</span>         <span class=o>=</span> <span class=s>$dir/crl                      # Where the issued crl are kept 证书吊销列表目录</span>
+</span></span><span class=line><span class=cl><span class=na>database</span>        <span class=o>=</span> <span class=s>$dir/index.txt                # database index file. 所有用户颁发证书的索引数据库，证书编号</span>
+</span></span><span class=line><span class=cl><span class=c1>#unique_subject = no                            # Set to &#39;no&#39; to allow creation of several certs with same subject.</span>
+</span></span><span class=line><span class=cl><span class=na>new_certs_dir</span>   <span class=o>=</span> <span class=s>$dir/newcerts                 # default place for new certs. 新颁发证书存储目录</span>
+</span></span><span class=line><span class=cl><span class=na>certificate</span>     <span class=o>=</span> <span class=s>$dir/rootca.pem               # The CA certificate CA的自签名证书</span>
+</span></span><span class=line><span class=cl><span class=na>serial</span>          <span class=o>=</span> <span class=s>$dir/serial                   # The current serial number 每个证书的编号 序列号存放的将要颁发的证书的编号  需要赋予初始值</span>
+</span></span><span class=line><span class=cl><span class=na>crlnumber</span>       <span class=o>=</span> <span class=s>$dir/crlnumber                # the current crl number 证书吊销列表的编号</span>
+</span></span><span class=line><span class=cl><span class=c1># must be commented out to leave a V1 CRL</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=na>crl</span>             <span class=o>=</span> <span class=s>$dir/crl.pem                  # The current CRL 证书吊销列表文件</span>
+</span></span><span class=line><span class=cl><span class=na>private_key</span>     <span class=o>=</span> <span class=s>$dir/private/rootkey.pem      # The private key CA私钥</span>
+</span></span><span class=line><span class=cl><span class=na>RANDFILE</span>        <span class=o>=</span> <span class=s>$dir/private/.rand            # private random number file</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=na>x509_extensions</span> <span class=o>=</span> <span class=s>usr_cert                      # The extensions to add to the cert</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Comment out the following two lines for the &#34;traditional&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># (and highly broken) format.</span>
+</span></span><span class=line><span class=cl><span class=na>name_opt</span>        <span class=o>=</span> <span class=s>ca_default                    # Subject Name options</span>
+</span></span><span class=line><span class=cl><span class=na>cert_opt</span>        <span class=o>=</span> <span class=s>ca_default                    # Certificate field options</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Extension copying option: use with caution.</span>
+</span></span><span class=line><span class=cl><span class=c1># copy_extensions = copy</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Extensions to add to a CRL. Note: Netscape communicator chokes on V2 CRLs</span>
+</span></span><span class=line><span class=cl><span class=c1># so this is commented out by default to leave a V1 CRL.</span>
+</span></span><span class=line><span class=cl><span class=c1># crlnumber must also be commented out to leave a V1 CRL.</span>
+</span></span><span class=line><span class=cl><span class=c1># crl_extensions        = crl_ext</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=na>default_days</span>    <span class=o>=</span> <span class=s>365                   # how long to certify for</span>
+</span></span><span class=line><span class=cl><span class=na>default_crl_days</span><span class=o>=</span> <span class=s>30                    # how long before next CRL</span>
+</span></span><span class=line><span class=cl><span class=na>default_md</span>      <span class=o>=</span> <span class=s>default               # use public key default MD</span>
+</span></span><span class=line><span class=cl><span class=na>preserve</span>        <span class=o>=</span> <span class=s>no                    # keep passed DN ordering</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># A few difference way of specifying how similar the request should look</span>
+</span></span><span class=line><span class=cl><span class=c1># For type CA, the listed attributes must be the same, and the optional</span>
+</span></span><span class=line><span class=cl><span class=c1># and supplied fields are just that :-)</span>
+</span></span><span class=line><span class=cl><span class=na>policy</span>          <span class=o>=</span> <span class=s>policy_anything</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># For the CA policy 证书的匹配策略</span>
+</span></span><span class=line><span class=cl><span class=k>[ policy_match ]</span>
+</span></span><span class=line><span class=cl><span class=na>countryName</span>             <span class=o>=</span> <span class=s>match     # 国家</span>
+</span></span><span class=line><span class=cl><span class=na>stateOrProvinceName</span>     <span class=o>=</span> <span class=s>match     # 省份</span>
+</span></span><span class=line><span class=cl><span class=na>organizationName</span>        <span class=o>=</span> <span class=s>match     # 组织</span>
+</span></span><span class=line><span class=cl><span class=na>organizationalUnitName</span>  <span class=o>=</span> <span class=s>optional  # 部门</span>
+</span></span><span class=line><span class=cl><span class=na>commonName</span>              <span class=o>=</span> <span class=s>supplied  # 通用名</span>
+</span></span><span class=line><span class=cl><span class=na>emailAddress</span>            <span class=o>=</span> <span class=s>optional  # 邮箱可选</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># For the &#39;anything&#39; policy</span>
+</span></span><span class=line><span class=cl><span class=c1># At this point in time, you must list all acceptable &#39;object&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># types.</span>
+</span></span><span class=line><span class=cl><span class=k>[ policy_anything ]</span>
+</span></span><span class=line><span class=cl><span class=na>countryName</span>                 <span class=o>=</span> <span class=s>optional</span>
+</span></span><span class=line><span class=cl><span class=na>stateOrProvinceName</span>         <span class=o>=</span> <span class=s>optional</span>
+</span></span><span class=line><span class=cl><span class=na>localityName</span>                <span class=o>=</span> <span class=s>optional</span>
+</span></span><span class=line><span class=cl><span class=na>organizationName</span>            <span class=o>=</span> <span class=s>optional</span>
+</span></span><span class=line><span class=cl><span class=na>organizationalUnitName</span>      <span class=o>=</span> <span class=s>optional</span>
+</span></span><span class=line><span class=cl><span class=na>commonName</span>                  <span class=o>=</span> <span class=s>supplied</span>
+</span></span><span class=line><span class=cl><span class=na>emailAddress</span>                <span class=o>=</span> <span class=s>optional</span>
+</span></span></code></pre></div><p><strong>在生成证书之前需要用上面的配置覆盖系统中openssl.cnf文件中的相关配置</strong>。</p><h2 id=rootca><a href=#rootca>RootCA</a></h2><p>根CA证书生成脚本<code>gen_rootca.sh</code>脚本内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># 创建相关目录</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! mkdir -p <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA/<span class=o>{</span>cert,crl,newcerts,private<span class=o>}</span> <span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;mkdir failed&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># # cd失败立即退出</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/CA&#34;</span> <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd </span><span class=nv>$HOME</span><span class=s2>/CA failed and remove </span><span class=nv>$HOME</span><span class=s2>/CA and exit 1&#34;</span><span class=p>;</span> rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA<span class=p>;</span> <span class=nb>exit</span> 1<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ~/CA中执行以下命令</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! touch index.txt<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;touch index.txt and remove </span><span class=nv>$HOME</span><span class=s2>/CA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! <span class=nb>echo</span> <span class=m>01</span> &gt; serial<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;echo 01 &gt; serial failed and remove </span><span class=nv>$HOME</span><span class=s2>/CA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 定义相关变量</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=nv>C</span><span class=o>=</span>CN            <span class=c1># 国家</span>
+</span></span><span class=line><span class=cl><span class=nv>ST</span><span class=o>=</span>SH           <span class=c1># 省份</span>
+</span></span><span class=line><span class=cl><span class=nv>L</span><span class=o>=</span>XA            <span class=c1># 城市</span>
+</span></span><span class=line><span class=cl><span class=nv>O</span><span class=o>=</span>demo          <span class=c1># 组织</span>
+</span></span><span class=line><span class=cl><span class=nv>OU</span><span class=o>=</span>demo         <span class=c1># 部门</span>
+</span></span><span class=line><span class=cl><span class=nv>CN</span><span class=o>=</span>rootca       <span class=c1># 通用名</span>
+</span></span><span class=line><span class=cl><span class=nv>email</span><span class=o>=</span>rootca@test.com       <span class=c1># 邮箱</span>
+</span></span><span class=line><span class=cl><span class=nv>RootKey</span><span class=o>=</span>private/rootkey.pem <span class=c1># 生成的RootCA私钥</span>
+</span></span><span class=line><span class=cl><span class=nv>RootCA</span><span class=o>=</span>rootca.pem           <span class=c1># pem格式的RootCA证书</span>
+</span></span><span class=line><span class=cl><span class=nv>RootCACert</span><span class=o>=</span>rootca.crt       <span class=c1># crt格式的RootCA证书</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 生成根证书SM2私钥</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ecparam -genkey -name SM2 -param_enc explicit -outform pem -out <span class=s2>&#34;</span><span class=nv>$RootKey</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 root private key failed and remove </span><span class=nv>$HOME</span><span class=s2>/CA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 使用SM2私钥创建根CA证书</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl req -new -x509 -key private/rootkey.pem -subj <span class=s2>&#34;/C=</span><span class=nv>$C</span><span class=s2>/ST=</span><span class=nv>$ST</span><span class=s2>/L=</span><span class=nv>$L</span><span class=s2>/O=</span><span class=nv>$O</span><span class=s2>/OU=</span><span class=nv>$OU</span><span class=s2>/CN=</span><span class=nv>$CN</span><span class=s2>/emailAddress=</span><span class=nv>$email</span><span class=s2>&#34;</span> -days <span class=m>3650</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$RootCA</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 root ca file failed and remove </span><span class=nv>$HOME</span><span class=s2>/CA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># pem格式证书转为crt</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl x509 -in <span class=s2>&#34;</span><span class=nv>$RootCA</span><span class=s2>&#34;</span> -out <span class=s2>&#34;</span><span class=nv>$RootCACert</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;pem convert to crt failed and remove </span><span class=nv>$HOME</span><span class=s2>/CA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> tree&#34;</span>
+</span></span><span class=line><span class=cl>tree
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -noout -text -in </span><span class=nv>$RootCACert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -in <span class=s2>&#34;</span><span class=nv>$RootCACert</span><span class=s2>&#34;</span> -noout -text
+</span></span></code></pre></div><p>RootCA生成结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>~$ ./gen_rootca.sh
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ tree
+</span></span><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── cert
+</span></span><span class=line><span class=cl>├── crl
+</span></span><span class=line><span class=cl>├── index.txt
+</span></span><span class=line><span class=cl>├── newcerts
+</span></span><span class=line><span class=cl>├── private
+</span></span><span class=line><span class=cl>│   └── rootkey.pem
+</span></span><span class=line><span class=cl>├── rootca.crt
+</span></span><span class=line><span class=cl>├── rootca.pem
+</span></span><span class=line><span class=cl>└── serial
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>5</span> directories, <span class=m>5</span> files
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -noout -text -in rootca.crt
+</span></span><span class=line><span class=cl>Certificate:
+</span></span><span class=line><span class=cl>    Data:
+</span></span><span class=line><span class=cl>        Version: <span class=m>3</span> <span class=o>(</span>0x2<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Serial Number:
+</span></span><span class=line><span class=cl>            72:8c:11:8a:e1:b7:31:8c:89:6c:15:ed:20:e0:46:9e:2a:cc:11:6c
+</span></span><span class=line><span class=cl>        Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>        Issuer: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> rootca, <span class=nv>emailAddress</span> <span class=o>=</span> rootca@test.com
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:21:31 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:21:31 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> rootca, <span class=nv>emailAddress</span> <span class=o>=</span> rootca@test.com
+</span></span><span class=line><span class=cl>        Subject Public Key Info:
+</span></span><span class=line><span class=cl>            Public Key Algorithm: sm2
+</span></span><span class=line><span class=cl>                Public-Key: <span class=o>(</span><span class=m>256</span> bit<span class=o>)</span>
+</span></span><span class=line><span class=cl>                pub:
+</span></span><span class=line><span class=cl>                    04:e8:a5:b3:e1:b6:7a:bd:ce:af:74:2b:7a:04:46:
+</span></span><span class=line><span class=cl>                    05:99:fd:e3:8b:88:2e:0d:80:48:b3:42:9d:a4:3d:
+</span></span><span class=line><span class=cl>                    8f:fa:22:e5:42:a7:a1:be:e2:98:2c:5a:67:2b:38:
+</span></span><span class=line><span class=cl>                    9d:5b:c2:e2:78:21:eb:23:bb:2f:f0:49:da:5a:16:
+</span></span><span class=line><span class=cl>                    36:ee:d5:f3:ef
+</span></span><span class=line><span class=cl>                Field Type: prime-field
+</span></span><span class=line><span class=cl>                Prime:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff
+</span></span><span class=line><span class=cl>                A:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:fc
+</span></span><span class=line><span class=cl>                B:
+</span></span><span class=line><span class=cl>                    28:e9:fa:9e:9d:9f:5e:34:4d:5a:9e:4b:cf:65:09:
+</span></span><span class=line><span class=cl>                    a7:f3:97:89:f5:15:ab:8f:92:dd:bc:bd:41:4d:94:
+</span></span><span class=line><span class=cl>                    0e:93
+</span></span><span class=line><span class=cl>                Generator <span class=o>(</span>uncompressed<span class=o>)</span>:
+</span></span><span class=line><span class=cl>                    04:32:c4:ae:2c:1f:19:81:19:5f:99:04:46:6a:39:
+</span></span><span class=line><span class=cl>                    c9:94:8f:e3:0b:bf:f2:66:0b:e1:71:5a:45:89:33:
+</span></span><span class=line><span class=cl>                    4c:74:c7:bc:37:36:a2:f4:f6:77:9c:59:bd:ce:e3:
+</span></span><span class=line><span class=cl>                    6b:69:21:53:d0:a9:87:7c:c6:2a:47:40:02:df:32:
+</span></span><span class=line><span class=cl>                    e5:21:39:f0:a0
+</span></span><span class=line><span class=cl>                Order:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:72:03:df:6b:21:c6:05:2b:53:bb:f4:09:39:
+</span></span><span class=line><span class=cl>                    d5:41:23
+</span></span><span class=line><span class=cl>                Cofactor:  <span class=m>1</span> <span class=o>(</span>0x1<span class=o>)</span>
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                90:A4:1B:E5:A6:15:C3:C3:6D:BC:BA:23:12:28:54:18:90:C9:52:81
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                90:A4:1B:E5:A6:15:C3:C3:6D:BC:BA:23:12:28:54:18:90:C9:52:81
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints: critical
+</span></span><span class=line><span class=cl>                CA:TRUE <span class=c1># 这里表明该证书可用于签名其他证书</span>
+</span></span><span class=line><span class=cl>    Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>    Signature Value:
+</span></span><span class=line><span class=cl>        30:45:02:21:00:da:c3:8a:49:bd:34:21:7a:23:95:84:ca:9e:
+</span></span><span class=line><span class=cl>        59:87:83:d4:15:0b:b7:ba:3b:6b:7d:ba:0b:a5:ab:55:05:44:
+</span></span><span class=line><span class=cl>        d9:02:20:14:46:09:44:57:b0:90:f2:e2:67:18:d8:bc:a5:c7:
+</span></span><span class=line><span class=cl>        14:f5:cc:b8:e6:ad:35:32:f4:3a:52:48:ab:35:96:50:36
+</span></span></code></pre></div><h2 id=二级ca><a href=#%e4%ba%8c%e7%ba%a7ca>二级CA</a></h2><p>二级CA证书生成脚本<code>gen_secondca.sh</code>内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># 创建相关目录</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! mkdir -p <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA <span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;mkdir failed&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># # cd失败立即退出</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/SecondCA&#34;</span> <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd </span><span class=nv>$HOME</span><span class=s2>/SecondCA failed and remove </span><span class=nv>$HOME</span><span class=s2>/SecondCA and exit 1&#34;</span><span class=p>;</span> rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA <span class=p>;</span> <span class=nb>exit</span> 1<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ~/SecondCA 中执行以下命令</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 定义相关变量</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=nv>C</span><span class=o>=</span>CN            <span class=c1># 国家</span>
+</span></span><span class=line><span class=cl><span class=nv>ST</span><span class=o>=</span>SH           <span class=c1># 省份</span>
+</span></span><span class=line><span class=cl><span class=nv>L</span><span class=o>=</span>XA            <span class=c1># 城市</span>
+</span></span><span class=line><span class=cl><span class=nv>O</span><span class=o>=</span>demo          <span class=c1># 组织</span>
+</span></span><span class=line><span class=cl><span class=nv>OU</span><span class=o>=</span>demo         <span class=c1># 部门</span>
+</span></span><span class=line><span class=cl><span class=nv>CN</span><span class=o>=</span>secondca     <span class=c1># 通用名</span>
+</span></span><span class=line><span class=cl><span class=nv>email</span><span class=o>=</span>secondca@test.com     <span class=c1># 邮箱</span>
+</span></span><span class=line><span class=cl><span class=nv>SecondKey</span><span class=o>=</span>secondkey.pem     <span class=c1># 生成的SecondCA私钥</span>
+</span></span><span class=line><span class=cl><span class=nv>SecondCSR</span><span class=o>=</span>secondca.csr      <span class=c1># 生成证书的签名请求文件</span>
+</span></span><span class=line><span class=cl><span class=nv>SecondCA</span><span class=o>=</span>secondca.pem       <span class=c1># pem格式的SecondCA证书</span>
+</span></span><span class=line><span class=cl><span class=nv>SecondCACert</span><span class=o>=</span>secondca.crt   <span class=c1># crt格式的SecondCA证书</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! <span class=nb>echo</span> <span class=m>02</span> &gt; <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA/serial<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;echo 02 &gt; </span><span class=nv>$HOME</span><span class=s2>/CA/serial failed and remove </span><span class=nv>$HOME</span><span class=s2>/SecondCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 生成二级证书SM2私钥</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ecparam -genkey -name SM2 -param_enc explicit -outform pem -out <span class=s2>&#34;</span><span class=nv>$SecondKey</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 secondca private key failed and remove </span><span class=nv>$HOME</span><span class=s2>/SecondCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 使用SM2私钥创建签名请求</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl req -new -key <span class=s2>&#34;</span><span class=nv>$SecondKey</span><span class=s2>&#34;</span> -subj <span class=s2>&#34;/C=</span><span class=nv>$C</span><span class=s2>/ST=</span><span class=nv>$ST</span><span class=s2>/L=</span><span class=nv>$L</span><span class=s2>/O=</span><span class=nv>$O</span><span class=s2>/OU=</span><span class=nv>$OU</span><span class=s2>/CN=</span><span class=nv>$CN</span><span class=s2>/emailAddress=</span><span class=nv>$email</span><span class=s2>&#34;</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$SecondCSR</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 secondca csr failed failed and remove </span><span class=nv>$HOME</span><span class=s2>/SecondCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用根CA证书进行签名，这里不显示指定根证书的原因在于openssl.cnf中已经设置</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ca -extensions v3_ca -in <span class=s2>&#34;</span><span class=nv>$SecondCSR</span><span class=s2>&#34;</span> -days <span class=m>3650</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$SecondCA</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 secondca certificate failed failed and remove </span><span class=nv>$HOME</span><span class=s2>/SecondCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># pem格式证书转为crt</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl x509 -in <span class=s2>&#34;</span><span class=nv>$SecondCA</span><span class=s2>&#34;</span> -out <span class=s2>&#34;</span><span class=nv>$SecondCACert</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;pem convert to crt failed and remove </span><span class=nv>$HOME</span><span class=s2>/SecondCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> tree&#34;</span>
+</span></span><span class=line><span class=cl>tree
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl verify -verbose -CAfile </span><span class=nv>$HOME</span><span class=s2>/CA/rootca.crt </span><span class=nv>$SecondCA</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl verify -verbose -CAfile <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA/rootca.crt <span class=s2>&#34;</span><span class=nv>$SecondCA</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl verify -verbose -CAfile </span><span class=nv>$HOME</span><span class=s2>/CA/rootca.crt </span><span class=nv>$SecondCACert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl verify -verbose -CAfile <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA/rootca.crt <span class=s2>&#34;</span><span class=nv>$SecondCACert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -in secondca.crt -noout -dates&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -in secondca.crt -noout -dates
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -noout -text -in secondca.crt&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -noout -text -in secondca.crt
+</span></span></code></pre></div><p>生成结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>~$ ./gen_secondca.sh
+</span></span><span class=line><span class=cl>Using configuration from /home/xxx/openssl.cnf
+</span></span><span class=line><span class=cl>Check that the request matches the signature
+</span></span><span class=line><span class=cl>Signature ok
+</span></span><span class=line><span class=cl>Certificate Details:
+</span></span><span class=line><span class=cl>        Serial Number: <span class=m>2</span> <span class=o>(</span>0x2<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:22:00 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:22:00 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject:
+</span></span><span class=line><span class=cl>            <span class=nv>countryName</span>               <span class=o>=</span> CN
+</span></span><span class=line><span class=cl>            <span class=nv>stateOrProvinceName</span>       <span class=o>=</span> SH
+</span></span><span class=line><span class=cl>            <span class=nv>localityName</span>              <span class=o>=</span> XA
+</span></span><span class=line><span class=cl>            <span class=nv>organizationName</span>          <span class=o>=</span> demo
+</span></span><span class=line><span class=cl>            <span class=nv>organizationalUnitName</span>    <span class=o>=</span> demo
+</span></span><span class=line><span class=cl>            <span class=nv>commonName</span>                <span class=o>=</span> secondca
+</span></span><span class=line><span class=cl>            <span class=nv>emailAddress</span>              <span class=o>=</span> secondca@test.com
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                00:5F:38:E1:B9:68:22:D4:01:6B:FC:68:A3:56:58:7A:19:88:66:3C
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                90:A4:1B:E5:A6:15:C3:C3:6D:BC:BA:23:12:28:54:18:90:C9:52:81
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints: critical
+</span></span><span class=line><span class=cl>                CA:TRUE
+</span></span><span class=line><span class=cl>Certificate is to be certified <span class=k>until</span> Apr <span class=m>11</span> 03:22:00 <span class=m>2034</span> GMT <span class=o>(</span><span class=m>3650</span> days<span class=o>)</span>
+</span></span><span class=line><span class=cl>Sign the certificate? <span class=o>[</span>y/n<span class=o>]</span>:y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>1</span> out of <span class=m>1</span> certificate requests certified, commit? <span class=o>[</span>y/n<span class=o>]</span>y
+</span></span><span class=line><span class=cl>Write out database with <span class=m>1</span> new entries
+</span></span><span class=line><span class=cl>Database updated
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ tree
+</span></span><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── secondca.crt
+</span></span><span class=line><span class=cl>├── secondca.csr
+</span></span><span class=line><span class=cl>├── secondca.pem
+</span></span><span class=line><span class=cl>└── secondkey.pem
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>1</span> directory, <span class=m>4</span> files
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl verify -verbose -CAfile /home/xxx/CA/rootca.crt secondca.pem
+</span></span><span class=line><span class=cl>secondca.pem: OK
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl verify -verbose -CAfile /home/xxx/CA/rootca.crt secondca.crt
+</span></span><span class=line><span class=cl>secondca.crt: OK
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -in secondca.crt -noout -dates
+</span></span><span class=line><span class=cl><span class=nv>notBefore</span><span class=o>=</span>Apr <span class=m>13</span> 03:22:00 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl><span class=nv>notAfter</span><span class=o>=</span>Apr <span class=m>11</span> 03:22:00 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -noout -text -in secondca.crt
+</span></span><span class=line><span class=cl>Certificate:
+</span></span><span class=line><span class=cl>    Data:
+</span></span><span class=line><span class=cl>        Version: <span class=m>3</span> <span class=o>(</span>0x2<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Serial Number: <span class=m>2</span> <span class=o>(</span>0x2<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>        Issuer: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> rootca, <span class=nv>emailAddress</span> <span class=o>=</span> rootca@test.com
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:22:00 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:22:00 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> secondca, <span class=nv>emailAddress</span> <span class=o>=</span> secondca@test.com
+</span></span><span class=line><span class=cl>        Subject Public Key Info:
+</span></span><span class=line><span class=cl>            Public Key Algorithm: sm2
+</span></span><span class=line><span class=cl>                Public-Key: <span class=o>(</span><span class=m>256</span> bit<span class=o>)</span>
+</span></span><span class=line><span class=cl>                pub:
+</span></span><span class=line><span class=cl>                    04:cb:e5:cd:7d:d1:92:39:62:94:b0:32:b7:d6:51:
+</span></span><span class=line><span class=cl>                    35:31:78:5b:76:93:e5:33:78:e3:23:7c:bc:67:77:
+</span></span><span class=line><span class=cl>                    35:02:25:65:d9:2b:89:ce:81:bf:8a:b3:b6:4b:a9:
+</span></span><span class=line><span class=cl>                    9b:71:74:58:c7:0f:ba:8a:03:c0:1a:2d:50:34:f4:
+</span></span><span class=line><span class=cl>                    c8:17:d3:20:a4
+</span></span><span class=line><span class=cl>                Field Type: prime-field
+</span></span><span class=line><span class=cl>                Prime:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff
+</span></span><span class=line><span class=cl>                A:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:fc
+</span></span><span class=line><span class=cl>                B:
+</span></span><span class=line><span class=cl>                    28:e9:fa:9e:9d:9f:5e:34:4d:5a:9e:4b:cf:65:09:
+</span></span><span class=line><span class=cl>                    a7:f3:97:89:f5:15:ab:8f:92:dd:bc:bd:41:4d:94:
+</span></span><span class=line><span class=cl>                    0e:93
+</span></span><span class=line><span class=cl>                Generator <span class=o>(</span>uncompressed<span class=o>)</span>:
+</span></span><span class=line><span class=cl>                    04:32:c4:ae:2c:1f:19:81:19:5f:99:04:46:6a:39:
+</span></span><span class=line><span class=cl>                    c9:94:8f:e3:0b:bf:f2:66:0b:e1:71:5a:45:89:33:
+</span></span><span class=line><span class=cl>                    4c:74:c7:bc:37:36:a2:f4:f6:77:9c:59:bd:ce:e3:
+</span></span><span class=line><span class=cl>                    6b:69:21:53:d0:a9:87:7c:c6:2a:47:40:02:df:32:
+</span></span><span class=line><span class=cl>                    e5:21:39:f0:a0
+</span></span><span class=line><span class=cl>                Order:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:72:03:df:6b:21:c6:05:2b:53:bb:f4:09:39:
+</span></span><span class=line><span class=cl>                    d5:41:23
+</span></span><span class=line><span class=cl>                Cofactor:  <span class=m>1</span> <span class=o>(</span>0x1<span class=o>)</span>
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                00:5F:38:E1:B9:68:22:D4:01:6B:FC:68:A3:56:58:7A:19:88:66:3C
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                90:A4:1B:E5:A6:15:C3:C3:6D:BC:BA:23:12:28:54:18:90:C9:52:81
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints: critical
+</span></span><span class=line><span class=cl>                CA:TRUE <span class=c1># 这里表明该证书可用于签名其他证书</span>
+</span></span><span class=line><span class=cl>    Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>    Signature Value:
+</span></span><span class=line><span class=cl>        30:45:02:21:00:ce:e5:9e:cb:e0:8d:5b:a8:ff:75:7f:87:15:
+</span></span><span class=line><span class=cl>        7e:4c:3a:8d:9d:45:bb:1c:32:8f:14:4b:79:1d:e5:70:9e:3e:
+</span></span><span class=line><span class=cl>        bb:02:20:7b:4e:ab:fd:b8:79:74:fb:d1:a9:9c:d7:cc:d1:66:
+</span></span><span class=line><span class=cl>        cf:5b:c8:aa:0f:e4:de:0c:a3:62:39:f6:f9:72:66:5b:0a
+</span></span></code></pre></div><h2 id=三级ca><a href=#%e4%b8%89%e7%ba%a7ca>三级CA</a></h2><p>三级CA证书生成脚本<code>gen_thirdca.sh</code>内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># 创建相关目录</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! mkdir -p <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA <span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;mkdir failed&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># # cd失败立即退出</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/ThirdCA&#34;</span> <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd </span><span class=nv>$HOME</span><span class=s2>/ThirdCA failed and remove </span><span class=nv>$HOME</span><span class=s2>/ThirdCA and exit 1&#34;</span><span class=p>;</span> rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA <span class=p>;</span> <span class=nb>exit</span> 1<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ~/ThirdCA 中执行以下命令</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 定义相关变量</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=nv>C</span><span class=o>=</span>CN            <span class=c1># 国家</span>
+</span></span><span class=line><span class=cl><span class=nv>ST</span><span class=o>=</span>SH           <span class=c1># 省份</span>
+</span></span><span class=line><span class=cl><span class=nv>L</span><span class=o>=</span>XA            <span class=c1># 城市</span>
+</span></span><span class=line><span class=cl><span class=nv>O</span><span class=o>=</span>demo          <span class=c1># 组织</span>
+</span></span><span class=line><span class=cl><span class=nv>OU</span><span class=o>=</span>demo         <span class=c1># 部门</span>
+</span></span><span class=line><span class=cl><span class=nv>CN</span><span class=o>=</span>thirdca              <span class=c1># 通用名</span>
+</span></span><span class=line><span class=cl><span class=nv>email</span><span class=o>=</span>thirdca@test.com  <span class=c1># 邮箱</span>
+</span></span><span class=line><span class=cl><span class=nv>ThirdKey</span><span class=o>=</span>thirdkey.pem   <span class=c1># 生成的三级CA私钥</span>
+</span></span><span class=line><span class=cl><span class=nv>ThirdCSR</span><span class=o>=</span>thirdca.csr    <span class=c1># 三级CA证书的签名请求文件</span>
+</span></span><span class=line><span class=cl><span class=nv>ThirdCA</span><span class=o>=</span>thirdca.pem     <span class=c1># pem格式的三级CA证书</span>
+</span></span><span class=line><span class=cl><span class=nv>ThirdCACert</span><span class=o>=</span>thirdca.crt <span class=c1># crt格式的三级CA证书</span>
+</span></span><span class=line><span class=cl><span class=nv>SignCert</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA/secondca.crt  <span class=c1># 签名证书</span>
+</span></span><span class=line><span class=cl><span class=nv>SignKey</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA/secondkey.pem  <span class=c1># 签名私钥</span>
+</span></span><span class=line><span class=cl><span class=nv>ChainCert</span><span class=o>=</span>ca-chain.crt                  <span class=c1># 证书链</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 生成三级证书SM2私钥</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ecparam -genkey -name SM2 -param_enc explicit -outform pem -out <span class=s2>&#34;</span><span class=nv>$ThirdKey</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 thirdca private key failed and remove </span><span class=nv>$HOME</span><span class=s2>/ThirdCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 使用SM2私钥创建签名请求</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl req -new -key <span class=s2>&#34;</span><span class=nv>$ThirdKey</span><span class=s2>&#34;</span> -subj <span class=s2>&#34;/C=</span><span class=nv>$C</span><span class=s2>/ST=</span><span class=nv>$ST</span><span class=s2>/L=</span><span class=nv>$L</span><span class=s2>/O=</span><span class=nv>$O</span><span class=s2>/OU=</span><span class=nv>$OU</span><span class=s2>/CN=</span><span class=nv>$CN</span><span class=s2>/emailAddress=</span><span class=nv>$email</span><span class=s2>&#34;</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$ThirdCSR</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 thirdca csr failed failed and remove </span><span class=nv>$HOME</span><span class=s2>/ThirdCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用二级CA进行签名，这里要指定签名的证书与私钥</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> ! -f <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> <span class=o>[</span> ! -f <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2> or </span><span class=nv>$SignCert</span><span class=s2> doesn&#39;t exist and remove </span><span class=nv>$HOME</span><span class=s2>/ThirdCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ca -extensions v3_ca -in <span class=s2>&#34;</span><span class=nv>$ThirdCSR</span><span class=s2>&#34;</span> -cert <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> -keyfile <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2>&#34;</span> -days <span class=m>3650</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$ThirdCA</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 thirdca certificate failed failed and remove </span><span class=nv>$HOME</span><span class=s2>/ThirdCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># pem格式证书转为crt</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl x509 -in <span class=s2>&#34;</span><span class=nv>$ThirdCA</span><span class=s2>&#34;</span> -out <span class=s2>&#34;</span><span class=nv>$ThirdCACert</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;pem convert to crt failed and remove </span><span class=nv>$HOME</span><span class=s2>/ThirdCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 将根证书与二级证书合并为证书链</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> cat </span><span class=nv>$SignCert</span><span class=s2> </span><span class=nv>$HOME</span><span class=s2>/CA/rootca.crt &gt; </span><span class=nv>$ChainCert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! cat <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA/rootca.crt &gt; ca-chain.crt<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate cert chain file failed and remove </span><span class=nv>$HOME</span><span class=s2>/ThirdCA and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> tree&#34;</span>
+</span></span><span class=line><span class=cl>tree
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl verify -verbose -CAfile </span><span class=nv>$ChainCert</span><span class=s2> </span><span class=nv>$ThirdCA</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl verify -verbose -CAfile <span class=s2>&#34;</span><span class=nv>$ChainCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$ThirdCA</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl verify -verbose -CAfile </span><span class=nv>$ChainCert</span><span class=s2> </span><span class=nv>$ThirdCACert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl verify -verbose -CAfile <span class=s2>&#34;</span><span class=nv>$ChainCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$ThirdCACert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -in thirdca.crt -noout -dates&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -in thirdca.crt -noout -dates
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -noout -text -in thirdca.crt&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -noout -text -in thirdca.crt
+</span></span></code></pre></div><p>三级CA生成结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>~$ ./gen_thirdca.sh
+</span></span><span class=line><span class=cl>Using configuration from /home/xxx/openssl.cnf
+</span></span><span class=line><span class=cl>Check that the request matches the signature
+</span></span><span class=line><span class=cl>Signature ok
+</span></span><span class=line><span class=cl>Certificate Details:
+</span></span><span class=line><span class=cl>        Serial Number: <span class=m>3</span> <span class=o>(</span>0x3<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:23:10 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:23:10 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject:
+</span></span><span class=line><span class=cl>            <span class=nv>countryName</span>               <span class=o>=</span> CN
+</span></span><span class=line><span class=cl>            <span class=nv>stateOrProvinceName</span>       <span class=o>=</span> SH
+</span></span><span class=line><span class=cl>            <span class=nv>localityName</span>              <span class=o>=</span> XA
+</span></span><span class=line><span class=cl>            <span class=nv>organizationName</span>          <span class=o>=</span> demo
+</span></span><span class=line><span class=cl>            <span class=nv>organizationalUnitName</span>    <span class=o>=</span> demo
+</span></span><span class=line><span class=cl>            <span class=nv>commonName</span>                <span class=o>=</span> thirdca
+</span></span><span class=line><span class=cl>            <span class=nv>emailAddress</span>              <span class=o>=</span> thirdca@test.com
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                C1:0D:90:4B:C2:CF:9A:64:48:D7:C5:92:F6:B9:AB:73:95:A1:74:9A
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                00:5F:38:E1:B9:68:22:D4:01:6B:FC:68:A3:56:58:7A:19:88:66:3C
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints: critical
+</span></span><span class=line><span class=cl>                CA:TRUE
+</span></span><span class=line><span class=cl>Certificate is to be certified <span class=k>until</span> Apr <span class=m>11</span> 03:23:10 <span class=m>2034</span> GMT <span class=o>(</span><span class=m>3650</span> days<span class=o>)</span>
+</span></span><span class=line><span class=cl>Sign the certificate? <span class=o>[</span>y/n<span class=o>]</span>:y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>1</span> out of <span class=m>1</span> certificate requests certified, commit? <span class=o>[</span>y/n<span class=o>]</span>y
+</span></span><span class=line><span class=cl>Write out database with <span class=m>1</span> new entries
+</span></span><span class=line><span class=cl>Database updated
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ cat /home/xxx/SecondCA/secondca.crt /home/xxx/CA/rootca.crt &gt; ca-chain.crt
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ tree
+</span></span><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── ca-chain.crt <span class=c1># 和并生成证书链文件</span>
+</span></span><span class=line><span class=cl>├── thirdca.crt
+</span></span><span class=line><span class=cl>├── thirdca.csr
+</span></span><span class=line><span class=cl>├── thirdca.pem
+</span></span><span class=line><span class=cl>└── thirdkey.pem
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>1</span> directory, <span class=m>5</span> files
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl verify -verbose -CAfile ca-chain.crt thirdca.pem
+</span></span><span class=line><span class=cl>thirdca.pem: OK
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl verify -verbose -CAfile ca-chain.crt thirdca.crt
+</span></span><span class=line><span class=cl>thirdca.crt: OK
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -in thirdca.crt -noout -dates
+</span></span><span class=line><span class=cl><span class=nv>notBefore</span><span class=o>=</span>Apr <span class=m>13</span> 03:23:10 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl><span class=nv>notAfter</span><span class=o>=</span>Apr <span class=m>11</span> 03:23:10 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -noout -text -in thirdca.crt
+</span></span><span class=line><span class=cl>Certificate:
+</span></span><span class=line><span class=cl>    Data:
+</span></span><span class=line><span class=cl>        Version: <span class=m>3</span> <span class=o>(</span>0x2<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Serial Number: <span class=m>3</span> <span class=o>(</span>0x3<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>        Issuer: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> secondca, <span class=nv>emailAddress</span> <span class=o>=</span> secondca@test.com
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:23:10 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:23:10 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> thirdca, <span class=nv>emailAddress</span> <span class=o>=</span> thirdca@test.com
+</span></span><span class=line><span class=cl>        Subject Public Key Info:
+</span></span><span class=line><span class=cl>            Public Key Algorithm: sm2
+</span></span><span class=line><span class=cl>                Public-Key: <span class=o>(</span><span class=m>256</span> bit<span class=o>)</span>
+</span></span><span class=line><span class=cl>                pub:
+</span></span><span class=line><span class=cl>                    04:ab:fc:54:30:8f:8f:37:28:34:6b:7a:a8:6a:12:
+</span></span><span class=line><span class=cl>                    65:84:08:e3:6b:bc:ef:3a:ed:85:c1:b9:7d:29:14:
+</span></span><span class=line><span class=cl>                    6f:11:7f:b0:ba:76:2c:89:20:8e:d1:31:7d:80:c4:
+</span></span><span class=line><span class=cl>                    68:b8:88:24:ac:92:e5:78:72:12:bc:d1:01:66:29:
+</span></span><span class=line><span class=cl>                    13:f9:2b:93:81
+</span></span><span class=line><span class=cl>                Field Type: prime-field
+</span></span><span class=line><span class=cl>                Prime:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff
+</span></span><span class=line><span class=cl>                A:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:fc
+</span></span><span class=line><span class=cl>                B:
+</span></span><span class=line><span class=cl>                    28:e9:fa:9e:9d:9f:5e:34:4d:5a:9e:4b:cf:65:09:
+</span></span><span class=line><span class=cl>                    a7:f3:97:89:f5:15:ab:8f:92:dd:bc:bd:41:4d:94:
+</span></span><span class=line><span class=cl>                    0e:93
+</span></span><span class=line><span class=cl>                Generator <span class=o>(</span>uncompressed<span class=o>)</span>:
+</span></span><span class=line><span class=cl>                    04:32:c4:ae:2c:1f:19:81:19:5f:99:04:46:6a:39:
+</span></span><span class=line><span class=cl>                    c9:94:8f:e3:0b:bf:f2:66:0b:e1:71:5a:45:89:33:
+</span></span><span class=line><span class=cl>                    4c:74:c7:bc:37:36:a2:f4:f6:77:9c:59:bd:ce:e3:
+</span></span><span class=line><span class=cl>                    6b:69:21:53:d0:a9:87:7c:c6:2a:47:40:02:df:32:
+</span></span><span class=line><span class=cl>                    e5:21:39:f0:a0
+</span></span><span class=line><span class=cl>                Order:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:72:03:df:6b:21:c6:05:2b:53:bb:f4:09:39:
+</span></span><span class=line><span class=cl>                    d5:41:23
+</span></span><span class=line><span class=cl>                Cofactor:  <span class=m>1</span> <span class=o>(</span>0x1<span class=o>)</span>
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                C1:0D:90:4B:C2:CF:9A:64:48:D7:C5:92:F6:B9:AB:73:95:A1:74:9A
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                00:5F:38:E1:B9:68:22:D4:01:6B:FC:68:A3:56:58:7A:19:88:66:3C
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints: critical
+</span></span><span class=line><span class=cl>                CA:TRUE  <span class=c1># 这里表明该证书可用于签名其他证书</span>
+</span></span><span class=line><span class=cl>    Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>    Signature Value:
+</span></span><span class=line><span class=cl>        30:45:02:21:00:c2:09:8e:2f:65:2c:4f:75:52:75:33:7b:0c:
+</span></span><span class=line><span class=cl>        a6:91:f7:74:8e:28:b5:c7:0b:f9:7c:6d:6f:48:e3:f5:4e:9a:
+</span></span><span class=line><span class=cl>        c3:02:20:51:67:dc:fe:30:4c:db:fc:aa:46:7c:06:6c:b3:ed:
+</span></span><span class=line><span class=cl>        bd:33:52:a0:e3:ca:bf:e4:22:b7:86:df:da:f5:86:fa:69
+</span></span></code></pre></div><h2 id=服务端证书><a href=#%e6%9c%8d%e5%8a%a1%e7%ab%af%e8%af%81%e4%b9%a6>服务端证书</a></h2><p>Server证书生成脚本<code>get_servercert.sh</code>内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># 创建相关目录</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! mkdir -p <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Server <span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;mkdir failed&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># # cd失败立即退出</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Server&#34;</span> <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd </span><span class=nv>$HOME</span><span class=s2>/Server failed and remove </span><span class=nv>$HOME</span><span class=s2>/Server and exit 1&#34;</span><span class=p>;</span> rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Server <span class=p>;</span> <span class=nb>exit</span> 1<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ~/Server 中执行以下命令</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 定义相关变量</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=nv>C</span><span class=o>=</span>CN            <span class=c1># 国家</span>
+</span></span><span class=line><span class=cl><span class=nv>ST</span><span class=o>=</span>SH           <span class=c1># 省份</span>
+</span></span><span class=line><span class=cl><span class=nv>L</span><span class=o>=</span>XA            <span class=c1># 城市</span>
+</span></span><span class=line><span class=cl><span class=nv>O</span><span class=o>=</span>demo          <span class=c1># 组织</span>
+</span></span><span class=line><span class=cl><span class=nv>OU</span><span class=o>=</span>demo         <span class=c1># 部门</span>
+</span></span><span class=line><span class=cl><span class=nv>CN</span><span class=o>=</span>servercert   <span class=c1># 通用名</span>
+</span></span><span class=line><span class=cl><span class=nv>email</span><span class=o>=</span>servercert@test.com               <span class=c1># 邮箱</span>
+</span></span><span class=line><span class=cl><span class=nv>ServerKey</span><span class=o>=</span>serverkey.pem                 <span class=c1># 生成的Server私钥</span>
+</span></span><span class=line><span class=cl><span class=nv>ServerCert</span><span class=o>=</span>servercert.pem               <span class=c1># pem格式的Server证书</span>
+</span></span><span class=line><span class=cl><span class=nv>ServerCertCRT</span><span class=o>=</span>servercert.crt            <span class=c1># crt格式的Server证书</span>
+</span></span><span class=line><span class=cl><span class=nv>ServerCSR</span><span class=o>=</span>servercert.csr                <span class=c1># 生成证书时的签名请求文件</span>
+</span></span><span class=line><span class=cl><span class=nv>SignCert</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA/thirdca.crt    <span class=c1># 签名证书</span>
+</span></span><span class=line><span class=cl><span class=nv>SignKey</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA/thirdkey.pem    <span class=c1># 签名私钥</span>
+</span></span><span class=line><span class=cl><span class=nv>ChainCert</span><span class=o>=</span>ca-chain.crt                  <span class=c1># 证书链</span>
+</span></span><span class=line><span class=cl><span class=c1># 生成Server证书SM2私钥</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ecparam -genkey -name SM2 -param_enc explicit -outform pem -out <span class=s2>&#34;</span><span class=nv>$ServerKey</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 server private key failed and remove </span><span class=nv>$HOME</span><span class=s2>/Server and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Server <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 使用SM2私钥创建签名请求</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl req -new -key <span class=s2>&#34;</span><span class=nv>$ServerKey</span><span class=s2>&#34;</span> -subj <span class=s2>&#34;/C=</span><span class=nv>$C</span><span class=s2>/ST=</span><span class=nv>$ST</span><span class=s2>/L=</span><span class=nv>$L</span><span class=s2>/O=</span><span class=nv>$O</span><span class=s2>/OU=</span><span class=nv>$OU</span><span class=s2>/CN=</span><span class=nv>$CN</span><span class=s2>/emailAddress=</span><span class=nv>$email</span><span class=s2>&#34;</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$ServerCSR</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 servert csr failed failed and remove </span><span class=nv>$HOME</span><span class=s2>/Server and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Server <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用三级CA进行签名，这里要指定签名的证书与私钥</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> ! -f <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> <span class=o>[</span> ! -f <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2> or </span><span class=nv>$SignCert</span><span class=s2> doesn&#39;t exist and remove </span><span class=nv>$HOME</span><span class=s2>/Server and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Server <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1># -extensions v3_ca 这里要去掉该参数，这个参数用于指定当前在证书是否可以认证其他证书</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ca -in <span class=s2>&#34;</span><span class=nv>$ServerCSR</span><span class=s2>&#34;</span> -cert <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> -keyfile <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2>&#34;</span> -days <span class=m>3650</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$ServerCert</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 thirdca certificate failed failed and remove </span><span class=nv>$HOME</span><span class=s2>/Server and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Server <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># pem格式证书转为crt</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl x509 -in <span class=s2>&#34;</span><span class=nv>$ServerCert</span><span class=s2>&#34;</span> -out <span class=s2>&#34;</span><span class=nv>$ServerCertCRT</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;pem convert to crt failed and remove </span><span class=nv>$HOME</span><span class=s2>/Server and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Server <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 将根证书与二级证书合并为证书链</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> cat </span><span class=nv>$SignCert</span><span class=s2> </span><span class=nv>$HOME</span><span class=s2>/SecondCA/secondca.crt </span><span class=nv>$HOME</span><span class=s2>/CA/rootca.crt &gt; </span><span class=nv>$ChainCert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! cat <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA/secondca.crt <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA/rootca.crt &gt; <span class=s2>&#34;</span><span class=nv>$ChainCert</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate cert chain file failed and remove </span><span class=nv>$HOME</span><span class=s2>/Server and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Server <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> tree&#34;</span>
+</span></span><span class=line><span class=cl>tree
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl verify -verbose -CAfile </span><span class=nv>$ChainCert</span><span class=s2> </span><span class=nv>$ServerCert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl verify -verbose -CAfile <span class=s2>&#34;</span><span class=nv>$ChainCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$ServerCert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl verify -verbose -CAfile </span><span class=nv>$ChainCert</span><span class=s2> </span><span class=nv>$ServerCertCRT</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl verify -verbose -CAfile <span class=s2>&#34;</span><span class=nv>$ChainCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$ServerCertCRT</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -in </span><span class=nv>$ServerCertCRT</span><span class=s2> -noout -dates&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -in <span class=s2>&#34;</span><span class=nv>$ServerCertCRT</span><span class=s2>&#34;</span> -noout -dates
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -noout -text -in </span><span class=nv>$ServerCertCRT</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -noout -text -in <span class=s2>&#34;</span><span class=nv>$ServerCertCRT</span><span class=s2>&#34;</span>
+</span></span></code></pre></div><p>Server证书生成结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>~$ ./gen_servercert.sh
+</span></span><span class=line><span class=cl>Using configuration from /home/xxx/openssl.cnf
+</span></span><span class=line><span class=cl>Check that the request matches the signature
+</span></span><span class=line><span class=cl>Signature ok
+</span></span><span class=line><span class=cl>Certificate Details:
+</span></span><span class=line><span class=cl>        Serial Number: <span class=m>4</span> <span class=o>(</span>0x4<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:25:29 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:25:29 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject:
+</span></span><span class=line><span class=cl>            <span class=nv>countryName</span>               <span class=o>=</span> CN
+</span></span><span class=line><span class=cl>            <span class=nv>stateOrProvinceName</span>       <span class=o>=</span> SH
+</span></span><span class=line><span class=cl>            <span class=nv>localityName</span>              <span class=o>=</span> XA
+</span></span><span class=line><span class=cl>            <span class=nv>organizationName</span>          <span class=o>=</span> demo
+</span></span><span class=line><span class=cl>            <span class=nv>organizationalUnitName</span>    <span class=o>=</span> demo
+</span></span><span class=line><span class=cl>            <span class=nv>commonName</span>                <span class=o>=</span> servercert
+</span></span><span class=line><span class=cl>            <span class=nv>emailAddress</span>              <span class=o>=</span> servercert@test.com
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints:
+</span></span><span class=line><span class=cl>                CA:FALSE
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                50:EB:78:B5:06:71:C4:BC:B9:B5:AC:C4:ED:A5:05:21:96:35:EA:8B
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                C1:0D:90:4B:C2:CF:9A:64:48:D7:C5:92:F6:B9:AB:73:95:A1:74:9A
+</span></span><span class=line><span class=cl>Certificate is to be certified <span class=k>until</span> Apr <span class=m>11</span> 03:25:29 <span class=m>2034</span> GMT <span class=o>(</span><span class=m>3650</span> days<span class=o>)</span>
+</span></span><span class=line><span class=cl>Sign the certificate? <span class=o>[</span>y/n<span class=o>]</span>:y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>1</span> out of <span class=m>1</span> certificate requests certified, commit? <span class=o>[</span>y/n<span class=o>]</span>y
+</span></span><span class=line><span class=cl>Write out database with <span class=m>1</span> new entries
+</span></span><span class=line><span class=cl>Database updated
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ cat /home/xxx/ThirdCA/thirdca.crt /home/xxx/SecondCA/secondca.crt /home/xxx/CA/rootca.crt &gt; ca-chain.crt
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ tree
+</span></span><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── ca-chain.crt
+</span></span><span class=line><span class=cl>├── servercert.crt
+</span></span><span class=line><span class=cl>├── servercert.csr
+</span></span><span class=line><span class=cl>├── servercert.pem
+</span></span><span class=line><span class=cl>└── serverkey.pem
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>1</span> directory, <span class=m>5</span> files
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl verify -verbose -CAfile ca-chain.crt servercert.pem
+</span></span><span class=line><span class=cl>servercert.pem: OK
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl verify -verbose -CAfile ca-chain.crt servercert.crt
+</span></span><span class=line><span class=cl>servercert.crt: OK
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -in servercert.crt -noout -dates
+</span></span><span class=line><span class=cl><span class=nv>notBefore</span><span class=o>=</span>Apr <span class=m>13</span> 03:25:29 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl><span class=nv>notAfter</span><span class=o>=</span>Apr <span class=m>11</span> 03:25:29 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -noout -text -in servercert.crt
+</span></span><span class=line><span class=cl>Certificate:
+</span></span><span class=line><span class=cl>    Data:
+</span></span><span class=line><span class=cl>        Version: <span class=m>3</span> <span class=o>(</span>0x2<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Serial Number: <span class=m>4</span> <span class=o>(</span>0x4<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>        Issuer: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> thirdca, <span class=nv>emailAddress</span> <span class=o>=</span> thirdca@test.com
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:25:29 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:25:29 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> servercert, <span class=nv>emailAddress</span> <span class=o>=</span> servercert@test.com
+</span></span><span class=line><span class=cl>        Subject Public Key Info:
+</span></span><span class=line><span class=cl>            Public Key Algorithm: sm2
+</span></span><span class=line><span class=cl>                Public-Key: <span class=o>(</span><span class=m>256</span> bit<span class=o>)</span>
+</span></span><span class=line><span class=cl>                pub:
+</span></span><span class=line><span class=cl>                    04:2a:8c:9d:87:fb:34:94:89:22:48:2d:fe:8e:34:
+</span></span><span class=line><span class=cl>                    a5:73:49:32:89:ca:fe:10:f8:26:4a:55:8d:92:f3:
+</span></span><span class=line><span class=cl>                    05:ca:47:a0:7f:36:1c:be:5f:bc:60:9d:eb:26:8d:
+</span></span><span class=line><span class=cl>                    24:fe:ff:5b:d2:e2:a5:90:ee:55:8e:fa:a1:75:1d:
+</span></span><span class=line><span class=cl>                    05:ef:c9:9b:d5
+</span></span><span class=line><span class=cl>                Field Type: prime-field
+</span></span><span class=line><span class=cl>                Prime:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff
+</span></span><span class=line><span class=cl>                A:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:fc
+</span></span><span class=line><span class=cl>                B:
+</span></span><span class=line><span class=cl>                    28:e9:fa:9e:9d:9f:5e:34:4d:5a:9e:4b:cf:65:09:
+</span></span><span class=line><span class=cl>                    a7:f3:97:89:f5:15:ab:8f:92:dd:bc:bd:41:4d:94:
+</span></span><span class=line><span class=cl>                    0e:93
+</span></span><span class=line><span class=cl>                Generator <span class=o>(</span>uncompressed<span class=o>)</span>:
+</span></span><span class=line><span class=cl>                    04:32:c4:ae:2c:1f:19:81:19:5f:99:04:46:6a:39:
+</span></span><span class=line><span class=cl>                    c9:94:8f:e3:0b:bf:f2:66:0b:e1:71:5a:45:89:33:
+</span></span><span class=line><span class=cl>                    4c:74:c7:bc:37:36:a2:f4:f6:77:9c:59:bd:ce:e3:
+</span></span><span class=line><span class=cl>                    6b:69:21:53:d0:a9:87:7c:c6:2a:47:40:02:df:32:
+</span></span><span class=line><span class=cl>                    e5:21:39:f0:a0
+</span></span><span class=line><span class=cl>                Order:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:72:03:df:6b:21:c6:05:2b:53:bb:f4:09:39:
+</span></span><span class=line><span class=cl>                    d5:41:23
+</span></span><span class=line><span class=cl>                Cofactor:  <span class=m>1</span> <span class=o>(</span>0x1<span class=o>)</span>
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints:
+</span></span><span class=line><span class=cl>                CA:FALSE  <span class=c1># 这里表明该证书不能签发其他证书，只有由证书链认证</span>
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                50:EB:78:B5:06:71:C4:BC:B9:B5:AC:C4:ED:A5:05:21:96:35:EA:8B
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                C1:0D:90:4B:C2:CF:9A:64:48:D7:C5:92:F6:B9:AB:73:95:A1:74:9A
+</span></span><span class=line><span class=cl>    Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>    Signature Value:
+</span></span><span class=line><span class=cl>        30:45:02:21:00:ae:ed:e7:56:c0:ce:61:9f:c5:1f:f3:d5:61:
+</span></span><span class=line><span class=cl>        82:ca:ee:03:1a:61:8e:a2:7a:59:e4:4f:23:7e:35:01:a9:f8:
+</span></span><span class=line><span class=cl>        c9:02:20:62:aa:04:fa:f8:89:b8:58:b9:6b:a4:7c:11:37:ea:
+</span></span><span class=line><span class=cl>        bf:e3:d1:bb:b0:02:69:61:cb:e5:63:39:ed:4d:28:2c:ce
+</span></span></code></pre></div><h2 id=客户端证书><a href=#%e5%ae%a2%e6%88%b7%e7%ab%af%e8%af%81%e4%b9%a6>客户端证书</a></h2><p>Client证书生成脚本<code>gen_clientcert.sh</code>的内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># 创建相关目录</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! mkdir -p <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Client <span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;mkdir failed&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># # cd失败立即退出</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Client&#34;</span> <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd </span><span class=nv>$HOME</span><span class=s2>/Client failed and remove </span><span class=nv>$HOME</span><span class=s2>/Client and exit 1&#34;</span><span class=p>;</span> rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Client <span class=p>;</span> <span class=nb>exit</span> 1<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ~/Client 中执行以下命令</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 定义相关变量</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=nv>C</span><span class=o>=</span>CN            <span class=c1># 国家</span>
+</span></span><span class=line><span class=cl><span class=nv>ST</span><span class=o>=</span>SH           <span class=c1># 省份</span>
+</span></span><span class=line><span class=cl><span class=nv>L</span><span class=o>=</span>XA            <span class=c1># 城市</span>
+</span></span><span class=line><span class=cl><span class=nv>O</span><span class=o>=</span>demo          <span class=c1># 组织</span>
+</span></span><span class=line><span class=cl><span class=nv>OU</span><span class=o>=</span>demo         <span class=c1># 部门</span>
+</span></span><span class=line><span class=cl><span class=nv>CN</span><span class=o>=</span>servercert   <span class=c1># 通用名</span>
+</span></span><span class=line><span class=cl><span class=nv>email</span><span class=o>=</span>servercert@test.com               <span class=c1># 邮箱</span>
+</span></span><span class=line><span class=cl><span class=nv>ClientKey</span><span class=o>=</span>clientkey.pem                 <span class=c1># 生成的Client私钥</span>
+</span></span><span class=line><span class=cl><span class=nv>ClientCert</span><span class=o>=</span>clientcert.pem               <span class=c1># pem格式的Client证书</span>
+</span></span><span class=line><span class=cl><span class=nv>ClientCertCRT</span><span class=o>=</span>clientcert.crt            <span class=c1># crt格式的Client证书</span>
+</span></span><span class=line><span class=cl><span class=nv>ClientCSR</span><span class=o>=</span>clientcert.csr                <span class=c1># 生成证书时的签名请求文件</span>
+</span></span><span class=line><span class=cl><span class=nv>SignCert</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA/thirdca.crt    <span class=c1># 签名证书</span>
+</span></span><span class=line><span class=cl><span class=nv>SignKey</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/ThirdCA/thirdkey.pem    <span class=c1># 签名私钥</span>
+</span></span><span class=line><span class=cl><span class=nv>ChainCert</span><span class=o>=</span>ca-chain.crt                  <span class=c1># 证书链</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 生成Client证书SM2私钥</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ecparam -genkey -name SM2 -param_enc explicit -outform pem -out <span class=s2>&#34;</span><span class=nv>$ClientKey</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 client private key failed and remove </span><span class=nv>$HOME</span><span class=s2>/Client and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Client <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># 使用SM2私钥创建签名请求</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl req -new -key <span class=s2>&#34;</span><span class=nv>$ClientKey</span><span class=s2>&#34;</span> -subj <span class=s2>&#34;/C=</span><span class=nv>$C</span><span class=s2>/ST=</span><span class=nv>$ST</span><span class=s2>/L=</span><span class=nv>$L</span><span class=s2>/O=</span><span class=nv>$O</span><span class=s2>/OU=</span><span class=nv>$OU</span><span class=s2>/CN=</span><span class=nv>$CN</span><span class=s2>/emailAddress=</span><span class=nv>$email</span><span class=s2>&#34;</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$ClientCSR</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 client csr failed failed and remove </span><span class=nv>$HOME</span><span class=s2>/Client and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Client <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用三级CA进行签名，这里要指定签名的证书与私钥</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> ! -f <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> <span class=o>[</span> ! -f <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2> or </span><span class=nv>$SignCert</span><span class=s2> doesn&#39;t exist and remove </span><span class=nv>$HOME</span><span class=s2>/Client and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Client <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1># -extensions v3_ca 这里要去掉该参数，这个参数用于指定当前在证书是否可以认证其他证书</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl ca -in <span class=s2>&#34;</span><span class=nv>$ClientCSR</span><span class=s2>&#34;</span> -cert <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> -keyfile <span class=s2>&#34;</span><span class=nv>$SignKey</span><span class=s2>&#34;</span> -days <span class=m>3650</span> -config <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/openssl.cnf -out <span class=s2>&#34;</span><span class=nv>$ClientCert</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate SM2 client certificate failed failed and remove </span><span class=nv>$HOME</span><span class=s2>/Client and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Client <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># pem格式证书转为crt</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! openssl x509 -in <span class=s2>&#34;</span><span class=nv>$ClientCert</span><span class=s2>&#34;</span> -out <span class=s2>&#34;</span><span class=nv>$ClientCertCRT</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;pem convert to crt failed and remove </span><span class=nv>$HOME</span><span class=s2>/Client and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Client <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 将根证书与二级证书合并为证书链</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> cat </span><span class=nv>$SignCert</span><span class=s2> </span><span class=nv>$HOME</span><span class=s2>/SecondCA/secondca.crt </span><span class=nv>$HOME</span><span class=s2>/CA/rootca.crt &gt; </span><span class=nv>$ChainCert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! cat <span class=s2>&#34;</span><span class=nv>$SignCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/SecondCA/secondca.crt <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/CA/rootca.crt &gt; <span class=s2>&#34;</span><span class=nv>$ChainCert</span><span class=s2>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;generate cert chain file failed and remove </span><span class=nv>$HOME</span><span class=s2>/Client and exit 1&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>cd</span> .. <span class=o>||</span> <span class=o>{</span> <span class=nb>echo</span> <span class=s2>&#34;cd .. failed and exit.&#34;</span><span class=p>;</span> exit<span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    rm -rf <span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>/Client <span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> 1<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> tree&#34;</span>
+</span></span><span class=line><span class=cl>tree
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl verify -verbose -CAfile </span><span class=nv>$ChainCert</span><span class=s2> </span><span class=nv>$ClientCert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl verify -verbose -CAfile <span class=s2>&#34;</span><span class=nv>$ChainCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$ClientCert</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl verify -verbose -CAfile </span><span class=nv>$ChainCert</span><span class=s2> </span><span class=nv>$ClientCertCRT</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl verify -verbose -CAfile <span class=s2>&#34;</span><span class=nv>$ChainCert</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$ClientCertCRT</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -in </span><span class=nv>$ClientCertCRT</span><span class=s2> -noout -dates&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -in <span class=s2>&#34;</span><span class=nv>$ClientCertCRT</span><span class=s2>&#34;</span> -noout -dates
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;-----------------------------------------------------------------&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;~</span>$<span class=s2> openssl x509 -noout -text -in </span><span class=nv>$ClientCertCRT</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>openssl x509 -noout -text -in <span class=s2>&#34;</span><span class=nv>$ClientCertCRT</span><span class=s2>&#34;</span>
+</span></span></code></pre></div><p>Client证书生成结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>~$ ./gen_clientcert.sh
+</span></span><span class=line><span class=cl>Using configuration from /home/xxx/openssl.cnf
+</span></span><span class=line><span class=cl>Check that the request matches the signature
+</span></span><span class=line><span class=cl>Signature ok
+</span></span><span class=line><span class=cl>Certificate Details:
+</span></span><span class=line><span class=cl>        Serial Number: <span class=m>5</span> <span class=o>(</span>0x5<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:26:27 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:26:27 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject:
+</span></span><span class=line><span class=cl>            <span class=nv>countryName</span>               <span class=o>=</span> CN
+</span></span><span class=line><span class=cl>            <span class=nv>stateOrProvinceName</span>       <span class=o>=</span> SH
+</span></span><span class=line><span class=cl>            <span class=nv>localityName</span>              <span class=o>=</span> XA
+</span></span><span class=line><span class=cl>            <span class=nv>organizationName</span>          <span class=o>=</span> demo
+</span></span><span class=line><span class=cl>            <span class=nv>organizationalUnitName</span>    <span class=o>=</span> demo
+</span></span><span class=line><span class=cl>            <span class=nv>commonName</span>                <span class=o>=</span> clientcert
+</span></span><span class=line><span class=cl>            <span class=nv>emailAddress</span>              <span class=o>=</span> clientcert@test.com
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints:
+</span></span><span class=line><span class=cl>                CA:FALSE
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                F9:94:D1:9C:4C:F4:6A:55:F2:68:FB:33:A9:A4:F3:F6:4E:84:5A:D9
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                C1:0D:90:4B:C2:CF:9A:64:48:D7:C5:92:F6:B9:AB:73:95:A1:74:9A
+</span></span><span class=line><span class=cl>Certificate is to be certified <span class=k>until</span> Apr <span class=m>11</span> 03:26:27 <span class=m>2034</span> GMT <span class=o>(</span><span class=m>3650</span> days<span class=o>)</span>
+</span></span><span class=line><span class=cl>Sign the certificate? <span class=o>[</span>y/n<span class=o>]</span>:y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>1</span> out of <span class=m>1</span> certificate requests certified, commit? <span class=o>[</span>y/n<span class=o>]</span>y
+</span></span><span class=line><span class=cl>Write out database with <span class=m>1</span> new entries
+</span></span><span class=line><span class=cl>Database updated
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ cat /home/xxx/ThirdCA/thirdca.crt /home/xxx/SecondCA/secondca.crt /home/xxx/CA/rootca.crt &gt; ca-chain.crt
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ tree
+</span></span><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── ca-chain.crt
+</span></span><span class=line><span class=cl>├── clientcert.crt
+</span></span><span class=line><span class=cl>├── clientcert.csr
+</span></span><span class=line><span class=cl>├── clientcert.pem
+</span></span><span class=line><span class=cl>└── clientkey.pem
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>1</span> directory, <span class=m>5</span> files
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl verify -verbose -CAfile ca-chain.crt clientcert.pem
+</span></span><span class=line><span class=cl>clientcert.pem: OK
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl verify -verbose -CAfile ca-chain.crt clientcert.crt
+</span></span><span class=line><span class=cl>clientcert.crt: OK
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -in clientcert.crt -noout -dates
+</span></span><span class=line><span class=cl><span class=nv>notBefore</span><span class=o>=</span>Apr <span class=m>13</span> 03:26:27 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl><span class=nv>notAfter</span><span class=o>=</span>Apr <span class=m>11</span> 03:26:27 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>-----------------------------------------------------------------
+</span></span><span class=line><span class=cl>~$ openssl x509 -noout -text -in clientcert.crt
+</span></span><span class=line><span class=cl>Certificate:
+</span></span><span class=line><span class=cl>    Data:
+</span></span><span class=line><span class=cl>        Version: <span class=m>3</span> <span class=o>(</span>0x2<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Serial Number: <span class=m>5</span> <span class=o>(</span>0x5<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>        Issuer: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> thirdca, <span class=nv>emailAddress</span> <span class=o>=</span> thirdca@test.com
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Apr <span class=m>13</span> 03:26:27 <span class=m>2024</span> GMT
+</span></span><span class=line><span class=cl>            Not After : Apr <span class=m>11</span> 03:26:27 <span class=m>2034</span> GMT
+</span></span><span class=line><span class=cl>        Subject: <span class=nv>C</span> <span class=o>=</span> CN, <span class=nv>ST</span> <span class=o>=</span> SH, <span class=nv>L</span> <span class=o>=</span> XA, <span class=nv>O</span> <span class=o>=</span> demo, <span class=nv>OU</span> <span class=o>=</span> demo, <span class=nv>CN</span> <span class=o>=</span> clientcert, <span class=nv>emailAddress</span> <span class=o>=</span> clientcert@test.com
+</span></span><span class=line><span class=cl>        Subject Public Key Info:
+</span></span><span class=line><span class=cl>            Public Key Algorithm: sm2
+</span></span><span class=line><span class=cl>                Public-Key: <span class=o>(</span><span class=m>256</span> bit<span class=o>)</span>
+</span></span><span class=line><span class=cl>                pub:
+</span></span><span class=line><span class=cl>                    04:1b:2b:12:2c:cb:69:d5:9a:f2:cb:f6:a3:85:35:
+</span></span><span class=line><span class=cl>                    49:87:7c:c0:62:86:68:f6:7a:d5:b6:d2:83:43:3b:
+</span></span><span class=line><span class=cl>                    76:dd:2b:4d:cd:26:d7:ed:58:60:65:a5:3d:fe:46:
+</span></span><span class=line><span class=cl>                    15:80:ac:8e:34:ed:36:9e:1e:af:c7:39:88:15:4e:
+</span></span><span class=line><span class=cl>                    ca:18:ea:2c:3e
+</span></span><span class=line><span class=cl>                Field Type: prime-field
+</span></span><span class=line><span class=cl>                Prime:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff
+</span></span><span class=line><span class=cl>                A:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:ff:ff:ff:ff:00:00:00:00:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:fc
+</span></span><span class=line><span class=cl>                B:
+</span></span><span class=line><span class=cl>                    28:e9:fa:9e:9d:9f:5e:34:4d:5a:9e:4b:cf:65:09:
+</span></span><span class=line><span class=cl>                    a7:f3:97:89:f5:15:ab:8f:92:dd:bc:bd:41:4d:94:
+</span></span><span class=line><span class=cl>                    0e:93
+</span></span><span class=line><span class=cl>                Generator <span class=o>(</span>uncompressed<span class=o>)</span>:
+</span></span><span class=line><span class=cl>                    04:32:c4:ae:2c:1f:19:81:19:5f:99:04:46:6a:39:
+</span></span><span class=line><span class=cl>                    c9:94:8f:e3:0b:bf:f2:66:0b:e1:71:5a:45:89:33:
+</span></span><span class=line><span class=cl>                    4c:74:c7:bc:37:36:a2:f4:f6:77:9c:59:bd:ce:e3:
+</span></span><span class=line><span class=cl>                    6b:69:21:53:d0:a9:87:7c:c6:2a:47:40:02:df:32:
+</span></span><span class=line><span class=cl>                    e5:21:39:f0:a0
+</span></span><span class=line><span class=cl>                Order:
+</span></span><span class=line><span class=cl>                    00:ff:ff:ff:fe:ff:ff:ff:ff:ff:ff:ff:ff:ff:ff:
+</span></span><span class=line><span class=cl>                    ff:ff:72:03:df:6b:21:c6:05:2b:53:bb:f4:09:39:
+</span></span><span class=line><span class=cl>                    d5:41:23
+</span></span><span class=line><span class=cl>                Cofactor:  <span class=m>1</span> <span class=o>(</span>0x1<span class=o>)</span>
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints:
+</span></span><span class=line><span class=cl>                CA:FALSE  <span class=c1># 这里表明该证书不能签发其他证书，只有由证书链认证</span>
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                F9:94:D1:9C:4C:F4:6A:55:F2:68:FB:33:A9:A4:F3:F6:4E:84:5A:D9
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                C1:0D:90:4B:C2:CF:9A:64:48:D7:C5:92:F6:B9:AB:73:95:A1:74:9A
+</span></span><span class=line><span class=cl>    Signature Algorithm: SM2-with-SM3
+</span></span><span class=line><span class=cl>    Signature Value:
+</span></span><span class=line><span class=cl>        30:44:02:20:27:93:e7:01:54:d2:1c:fa:34:e9:a3:1f:60:41:
+</span></span><span class=line><span class=cl>        8f:7d:c7:c1:79:47:6a:92:95:6b:10:96:47:33:fd:8b:9c:3d:
+</span></span><span class=line><span class=cl>        02:20:37:34:d7:8a:29:2a:71:8e:7c:5a:08:3a:8f:94:24:83:
+</span></span><span class=line><span class=cl>        49:37:26:1b:b1:d4:62:ae:7c:11:f1:a4:e1:5b:55:b4
+</span></span></code></pre></div></div><div class=post-archive><ul class=post-copyright><li><strong>原文作者：</strong><a rel=author href=https://DBL2017.github.io/>生如夏花</a></li><li style=word-break:break-all><strong>原文链接：</strong><a href=https://DBL2017.github.io/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/openssl%E7%94%9F%E6%88%90sm2%E8%AF%81%E4%B9%A6%E9%93%BE/>https://DBL2017.github.io/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/openssl%E7%94%9F%E6%88%90sm2%E8%AF%81%E4%B9%A6%E9%93%BE/</a></li><li><strong>版权声明：</strong>本作品采用<a rel=license href=https://creativecommons.org/licenses/by-nc-nd/4.0/>知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li></ul></div><br><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/openssl%E7%94%9F%E6%88%90rsa%E8%AF%81%E4%B9%A6%E9%93%BE/>OpenSSL生成RSA证书链</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E8%AF%81%E4%B9%A6/>证书</a></li><li><a href=/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/%E5%9F%BA%E4%BA%8Essl%E7%9A%84mqtt%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E9%80%9A%E4%BF%A1/>基于SSL的MQTT双向认证加密通信</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/tls/>TLS</a></li><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/>消息认证码</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=/tags/openssl>openssl</a></li><li><a href=/tags/sm2>SM2</a></li><li><a href=/tags/sm3>SM3</a></li><li><a href=/tags/sm4>SM4</a></li><li><a href=/tags/%E5%9B%BD%E5%AF%86>国密</a></li><li><a href=/tags/tls>TLS</a></li><li><a href=/tags/%E8%AF%81%E4%B9%A6>证书</a></li><li><a href=/tags/%E8%AE%A4%E8%AF%81>认证</a></li><li><a href=/tags/ca>CA</a></li></ul></div></article><div class="post bg-white"><div><h2>评论</h2></div><div id=comments></div></div><script>new Valine({el:"#comments",appId:"E7COm5iHDM70WhcFfoYyAcH7-gzGzoHsz",appKey:"KoQ86O8YhLSQvyTavTCZdWbe",placeholder:"请写下你的建议！",avatar:"",avatarForce:!0,recordIP:!0,enableQQ:!0,requiredFields:["nick","mail"],meta:["nick","mail"]})</script></div></div></div><div class=content-right><div class=sidebar><section class=widget><form id=form-search action=https://DBL2017.github.io/search/ method=get accept-charset=utf-8 _lpchecked=1><input type=text name=q maxlength=20 placeholder=请输入查找关键字 required>
+<button type=submit class=submit title=提交><svg t="1714448321870" class="icon" style="width:22px;height:22px" viewBox="0 0 1024 1024" p-id="1771" width="200" height="200"><path d="M781.9264 691.1232l236.928 236.9216-90.816 90.8032-236.9152-236.9216c-72.032 53.3568-161.184 84.9088-257.7088 84.9088C194.048 866.8352.0 672.7872.0 433.408.0 194.048 194.048.0 433.4144.0c239.3728.0 433.4208 194.048 433.4208 433.4144.0 96.5248-31.552 185.6768-84.9088 257.7088zm-348.512 47.2896c168.448.0 304.9984-136.5504 304.9984-304.9984s-136.5504-304.992-304.9984-304.992-304.992 136.5504-304.992 304.9856c0 168.448 136.5504 304.9984 304.992 304.9984z" fill="#4a4a4a" p-id="1772"/></svg></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/iptables%E8%87%AA%E5%AE%9A%E4%B9%89%E9%93%BE/ title=iptables自定义链>iptables自定义链</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/ubuntu24.04-apt-upgrade%E6%8F%90%E7%A4%BAesm-apps/ title="Ubuntu24.04 apt upgrade提示esm-apps">Ubuntu24.04 apt upgrade提示esm-apps</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/ubuntu24.04%E6%90%AD%E5%BB%BApppoe-server%E5%B9%B6%E8%BF%9B%E8%A1%8C%E6%8B%A8%E5%8F%B7%E6%B5%8B%E8%AF%95/ title="Ubuntu24.04搭建PPPoE Server并进行拨号测试">Ubuntu24.04搭建PPPoE Server并进行拨号测试</a></li><li><a href=https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91%E4%BB%A5%E5%8F%8A%E5%9C%A8vmware%E4%B8%8A%E8%BF%90%E8%A1%8C/ title=OpenWrt下载编译以及在VMWare上运行>OpenWrt下载编译以及在VMWare上运行</a></li><li><a href=https://DBL2017.github.io/post/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/ubuntu24.04%E7%8E%AF%E5%A2%83%E7%BC%96%E8%AF%91glibc-2.40%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/ title=Ubuntu24.04环境编译glibc-2.40错误记录>Ubuntu24.04环境编译glibc-2.40错误记录</a></li><li><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/unix%E5%9F%9F%E5%A5%97%E6%8E%A5%E5%AD%97/ title=UNIX域套接字>UNIX域套接字</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/job-systemd-networkd-wait-online.service-start-running/ title="Job systemd-networkd-wait-online.service start running">Job systemd-networkd-wait-online.service start running</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/fdisk%E5%88%9B%E5%BB%BA%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E5%B9%B6%E6%A0%BC%E5%BC%8F%E5%8C%96/ title=fdisk创建磁盘分区并格式化>fdisk创建磁盘分区并格式化</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/vmware%E8%99%9A%E6%8B%9F%E6%9C%BAubuntu24.04%E6%A1%A5%E6%8E%A5%E5%88%B0%E5%AE%BF%E4%B8%BB%E6%9C%BA%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E4%B8%8A%E7%BD%91/ title=VMware虚拟机Ubuntu24.04桥接到宿主机无线网卡上网>VMware虚拟机Ubuntu24.04桥接到宿主机无线网卡上网</a></li><li><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/io%E5%A4%9A%E8%B7%AF%E8%BD%AC%E6%8E%A5%E4%B9%8Bpoll%E5%87%BD%E6%95%B0/ title=I/O多路转接之poll函数>I/O多路转接之poll函数</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list><li><a href=https://DBL2017.github.io/categories/kindle/>KINDLE (1)</a></li><li><a href=https://DBL2017.github.io/categories/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/>传输协议 (11)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/>工具使用 (19)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/>开源三方 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/>操作系统 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/>数字安全 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/>数据结构和算法 (5)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/>编程语言 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88/>网络工程师 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/>读书笔记 (56)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/>问题排查 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%BB%98%E8%AE%A4/>默认 (2)</a></li></ul></section><section class=widget><h3 class=widget-title>友情链接</h3><ul class=widget-list><li><a target=_blank href=https://mermaid.live/ title=Mermaid>Mermaid 编辑</a></li><li><a target=_blank href=https://excalidraw.com/ title=EXCALIDRAW>Excalidraw 绘图</a></li><li><a target=_blank href=https://git-scm.com/docs title=Git命令参考手册>Git命令参考手册</a></li><li><a target=_blank href=https://www.gnu.org/software/make/manual/make.html title="GNU make官方文档">GNU make官方文档</a></li><li><a target=_blank href=https://www.emojiall.com/ title=Emojiall表情网站>Emojiall表情网站</a></li></ul></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/index.xml>文章 RSS</a></li></ul></section></div></div></div><div class=container-footer><footer id=footer><div>&copy; 2024 <a href=https://DBL2017.github.io/>生如夏花的博客 By
+生如夏花</a>
+| <a rel=nofollow target=_blank href=http://beian.miit.gov.cn/>广电总局</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered
+by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://DBL2017.github.io/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">生如夏花的博客</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],displayMath:[["$$","$$"]],processEscapes:!0,processEnvironments:!0,skipTags:["script","noscript","style","textarea","pre"]}}</script><script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src=/js/jquery.fancybox.min.min.9040007c0fd2a6cdc356495acb1c45ba3328b261b0d9f75d3da19bc47229189108aab8ca043864c1801d59431de72dec8d51ae50539f9ce1f5964bf5f38786c3.js integrity="sha512-kEAAfA/Sps3DVklayxxFujMosmGw2fddPaGbxHIpGJEIqrjKBDhkwYAdWUMd5y3sjVGuUFOfnOH1lkv184eGww==" crossorigin=anonymous></script><a id=rocket href=#top></a><script src=/js/totop.min.8c7573186baa30f09c49b5cf3176c3b105785324d961b3d5c2f7f099d14673160a29aeebdec25909d046aa14936cd43451e17664662d518550d5e8998dbec670.js integrity="sha512-jHVzGGuqMPCcSbXPMXbDsQV4UyTZYbPVwvfwmdFGcxYKKa7r3sJZCdBGqhSTbNQ0UeF2ZGYtUYVQ1eiZjb7GcA==" crossorigin=anonymous></script><script src=/js/clipboard.min.0765794be1674926c1a3810afcf039f605f367cb11cef727ad49e6aa70f9fca0a37d329d64c55822896869eb0960763e73e085ee7675cbc497e4d3256a6e6a67.js integrity="sha512-B2V5S+FnSSbBo4EK/PA59gXzZ8sRzvcnrUnmqnD5/KCjfTKdZMVYIoloaesJYHY+c+CF7nZ1y8SX5NMlam5qZw==" crossorigin=anonymous></script><script>var spy=new Gumshoe("#TableOfContents a",{nested:!0,nestedClass:"active"})</script><script>hljs.highlightAll()</script></div></div></body></html>

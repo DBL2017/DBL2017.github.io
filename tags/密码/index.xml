@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>密码 on 生如夏花的博客</title><link>https://DBL2017.github.io/tags/%E5%AF%86%E7%A0%81/</link><description>Recent content in 密码 on 生如夏花的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 04 Jul 2023 22:11:49 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E5%AF%86%E7%A0%81/index.xml" rel="self" type="application/rss+xml"/><item><title>伪随机生成器</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90%E5%99%A8/</link><pubDate>Sun, 02 Jul 2023 21:33:49 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90%E5%99%A8/</guid><description/><tags>图解密码技术 伪随机数 随机数 随机性 单向散列函数 密码 线性同余法</tags><summary>&lt;p>在密码技术中，随机数被用来生成密码。&lt;/p>
+&lt;p>随机数的性质分为三类：随机性、不可预测性和不可重现性。&lt;/p>
+&lt;p>线性同余法是很多库函数所采用的生成伪随机数的方法，但不可以用于密码技术。&lt;/p>
+&lt;p>用于密码技术的伪随机数生成器，需要使用单向散列函数和密码技术确保不可预测性。&lt;/p></summary></item><item><title>混合密码系统</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B7%B7%E5%90%88%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/</link><pubDate>Mon, 15 May 2023 21:55:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B7%B7%E5%90%88%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/</guid><description/><tags>图解密码技术 密码 混合密码 公钥密码 会话密钥</tags><summary>&lt;p>混合密码系统用对称明码加密明文，用公钥密码来加密对称密码中所使用的密钥。&lt;/p>
+&lt;p>通过使用混合密码系统，能够在通信中将对称密码和公钥密码的优势结合起来。&lt;/p></summary></item><item><title>公钥密码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</link><pubDate>Fri, 05 May 2023 23:42:48 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</guid><description/><tags>图解密码技术 密码 密码学 密码技术 公钥密码</tags><summary>&lt;p>&lt;strong>密钥配送问题&lt;/strong>：在对称密码中，由于加密和解密的密钥是相同的，因此必须事先向接收者配送密钥。&lt;/p>
+&lt;p>如果使用公钥密码，则无需向接收者配送用于解密的密钥，这就相当于解决了密钥配送问题。&lt;/p>
+&lt;p>&lt;strong>对称密码通过将明文转换为复杂的形式来保证机密性，公钥密码则是基于数学难题来保证机密性。&lt;/strong> 例如RSA利用了大整数的质因数分解问题的困难度。&lt;/p>
+&lt;p>即使已经有了公钥密码，对称密码也不会消失。&lt;/p>
+&lt;p>&lt;strong>公钥密码的运行速度远远低于对称密码&lt;/strong>，因此一般通信过程中，往往会配合使用这两种密码，即用对称密码提高处理速度，用公钥密码解决密钥配送问题。这样的方式称为&lt;strong>混合密码系统&lt;/strong>。&lt;/p></summary></item><item><title>分组密码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/</link><pubDate>Wed, 03 May 2023 22:14:35 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/</guid><description/><tags>图解密码技术 密码 密码学 密码技术 分组密码</tags><summary>&lt;p>密码算法可以分为分组密码和流密码两种。&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>术语&lt;/th>
+ &lt;th>说明&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>分组密码&lt;/td>
+ &lt;td>每次只能处理特定长度的一块数据的一类密码算法。&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>分组&lt;/td>
+ &lt;td>每次处理的数据。&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>分组长度&lt;/td>
+ &lt;td>每次处理的数据分组的比特数。&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>流密码&lt;/td>
+ &lt;td>对数据流进行连续处理的一类密码算法。一般以1比特、8比特或32比特等为单位进行加解密。&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>DES、三重DES以及AES（Rijndael）等大多数对称密码算法都属于分组密码。&lt;/p></summary></item><item><title>对称密码之Rijndael和AES</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%B9%E7%A7%B0%E5%AF%86%E7%A0%81%E4%B9%8Brijndael%E5%92%8Caes/</link><pubDate>Thu, 20 Apr 2023 20:56:18 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%B9%E7%A7%B0%E5%AF%86%E7%A0%81%E4%B9%8Brijndael%E5%92%8Caes/</guid><description/><tags>图解密码技术 密码 密码学 密码技术 AES 对称密码</tags><summary>&lt;p>&lt;strong>AES&lt;/strong>（Advanced Encryption Standard）是取代前任标准（DES）而成为新标准的一种对称密码算法。&lt;/p>
+&lt;p>2000年，在多个对称密码候选算法中，选出了一种名为&lt;strong>Rijndael&lt;/strong>的对称密码算法，并将其确定为了AES。&lt;/p></summary></item><item><title>对称密码之Feistel网络</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%B9%E7%A7%B0%E5%AF%86%E7%A0%81%E4%B9%8Bfeistel%E7%BD%91%E7%BB%9C/</link><pubDate>Mon, 17 Apr 2023 20:12:56 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%B9%E7%A7%B0%E5%AF%86%E7%A0%81%E4%B9%8Bfeistel%E7%BD%91%E7%BB%9C/</guid><description/><tags>图解密码技术 密码 密码学 密码技术 DES Feistel 对称密码</tags><summary>&lt;p>对称密码指的是用相同的密钥进行加密和解密。&lt;/p>
+&lt;p>在Feistel网络中，加密的各个步骤称为&lt;strong>轮&lt;/strong>，整个加密过程就是进行若干次轮的循环。&lt;/p>
+&lt;p>&lt;strong>DES是一种16轮循环的Feistel网络。&lt;/strong>&lt;/p></summary></item><item><title>历史上的几种简单密码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%80%E5%8D%95%E5%AF%86%E7%A0%81/</link><pubDate>Thu, 13 Apr 2023 23:14:26 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%80%E5%8D%95%E5%AF%86%E7%A0%81/</guid><description/><tags>图解密码技术 密码 密码学 历史密码 凯撒密码 简单替换密码 Enigma</tags><summary>&lt;p>3中历史上著名的密码：凯撒密码、简单替换密码、Enigma。&lt;/p>
+&lt;p>两种密码破译方法：暴力攻击和频率分析。&lt;/p></summary></item><item><title>密码学常识</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</link><pubDate>Thu, 13 Apr 2023 19:45:37 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</guid><description/><tags>图解密码技术 密码学 密码 对称密码 公钥密码 RSA 哈希 数字签名 随机数 伪随机数 消息认证码</tags><summary>&lt;p>&lt;strong>对称密码&lt;/strong>、&lt;strong>公钥密码&lt;/strong>、&lt;strong>单向散列函数&lt;/strong>、&lt;strong>消息认证码&lt;/strong>、&lt;strong>数字签名&lt;/strong>、&lt;strong>伪随机数生成器&lt;/strong>，这六种技术称为密码学家的工具箱。&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>信息安全所面临的威胁&lt;/th>
+ &lt;th>受威胁的特性&lt;/th>
+ &lt;th>用以应对的密码技术&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>窃听（秘密泄露）&lt;/td>
+ &lt;td>机密性&lt;/td>
+ &lt;td>对称密码/公钥密码&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>篡改（信息被修改）&lt;/td>
+ &lt;td>完整性&lt;/td>
+ &lt;td>单向散列函数/消息认证码/数字签名&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>伪装（伪装成真正的发送者）&lt;/td>
+ &lt;td>认证&lt;/td>
+ &lt;td>消息认证码/数字签名&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>否认（是否称自己没有做过）&lt;/td>
+ &lt;td>不可否认性&lt;/td>
+ &lt;td>数字签名&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table></summary></item></channel></rss>
