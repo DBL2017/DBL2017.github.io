@@ -1,0 +1,429 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>OpenWrt之uci.sh中uci_load的工作原理 | 生如夏花</title>
+<meta property="og:title" content="OpenWrt之uci.sh中uci_load的工作原理 - 生如夏花"><meta property="og:type" content="article"><meta property="article:published_time" content='2024-12-25T09:29:50+08:00'><meta property="article:modified_time" content='2024-12-25T09:29:50+08:00'><meta name=Keywords content="C语言,Linux系统开发,物联网,博客,项目管理,软件架构"><meta name=description content="OpenWrt在`/lib/functions.sh`和`/lib/config/uci.sh`脚本中提供了操作UCI配置的校准接口，可以在Shell脚本中操作UCI配置。这样就可以在启动脚本中来根据UCI配置来进行选择启动。"><meta name=author content><meta property="og:url" content="https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B9%8Buci.sh%E4%B8%ADuci_load%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css integrity="sha512-RLF8eOxhuwsRINc7r56dpl9a3VStqrXD+udWahutJrYdyh++2Ghnf+s4jFsOyryKZt/GNjPwbXVPH3MJpKrn2g==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=/css/badge.min.dc57f0a9d275742b1e2d17f204ae0b829361b5dd0df99d3d356615830fb223936c054d31a888c5f369975da90586601e2666ddbbbb36e98510b814a70826e874.css integrity="sha512-3FfwqdJ1dCseLRfyBK4LgpNhtd0N+Z09NWYVgw+yI5NsBU0xqIjF82mXXakFhmAeJmbdu7s26YUQuBSnCCbodA==" crossorigin=anonymous><link rel=stylesheet href=/css/header.min.9e74ad2f7e23fb54e2da3ef2f1eb6498897cd4139d181133b5e641f107980364ccfbcea731badb693b4a50819c388b6f8cab037346daf142114f86f14faa8766.css integrity="sha512-nnStL34j+1Ti2j7y8etkmIl81BOdGBEzteZB8QeYA2TM+86nMbrbaTtKUIGcOItvjKsDc0ba8UIRT4bxT6qHZg==" crossorigin=anonymous><link rel=stylesheet href=/css/table.min.032852d8d049c55be5cd0a27bf8c7b09c8ea549fb719c2fd0231ebd262fdddb5aaaf391dabeb89ce33bcbe49f13ee8a530822a26f76b675af23473ed07b95d2e.css integrity="sha512-AyhS2NBJxVvlzQonv4x7CcjqVJ+3GcL9AjHr0mL93bWqrzkdq+uJzjO8vknxPuilMIIqJvdrZ1ryNHPtB7ldLg==" crossorigin=anonymous><link rel=stylesheet href=/css/baseof.min.5e04a6c8338c3c57aedaaae91320971e148651ac160d51bb58ebfec7757346a177331ac5646bbb1b2664b1c8cc405939125785c138935bc0d29a805b11791691.css integrity="sha512-XgSmyDOMPFeu2qrpEyCXHhSGUawWDVG7WOv+x3VzRqF3MxrFZGu7GyZkscjMQFk5EleFwTiTW8DSmoBbEXkWkQ==" crossorigin=anonymous><link rel=stylesheet href=/css/rocket.min.96a6be31cd3df9dcd4e7e131e9fcb0e63149da1da6a23df5ed8c8e0ccf0436f4c95aad5ded6a69e7fba5c051f8cc00466fcedaa07e4c7f59492d4a15aba2e936.css integrity="sha512-lqa+Mc09+dzU5+Ex6fyw5jFJ2h2moj317YyODM8ENvTJWq1d7Wpp5/ulwFH4zABGb87aoH5Mf1lJLUoVq6LpNg==" crossorigin=anonymous><link rel=stylesheet href=/css/toc.min.6d85af7b55a06a3c1672914851ad8f64e3e4de3a81435cc45b05f1b71fb4bde6d0f00597b4f316d214809e3597a66516d7651772c9da8d8e42bf188fb3df5a85.css integrity="sha512-bYWve1WgajwWcpFIUa2PZOPk3jqBQ1zEWwXxtx+0vebQ8AWXtPMW0hSAnjWXpmUW12UXcsnajY5CvxiPs99ahQ==" crossorigin=anonymous><link rel=stylesheet href=/css/clipboard.min.5e6a0198e50c850ced7dc2ba6f282ecaab21a8daad9eee626b990120818361b4b0007128d73957d5682346c88a6f9831f5872051e5f12da830cc29ca75676403.css integrity="sha512-XmoBmOUMhQztfcK6byguyqshqNqtnu5ia5kBIIGDYbSwAHEo1zlX1WgjRsiKb5gx9YcgUeXxLagwzCnKdWdkAw==" crossorigin=anonymous><link rel=stylesheet href=/css/style.min.0ee927227dc0f181f293a851db44642879c59ab0e5e6dfaae42f3402d8e06810cb2c8fe30201142d9f8205e46f706cf646ccba5e8ee7695327d888861ddaf10d.css integrity="sha512-DuknIn3A8YHyk6hR20RkKHnFmrDl5t+q5C80AtjgaBDLLI/jAgEULZ+CBeRvcGz2Rsy6Xo7naVMn2IiGHdrxDQ==" crossorigin=anonymous><link rel="shortcut icon" href=/img/favicon.png type=image/x-icon><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin=anonymous referrerpolicy=no-referrer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/vim.min.js></script><script src=/js/gumshoe.min.min.9dec1df0371d73b03324ed4bb78a6d5b2e84af6a37b11ce799808a26d70dfd156595f8d23c42db9e4866f12b4c0de664cfd032fa6f95bdaaada1bacdb235e79e.js integrity="sha512-newd8Dcdc7AzJO1Lt4ptWy6Er2o3sRznmYCKJtcN/RVllfjSPELbnkhm8StMDeZkz9Ay+m+VvaqtobrNsjXnng==" crossorigin=anonymous></script></head><body><div class=container><div class=container-header><header><div class=header-main><div class=header-site-name><a id=header-title href=https://DBL2017.github.io/>生如夏花</a><p class=description>专注于工业物联网行业数据采集，嵌入式Linux系统裁剪，5G智慧网关软件开发等</p></div><div class=header-menu><nav id=header-nav-menu><a href=https://DBL2017.github.io/>首页</a>
+<a href=https://DBL2017.github.io/series/ title=系列>系列</a>
+<a href=https://DBL2017.github.io/categories/ title=分类>分类</a>
+<a href=https://DBL2017.github.io/tags/ title=标签>标签</a>
+<a href=https://DBL2017.github.io/archives/ title=归档>归档</a>
+<a href=https://DBL2017.github.io/about/ title=关于>关于</a></nav></div></div></header></div><div class=container-content><div class=content-center><div class=main-single><div class=single-toc><div class=post-toc><h2 class=post-toc-title><a href=#>目录</a></h2><div class=post-toc-content><nav id=TableOfContents><ul><li><a href=#用法>用法</a></li><li><a href=#原理>原理</a><ul><li><a href=#eval命令>eval命令</a></li><li><a href=#uci参数>uci参数</a></li><li><a href=#export>export</a></li></ul></li><li><a href=#示例>示例</a></li></ul></nav></div></div></div><div class=single-article><article class=post><header><h1 class=post-title>OpenWrt之uci.sh中uci_load的工作原理</h1></header><date class="post-meta meta-date"><span class=meta-category><a href=/archives/#2024>2024年12月25日</a></span></date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/categories/#%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f>操作系统</a></span></div><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/series/#OpenWrt>OpenWrt</a></span></div><div class=post-meta><span>|</span>
+<span>共2803字</span></div><div class=post-meta><span>|</span>
+<span>阅读时长(6分钟)</span></div><div class=clear style=display:none><div class=toc-article><div class=toc-title>文章目录</div></div></div><div class=post-content><p>OpenWrt在<code>/lib/functions.sh</code>和<code>/lib/config/uci.sh</code>提供了一组标准的shell接口来操作UCI配置，这样可以在Shell脚本中处理UCI配置。尤其是在<code>/etc/init.d</code>目录下的配置文件中。</p><p>本文主要探索<code>/lib/config/uci.sh</code>脚本中的<code>uci_load</code>接口是如何将UCI配置加载到内存中的。</p><h2 id=用法><a href=#%e7%94%a8%e6%b3%95>用法</a></h2><p>下面以<code>/etc/config/network</code>配置文件为例</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>root@OpenWrt:~/uci# cat /etc/config/network
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config interface <span class=s1>&#39;loopback&#39;</span>
+</span></span><span class=line><span class=cl>        option device <span class=s1>&#39;lo&#39;</span>
+</span></span><span class=line><span class=cl>        option proto <span class=s1>&#39;static&#39;</span>
+</span></span><span class=line><span class=cl>        option ipaddr <span class=s1>&#39;127.0.0.1&#39;</span>
+</span></span><span class=line><span class=cl>        option netmask <span class=s1>&#39;255.0.0.0&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config globals <span class=s1>&#39;globals&#39;</span>
+</span></span><span class=line><span class=cl>        option ula_prefix <span class=s1>&#39;fdef:6d48:4a40::/48&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config device
+</span></span><span class=line><span class=cl>        option name <span class=s1>&#39;br-lan&#39;</span>
+</span></span><span class=line><span class=cl>        option <span class=nb>type</span> <span class=s1>&#39;bridge&#39;</span>
+</span></span><span class=line><span class=cl>        list ports <span class=s1>&#39;eth0&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config interface <span class=s1>&#39;lan&#39;</span>
+</span></span><span class=line><span class=cl>        option device <span class=s1>&#39;br-lan&#39;</span>
+</span></span><span class=line><span class=cl>        option proto <span class=s1>&#39;dhcp&#39;</span>
+</span></span><span class=line><span class=cl>        option ipaddr <span class=s1>&#39;192.168.1.1&#39;</span>
+</span></span><span class=line><span class=cl>        option netmask <span class=s1>&#39;255.255.255.0&#39;</span>
+</span></span><span class=line><span class=cl>        option ip6assign <span class=s1>&#39;60&#39;</span>
+</span></span></code></pre></div><p>下面遍历<code>/etc/config/network</code>文件中的<code>interface</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=cp>#!/bin/sh
+</span></span></span><span class=line><span class=cl><span class=cp></span>. /lib/functions.sh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 加载网络配置文件</span>
+</span></span><span class=line><span class=cl>uci_load network
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 定义处理每个接口的回调函数</span>
+</span></span><span class=line><span class=cl>handle_interface<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>local</span> <span class=nv>section</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;section: </span><span class=nv>$section</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    config_get iface <span class=s2>&#34;</span><span class=nv>$section</span><span class=s2>&#34;</span> ifname
+</span></span><span class=line><span class=cl>    config_get device <span class=s2>&#34;</span><span class=nv>$section</span><span class=s2>&#34;</span> device
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Interface: </span><span class=nv>$iface</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Device: </span><span class=nv>$device</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 遍历所有接口</span>
+</span></span><span class=line><span class=cl>config_foreach handle_interface interface
+</span></span></code></pre></div><p>输出结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>root@OpenWrt:~/uci# ./uci_load_test.sh
+</span></span><span class=line><span class=cl>section: loopback
+</span></span><span class=line><span class=cl>Interface: lo
+</span></span><span class=line><span class=cl>Device: lo
+</span></span><span class=line><span class=cl>section: lan
+</span></span><span class=line><span class=cl>Interface: br-lan
+</span></span><span class=line><span class=cl>Device: br-lan
+</span></span></code></pre></div><h2 id=原理><a href=#%e5%8e%9f%e7%90%86>原理</a></h2><p>在上面的代码中调用<code>uci_load</code>之前首先引入了<code>/lib/functions.sh</code>文件，这是因为该文件提供了一些<code>uci_load</code>所需的参数。</p><p><code>uci_load</code>接口的源码如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nv>CONFIG_APPEND</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>uci_load<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>PACKAGE</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> DATA
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> RET
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> VAR
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 初始化，取消导出相关变量</span>
+</span></span><span class=line><span class=cl>    <span class=c1># export -n用于取消导出变量</span>
+</span></span><span class=line><span class=cl>	<span class=nv>_C</span><span class=o>=</span><span class=m>0</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=o>[</span> -z <span class=s2>&#34;</span><span class=nv>$CONFIG_APPEND</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>		<span class=k>for</span> VAR in <span class=nv>$CONFIG_LIST_STATE</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>			<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> CONFIG_<span class=si>${</span><span class=nv>VAR</span><span class=si>}</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>			<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> CONFIG_<span class=si>${</span><span class=nv>VAR</span><span class=si>}</span><span class=nv>_LENGTH</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>		<span class=k>done</span>
+</span></span><span class=line><span class=cl>		<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_LIST_STATE</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>		<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_SECTIONS</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>		<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_NUM_SECTIONS</span><span class=o>=</span><span class=m>0</span>
+</span></span><span class=line><span class=cl>		<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_SECTION</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>	<span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 从uci配置中获取相关配置，比如获取/etc/config/network配置</span>
+</span></span><span class=line><span class=cl>	<span class=nv>DATA</span><span class=o>=</span><span class=s2>&#34;</span><span class=k>$(</span>/sbin/uci <span class=si>${</span><span class=nv>UCI_CONFIG_DIR</span><span class=p>:+-c </span><span class=nv>$UCI_CONFIG_DIR</span><span class=si>}</span> <span class=si>${</span><span class=nv>LOAD_STATE</span><span class=p>:+-P /var/state</span><span class=si>}</span> -S -n <span class=nb>export</span> <span class=s2>&#34;</span><span class=nv>$PACKAGE</span><span class=s2>&#34;</span> 2&gt;/dev/null<span class=k>)</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nv>RET</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$RET</span><span class=s2>&#34;</span> !<span class=o>=</span> <span class=m>0</span> -o -z <span class=s2>&#34;</span><span class=nv>$DATA</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> <span class=nb>eval</span> <span class=s2>&#34;</span><span class=nv>$DATA</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>unset</span> DATA
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=si>${</span><span class=nv>CONFIG_SECTION</span><span class=p>:+config_cb</span><span class=si>}</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=s2>&#34;</span><span class=nv>$RET</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p><code>NO_EXPORT=1</code>参数定义在<code>/lib/functions.sh</code>脚本中，而<code>${NO_EXPORT:+-n}</code>的含义是如果<code>NO_EXPORT</code>有值则取<code>-n</code>，因此<code>export ${NO_EXPORT:+-n}</code>等价于<code>export -n</code>，具体见<a href=#export>export</a>。</p><p><code>LOAD_STATE=1</code>参数定义在<code>/lib/functions.sh</code>脚本中，<code>UCI_CONFIG_DIR</code>参数未定义。</p><p>因此<code>DATA="$(/sbin/uci ${UCI_CONFIG_DIR:+-c $UCI_CONFIG_DIR} ${LOAD_STATE:+-P /var/state} -S -n export "$PACKAGE" 2>/dev/null)"</code>等价于<code>DATA="$(/sbin/uci -P /var/state -S -n export "$PACKAGE" 2>/dev/null)"</code>，<code>uci</code>的参数见<a href=#uci%E5%8F%82%E6%95%B0>uci参数</a></p><p>如果传入参数为<code>network</code>，则为<code>DATA="$(/sbin/uci -P /var/state -S -n export "network" 2>/dev/null)"</code>，那么输出结果为：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>root@OpenWrt:~/uci# /sbin/uci -P /var/state -S -n <span class=nb>export</span> <span class=s2>&#34;network&#34;</span> 2&gt;/dev/null
+</span></span><span class=line><span class=cl>package network
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config interface <span class=s1>&#39;loopback&#39;</span>
+</span></span><span class=line><span class=cl>        option device <span class=s1>&#39;lo&#39;</span>
+</span></span><span class=line><span class=cl>        option proto <span class=s1>&#39;static&#39;</span>
+</span></span><span class=line><span class=cl>        option ipaddr <span class=s1>&#39;127.0.0.1&#39;</span>
+</span></span><span class=line><span class=cl>        option netmask <span class=s1>&#39;255.0.0.0&#39;</span>
+</span></span><span class=line><span class=cl>        option up <span class=s1>&#39;1&#39;</span>
+</span></span><span class=line><span class=cl>        option ifname <span class=s1>&#39;lo&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config globals <span class=s1>&#39;globals&#39;</span>
+</span></span><span class=line><span class=cl>        option ula_prefix <span class=s1>&#39;fdef:6d48:4a40::/48&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config device <span class=s1>&#39;cfg030f15&#39;</span>
+</span></span><span class=line><span class=cl>        option name <span class=s1>&#39;br-lan&#39;</span>
+</span></span><span class=line><span class=cl>        option <span class=nb>type</span> <span class=s1>&#39;bridge&#39;</span>
+</span></span><span class=line><span class=cl>        list ports <span class=s1>&#39;eth0&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config interface <span class=s1>&#39;lan&#39;</span>
+</span></span><span class=line><span class=cl>        option device <span class=s1>&#39;br-lan&#39;</span>
+</span></span><span class=line><span class=cl>        option proto <span class=s1>&#39;dhcp&#39;</span>
+</span></span><span class=line><span class=cl>        option ipaddr <span class=s1>&#39;192.168.1.1&#39;</span>
+</span></span><span class=line><span class=cl>        option netmask <span class=s1>&#39;255.255.255.0&#39;</span>
+</span></span><span class=line><span class=cl>        option ip6assign <span class=s1>&#39;60&#39;</span>
+</span></span><span class=line><span class=cl>        option up <span class=s1>&#39;1&#39;</span>
+</span></span><span class=line><span class=cl>        option ifname <span class=s1>&#39;br-lan&#39;</span>
+</span></span></code></pre></div><p>接下来的两行现实判断执行结果，命令返回值是否为0以及<code>DATA</code>参数是否为空。</p><p>然后重点就是<code>eval "$DATA"</code>，该命令会将<code>$DATA</code>的每一行内容作为命令来执行，具体见<a href=#eval%E5%91%BD%E4%BB%A4>eval</a>。</p><p>那么接下来的<code>package xxx</code>、<code>config xxx</code>、<code>option xxx</code>以及<code>list xxx</code>等行都会作为命令来执行，而这些命令都在<code>/lib/functions.sh</code>脚本中提供。</p><p><code>/lib/functions.sh</code>脚本中的相关内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>append<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>var</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>sep</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>3</span><span class=k>:-</span><span class=p> </span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nb>eval</span> <span class=s2>&#34;export </span><span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span><span class=s2> -- \&#34;</span><span class=nv>$var</span><span class=s2>=\${</span><span class=nv>$var</span><span class=s2>:+\${</span><span class=nv>$var</span><span class=s2>}\${value:+\$sep}}\$value\&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>package<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config <span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>cfgtype</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_NUM_SECTIONS</span><span class=o>=</span><span class=k>$((</span>CONFIG_NUM_SECTIONS <span class=o>+</span> <span class=m>1</span><span class=k>))</span>
+</span></span><span class=line><span class=cl>	<span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>name</span><span class=k>:-</span><span class=nv>cfg$CONFIG_NUM_SECTIONS</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	append CONFIG_SECTIONS <span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_SECTION</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;TYPE&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>cfgtype</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=o>[</span> -n <span class=s2>&#34;</span><span class=nv>$NO_CALLBACK</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> config_cb <span class=s2>&#34;</span><span class=nv>$cfgtype</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>option <span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>varname</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span><span class=p>;</span> <span class=nb>shift</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>value</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=o>[</span> -n <span class=s2>&#34;</span><span class=nv>$NO_CALLBACK</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> option_cb <span class=s2>&#34;</span><span class=nv>$varname</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>list<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>varname</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span><span class=p>;</span> <span class=nb>shift</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> len
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	config_get len <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>_LENGTH&#34;</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl>	<span class=o>[</span> <span class=nv>$len</span> <span class=o>=</span> <span class=m>0</span> <span class=o>]</span> <span class=o>&amp;&amp;</span> append CONFIG_LIST_STATE <span class=s2>&#34;</span><span class=si>${</span><span class=nv>CONFIG_SECTION</span><span class=si>}</span><span class=s2>_</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nv>len</span><span class=o>=</span><span class=k>$((</span>len <span class=o>+</span> <span class=m>1</span><span class=k>))</span>
+</span></span><span class=line><span class=cl>	config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>_ITEM</span><span class=nv>$len</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$value</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>_LENGTH&#34;</span> <span class=s2>&#34;</span><span class=nv>$len</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	append <span class=s2>&#34;CONFIG_</span><span class=si>${</span><span class=nv>CONFIG_SECTION</span><span class=si>}</span><span class=s2>_</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$value</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$LIST_SEP</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=o>[</span> -n <span class=s2>&#34;</span><span class=nv>$NO_CALLBACK</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> list_cb <span class=s2>&#34;</span><span class=nv>$varname</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config_set<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>section</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>option</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$3</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=s2>&#34;CONFIG_</span><span class=si>${</span><span class=nv>section</span><span class=si>}</span><span class=s2>_</span><span class=si>${</span><span class=nv>option</span><span class=si>}</span><span class=s2>=</span><span class=si>${</span><span class=nv>value</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>以<code>config interface 'loopback'</code>为例，<code>config()</code>函数接收两个参数。</p><p>加上注释之后并运行结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>config <span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>cfgtype</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_NUM_SECTIONS</span><span class=o>=</span><span class=k>$((</span>CONFIG_NUM_SECTIONS <span class=o>+</span> <span class=m>1</span><span class=k>))</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;CONFIG_NUM_SECTIONS=</span><span class=nv>$CONFIG_NUM_SECTIONS</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>name</span><span class=k>:-</span><span class=nv>cfg$CONFIG_NUM_SECTIONS</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;name=</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        append CONFIG_SECTIONS <span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;CONFIG_SECTIONS=</span><span class=nv>$CONFIG_SECTIONS</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_SECTION</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;CONFIG_SECTION=</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;TYPE&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>cfgtype</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>eval</span> <span class=nb>echo</span> <span class=se>\$</span><span class=o>{</span>CONFIG_<span class=si>${</span><span class=nv>CONFIG_SECTION</span><span class=si>}</span>_TYPE<span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=o>[</span> -n <span class=s2>&#34;</span><span class=nv>$NO_CALLBACK</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> config_cb <span class=s2>&#34;</span><span class=nv>$cfgtype</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_NUM_SECTIONS=1</span>
+</span></span><span class=line><span class=cl><span class=c1># name=loopback</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_SECTIONS=loopback</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_SECTION=loopback</span>
+</span></span><span class=line><span class=cl><span class=c1># interface</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_NUM_SECTIONS=2</span>
+</span></span><span class=line><span class=cl><span class=c1># name=globals</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_SECTIONS=loopback globals</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_SECTION=globals</span>
+</span></span><span class=line><span class=cl><span class=c1># globals</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_NUM_SECTIONS=3</span>
+</span></span><span class=line><span class=cl><span class=c1># name=cfg030f15</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_SECTIONS=loopback globals cfg030f15</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_SECTION=cfg030f15</span>
+</span></span><span class=line><span class=cl><span class=c1># device</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_NUM_SECTIONS=4</span>
+</span></span><span class=line><span class=cl><span class=c1># name=lan</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_SECTIONS=loopback globals cfg030f15 lan</span>
+</span></span><span class=line><span class=cl><span class=c1># CONFIG_SECTION=lan</span>
+</span></span><span class=line><span class=cl><span class=c1># interface</span>
+</span></span></code></pre></div><p>在<code>uci_load</code>调用过程中每遇到一个<code>section</code>就会调用1次<code>config()</code>接口，在<code>config</code>接口中会执行以下操作：</p><ol><li>统计<code>section</code>的个数，记录在变量<code>CONFIG_NUM_SECTIONS</code>中。</li><li>记录当前和所有<code>section</code>名称，分别保存在变量<code>CONFIG_SECTION</code>和<code>CONFIG_SECTIONS</code>中。</li><li>记录当前<code>section</code>类型，保存在变量<code>CONFIG_${CONFIG_SECTION}_TYPE</code>中。</li><li>然后判断是否设置了回调函数，如果设置则调用回调<code>config_cb</code>。</li></ol><p><code>option_cb</code>和<code>list_cb</code>同理，<code>list_cb</code>可能要复杂一点。</p><p><code>uci_load</code>函数接下来就是删除<code>DATA</code>变量，然后如果<code>CONFIG_SECTION</code>再调用一次<code>config_cb</code>回调函数。</p><h3 id=eval命令><a href=#eval%e5%91%bd%e4%bb%a4>eval命令</a></h3><p>在Shell脚本中，<code>eval</code>命令用于对传递给它的字符串进行重新解析和执行。它可以将字符串中的变量、命令等进行解析并执行，通常用于需要动态构建和执行命令的场景。</p><p>示例如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=cp>#!/bin/sh
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># 示例1：解析变量</span>
+</span></span><span class=line><span class=cl><span class=nv>cmd</span><span class=o>=</span><span class=s2>&#34;echo Hello, World!&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>eval</span> <span class=nv>$cmd</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 示例2：动态构建命令</span>
+</span></span><span class=line><span class=cl><span class=nv>varname</span><span class=o>=</span><span class=s2>&#34;myvar&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>eval</span> <span class=nv>$varname</span><span class=o>=</span><span class=s2>&#34;Hello&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$myvar</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 示例3：多重解析</span>
+</span></span><span class=line><span class=cl><span class=nv>cmd1</span><span class=o>=</span><span class=s2>&#34;echo&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>cmd2</span><span class=o>=</span><span class=s2>&#34;Hello, World!&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>eval</span> <span class=s2>&#34;</span><span class=nv>$cmd1</span><span class=s2> </span><span class=nv>$cmd2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Hello, World!</span>
+</span></span><span class=line><span class=cl><span class=c1># Hello</span>
+</span></span><span class=line><span class=cl><span class=c1># Hello, World!</span>
+</span></span></code></pre></div><h3 id=uci参数><a href=#uci%e5%8f%82%e6%95%b0>uci参数</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>root@OpenWrt:~/uci# uci
+</span></span><span class=line><span class=cl>Usage: uci <span class=o>[</span>&lt;options&gt;<span class=o>]</span> &lt;command&gt; <span class=o>[</span>&lt;arguments&gt;<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Commands:
+</span></span><span class=line><span class=cl>        batch
+</span></span><span class=line><span class=cl>        <span class=nb>export</span>     <span class=o>[</span>&lt;config&gt;<span class=o>]</span>
+</span></span><span class=line><span class=cl>        import     <span class=o>[</span>&lt;config&gt;<span class=o>]</span>
+</span></span><span class=line><span class=cl>        changes    <span class=o>[</span>&lt;config&gt;<span class=o>]</span>
+</span></span><span class=line><span class=cl>        commit     <span class=o>[</span>&lt;config&gt;<span class=o>]</span>
+</span></span><span class=line><span class=cl>        add        &lt;config&gt; &lt;section-type&gt;
+</span></span><span class=line><span class=cl>        add_list   &lt;config&gt;.&lt;section&gt;.&lt;option&gt;<span class=o>=</span>&lt;string&gt;
+</span></span><span class=line><span class=cl>        del_list   &lt;config&gt;.&lt;section&gt;.&lt;option&gt;<span class=o>=</span>&lt;string&gt;
+</span></span><span class=line><span class=cl>        show       <span class=o>[</span>&lt;config&gt;<span class=o>[</span>.&lt;section&gt;<span class=o>[</span>.&lt;option&gt;<span class=o>]]]</span>
+</span></span><span class=line><span class=cl>        get        &lt;config&gt;.&lt;section&gt;<span class=o>[</span>.&lt;option&gt;<span class=o>]</span>
+</span></span><span class=line><span class=cl>        <span class=nb>set</span>        &lt;config&gt;.&lt;section&gt;<span class=o>[</span>.&lt;option&gt;<span class=o>]=</span>&lt;value&gt;
+</span></span><span class=line><span class=cl>        delete     &lt;config&gt;<span class=o>[</span>.&lt;section&gt;<span class=o>[[</span>.&lt;option&gt;<span class=o>][=</span>&lt;id&gt;<span class=o>]]]</span>
+</span></span><span class=line><span class=cl>        rename     &lt;config&gt;.&lt;section&gt;<span class=o>[</span>.&lt;option&gt;<span class=o>]=</span>&lt;name&gt;
+</span></span><span class=line><span class=cl>        revert     &lt;config&gt;<span class=o>[</span>.&lt;section&gt;<span class=o>[</span>.&lt;option&gt;<span class=o>]]</span>
+</span></span><span class=line><span class=cl>        reorder    &lt;config&gt;.&lt;section&gt;<span class=o>=</span>&lt;position&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Options:
+</span></span><span class=line><span class=cl>        -c &lt;path&gt;  <span class=nb>set</span> the search path <span class=k>for</span> config files <span class=o>(</span>default: /etc/config<span class=o>)</span>
+</span></span><span class=line><span class=cl>        -d &lt;str&gt;   <span class=nb>set</span> the delimiter <span class=k>for</span> list values in uci show
+</span></span><span class=line><span class=cl>        -f &lt;file&gt;  use &lt;file&gt; as input instead of stdin
+</span></span><span class=line><span class=cl>        -m         when importing, merge data into an existing package
+</span></span><span class=line><span class=cl>        -n         name unnamed sections on <span class=nb>export</span> <span class=o>(</span>default<span class=o>)</span>
+</span></span><span class=line><span class=cl>        -N         don<span class=s1>&#39;t name unnamed sections
+</span></span></span><span class=line><span class=cl><span class=s1>        -p &lt;path&gt;  add a search path for config change files
+</span></span></span><span class=line><span class=cl><span class=s1>        -P &lt;path&gt;  add a search path for config change files and use as default
+</span></span></span><span class=line><span class=cl><span class=s1>        -t &lt;path&gt;  set save path for config change files
+</span></span></span><span class=line><span class=cl><span class=s1>        -q         quiet mode (don&#39;</span>t print error messages<span class=o>)</span>
+</span></span><span class=line><span class=cl>        -s         force strict mode <span class=o>(</span>stop on parser errors, default<span class=o>)</span>
+</span></span><span class=line><span class=cl>        -S         disable strict mode
+</span></span><span class=line><span class=cl>        -X         <span class=k>do</span> not use extended syntax on <span class=s1>&#39;show&#39;</span>
+</span></span></code></pre></div><p><code>-P &lt;path></code>参数用于增加一个配置的搜索路径。</p><p><code>-n</code> 对导出的匿名<code>section</code>进行命名。</p><h3 id=export><a href=#export>export</a></h3><p><code>export -n</code>用于取消导出变量，取消导出变量后，变量仍旧存在于当前Shell，但是不会存在于子进程中，验证脚本如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># 设置并导出变量</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>VAR1</span><span class=o>=</span><span class=s2>&#34;Hello&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>VAR2</span><span class=o>=</span><span class=s2>&#34;World&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 显示当前变量值</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Before export -n:&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;VAR1: </span><span class=nv>$VAR1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;VAR2: </span><span class=nv>$VAR2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 取消导出 VAR1</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> -n VAR1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 启动一个子 Shell 并检查变量</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;In a subshell:&#34;</span>
+</span></span><span class=line><span class=cl>bash -c <span class=s1>&#39;echo &#34;VAR1: $VAR1&#34;; echo &#34;VAR2: $VAR2&#34;&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 显示当前 Shell 中的变量值</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;After export -n in current shell:&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;VAR1: </span><span class=nv>$VAR1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;VAR2: </span><span class=nv>$VAR2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Before export -n:</span>
+</span></span><span class=line><span class=cl><span class=c1># VAR1: Hello</span>
+</span></span><span class=line><span class=cl><span class=c1># VAR2: World</span>
+</span></span><span class=line><span class=cl><span class=c1># In a subshell:</span>
+</span></span><span class=line><span class=cl><span class=c1># VAR1:</span>
+</span></span><span class=line><span class=cl><span class=c1># VAR2: World</span>
+</span></span><span class=line><span class=cl><span class=c1># After export -n in current shell:</span>
+</span></span><span class=line><span class=cl><span class=c1># VAR1: Hello</span>
+</span></span><span class=line><span class=cl><span class=c1># VAR2: World</span>
+</span></span></code></pre></div><h2 id=示例><a href=#%e7%a4%ba%e4%be%8b>示例</a></h2><p>下面是将用到的<code>/lib/config/uci.sh</code>和<code>/lib/functions.sh</code>脚本中的所有接口汇总到一个脚本文件中执行的示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=cp>#!/bin/sh
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>_C</span><span class=o>=</span><span class=m>0</span>
+</span></span><span class=line><span class=cl><span class=nv>NO_EXPORT</span><span class=o>=</span><span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=nv>LOAD_STATE</span><span class=o>=</span><span class=m>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>package<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># config_get &lt;variable&gt; &lt;section&gt; &lt;option&gt; [&lt;default&gt;]</span>
+</span></span><span class=line><span class=cl><span class=c1># config_get &lt;section&gt; &lt;option&gt;</span>
+</span></span><span class=line><span class=cl>config_get<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>case</span> <span class=s2>&#34;</span><span class=nv>$2</span><span class=si>${</span><span class=nv>3</span><span class=k>:-</span><span class=nv>$1</span><span class=si>}</span><span class=s2>&#34;</span> in
+</span></span><span class=line><span class=cl>                *<span class=o>[</span>!A-Za-z0-9_<span class=o>]</span>*<span class=o>)</span> : <span class=p>;;</span>
+</span></span><span class=line><span class=cl>                *<span class=o>)</span>
+</span></span><span class=line><span class=cl>                        <span class=k>case</span> <span class=s2>&#34;</span><span class=nv>$3</span><span class=s2>&#34;</span> in
+</span></span><span class=line><span class=cl>                                <span class=s2>&#34;&#34;</span><span class=o>)</span> <span class=nb>eval</span> <span class=nb>echo</span> <span class=s2>&#34;\&#34;\${CONFIG_</span><span class=si>${</span><span class=nv>1</span><span class=si>}</span><span class=s2>_</span><span class=si>${</span><span class=nv>2</span><span class=si>}</span><span class=s2>:-\${4}}\&#34;&#34;</span><span class=p>;;</span>
+</span></span><span class=line><span class=cl>                                *<span class=o>)</span>  <span class=nb>eval</span> <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> -- <span class=s2>&#34;</span><span class=si>${</span><span class=nv>1</span><span class=si>}</span><span class=s2>=\${CONFIG_</span><span class=si>${</span><span class=nv>2</span><span class=si>}</span><span class=s2>_</span><span class=si>${</span><span class=nv>3</span><span class=si>}</span><span class=s2>:-\${4}}&#34;</span><span class=p>;;</span>
+</span></span><span class=line><span class=cl>                        <span class=k>esac</span>
+</span></span><span class=line><span class=cl>                <span class=p>;;</span>
+</span></span><span class=line><span class=cl>        <span class=k>esac</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>append<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>var</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>sep</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>3</span><span class=k>:-</span><span class=p> </span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nb>eval</span> <span class=s2>&#34;export </span><span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span><span class=s2> -- \&#34;</span><span class=nv>$var</span><span class=s2>=\${</span><span class=nv>$var</span><span class=s2>:+\${</span><span class=nv>$var</span><span class=s2>}\${value:+\$sep}}\$value\&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config <span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>cfgtype</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_NUM_SECTIONS</span><span class=o>=</span><span class=k>$((</span>CONFIG_NUM_SECTIONS <span class=o>+</span> <span class=m>1</span><span class=k>))</span>
+</span></span><span class=line><span class=cl>        <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>name</span><span class=k>:-</span><span class=nv>cfg$CONFIG_NUM_SECTIONS</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        append CONFIG_SECTIONS <span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_SECTION</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;TYPE&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>cfgtype</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=o>[</span> -n <span class=s2>&#34;</span><span class=nv>$NO_CALLBACK</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> config_cb <span class=s2>&#34;</span><span class=nv>$cfgtype</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>option <span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>varname</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span><span class=p>;</span> <span class=nb>shift</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>value</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=o>[</span> -n <span class=s2>&#34;</span><span class=nv>$NO_CALLBACK</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> option_cb <span class=s2>&#34;</span><span class=nv>$varname</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>list<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>varname</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span><span class=p>;</span> <span class=nb>shift</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> len
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        config_get len <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>_LENGTH&#34;</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl>        <span class=o>[</span> <span class=nv>$len</span> <span class=o>=</span> <span class=m>0</span> <span class=o>]</span> <span class=o>&amp;&amp;</span> append CONFIG_LIST_STATE <span class=s2>&#34;</span><span class=si>${</span><span class=nv>CONFIG_SECTION</span><span class=si>}</span><span class=s2>_</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nv>len</span><span class=o>=</span><span class=k>$((</span>len <span class=o>+</span> <span class=m>1</span><span class=k>))</span>
+</span></span><span class=line><span class=cl>        config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>_ITEM</span><span class=nv>$len</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$value</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        config_set <span class=s2>&#34;</span><span class=nv>$CONFIG_SECTION</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>_LENGTH&#34;</span> <span class=s2>&#34;</span><span class=nv>$len</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        append <span class=s2>&#34;CONFIG_</span><span class=si>${</span><span class=nv>CONFIG_SECTION</span><span class=si>}</span><span class=s2>_</span><span class=si>${</span><span class=nv>varname</span><span class=si>}</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$value</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$LIST_SEP</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=o>[</span> -n <span class=s2>&#34;</span><span class=nv>$NO_CALLBACK</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> list_cb <span class=s2>&#34;</span><span class=nv>$varname</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config_set<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>section</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>option</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$3</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=s2>&#34;CONFIG_</span><span class=si>${</span><span class=nv>section</span><span class=si>}</span><span class=s2>_</span><span class=si>${</span><span class=nv>option</span><span class=si>}</span><span class=s2>=</span><span class=si>${</span><span class=nv>value</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>CONFIG_APPEND</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>uci_load<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>PACKAGE</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> DATA
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> RET
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> VAR
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nv>_C</span><span class=o>=</span><span class=m>0</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=o>[</span> -z <span class=s2>&#34;</span><span class=nv>$CONFIG_APPEND</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>                <span class=k>for</span> VAR in <span class=nv>$CONFIG_LIST_STATE</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>                        <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> CONFIG_<span class=si>${</span><span class=nv>VAR</span><span class=si>}</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>                        <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> CONFIG_<span class=si>${</span><span class=nv>VAR</span><span class=si>}</span><span class=nv>_LENGTH</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>                <span class=k>done</span>
+</span></span><span class=line><span class=cl>                <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_LIST_STATE</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>                <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_SECTIONS</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>                <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_NUM_SECTIONS</span><span class=o>=</span><span class=m>0</span>
+</span></span><span class=line><span class=cl>                <span class=nb>export</span> <span class=si>${</span><span class=nv>NO_EXPORT</span><span class=p>:+-n</span><span class=si>}</span> <span class=nv>CONFIG_SECTION</span><span class=o>=</span>
+</span></span><span class=line><span class=cl>        <span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nv>DATA</span><span class=o>=</span><span class=s2>&#34;</span><span class=k>$(</span>/sbin/uci <span class=si>${</span><span class=nv>UCI_CONFIG_DIR</span><span class=p>:+-c </span><span class=nv>$UCI_CONFIG_DIR</span><span class=si>}</span> <span class=si>${</span><span class=nv>LOAD_STATE</span><span class=p>:+-P /var/state</span><span class=si>}</span> -S -n <span class=nb>export</span> <span class=s2>&#34;</span><span class=nv>$PACKAGE</span><span class=s2>&#34;</span> 2&gt;/dev/null<span class=k>)</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nv>RET</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$RET</span><span class=s2>&#34;</span> !<span class=o>=</span> <span class=m>0</span> -o -z <span class=s2>&#34;</span><span class=nv>$DATA</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> <span class=nb>eval</span> <span class=s2>&#34;</span><span class=nv>$DATA</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>unset</span> DATA
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=si>${</span><span class=nv>CONFIG_SECTION</span><span class=p>:+config_cb</span><span class=si>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=s2>&#34;</span><span class=nv>$RET</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>config_cb<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>type</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=c1># commands to be run for every section</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;type=</span><span class=nv>$type</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;name=</span><span class=nv>$name</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>option_cb<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>list_cb<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>local</span> <span class=nv>value</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>uci_load <span class=s2>&#34;network&#34;</span>
+</span></span></code></pre></div><p>执行结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nv>type</span><span class=o>=</span>interface
+</span></span><span class=line><span class=cl><span class=nv>name</span><span class=o>=</span>loopback
+</span></span><span class=line><span class=cl><span class=nv>type</span><span class=o>=</span>globals
+</span></span><span class=line><span class=cl><span class=nv>name</span><span class=o>=</span>globals
+</span></span><span class=line><span class=cl><span class=nv>type</span><span class=o>=</span>device
+</span></span><span class=line><span class=cl><span class=nv>name</span><span class=o>=</span>cfg030f15
+</span></span><span class=line><span class=cl><span class=nv>type</span><span class=o>=</span>interface
+</span></span><span class=line><span class=cl><span class=nv>name</span><span class=o>=</span>lan
+</span></span><span class=line><span class=cl><span class=nv>type</span><span class=o>=</span>
+</span></span><span class=line><span class=cl><span class=nv>name</span><span class=o>=</span>
+</span></span></code></pre></div><p>最后一次执行<code>config_cb</code>是由<code>uci_load</code>调用的，其中传入的参数为空，可以依据该条件判断是否到达结尾。</p></div><div class=post-archive><ul class=post-copyright><li><strong>原文作者：</strong><a rel=author href=https://DBL2017.github.io/>生如夏花</a></li><li style=word-break:break-all><strong>原文链接：</strong><a href=https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B9%8Buci.sh%E4%B8%ADuci_load%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/>https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B9%8Buci.sh%E4%B8%ADuci_load%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/</a></li><li><strong>版权声明：</strong>本作品采用<a rel=license href=https://creativecommons.org/licenses/by-nc-nd/4.0/>知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li></ul></div><br><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91%E4%BB%A5%E5%8F%8A%E5%9C%A8vmware%E4%B8%8A%E8%BF%90%E8%A1%8C/>OpenWrt下载编译以及在VMWare上运行</a></li><li><a href=/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/ubus%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E8%A7%A3%E6%9E%90/>ubus接口调用解析时遇到的一点问题</a></li><li><a href=/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/tmux%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/>tmux使用方法</a></li><li><a href=/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/iptables%E8%87%AA%E5%AE%9A%E4%B9%89%E9%93%BE/>iptables自定义链</a></li><li><a href=/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/ubuntu24.04-apt-upgrade%E6%8F%90%E7%A4%BAesm-apps/>Ubuntu24.04 apt upgrade提示esm-apps</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=/tags/uci>UCI</a></li><li><a href=/tags/openwrt>OpenWrt</a></li><li><a href=/tags/uci.sh>uci.sh</a></li><li><a href=/tags/uci_load>uci_load</a></li><li><a href=/tags/config_cb>config_cb</a></li><li><a href=/tags/option_cb>option_cb</a></li><li><a href=/tags/list_cb>list_cb</a></li></ul></div></article><div class="post bg-white"><script src=https://utteranc.es/client.js repo=DBL2017/DBL2017.github.io issue-term=title theme=github-light crossorigin=anonymous async></script></div></div></div></div><div class=content-right><div class=sidebar><section class=widget><form id=form-search action=https://DBL2017.github.io/search/ method=get accept-charset=utf-8 _lpchecked=1><input type=text name=q maxlength=20 placeholder=请输入查找关键字 required>
+<button type=submit class=submit title=提交><svg t="1714448321870" class="icon" style="width:22px;height:22px" viewBox="0 0 1024 1024" p-id="1771" width="200" height="200"><path d="M781.9264 691.1232l236.928 236.9216-90.816 90.8032-236.9152-236.9216c-72.032 53.3568-161.184 84.9088-257.7088 84.9088C194.048 866.8352.0 672.7872.0 433.408.0 194.048 194.048.0 433.4144.0c239.3728.0 433.4208 194.048 433.4208 433.4144.0 96.5248-31.552 185.6768-84.9088 257.7088zm-348.512 47.2896c168.448.0 304.9984-136.5504 304.9984-304.9984s-136.5504-304.992-304.9984-304.992-304.992 136.5504-304.992 304.9856c0 168.448 136.5504 304.9984 304.992 304.9984z" fill="#4a4a4a" p-id="1772"/></svg></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B9%8Buci.sh%E4%B8%ADuci_load%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/ title=OpenWrt之uci.sh中uci_load的工作原理>OpenWrt之uci.sh中uci_load的工作原理</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/tmux%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/ title=tmux使用方法>tmux使用方法</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/iptables%E8%87%AA%E5%AE%9A%E4%B9%89%E9%93%BE/ title=iptables自定义链>iptables自定义链</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/ubuntu24.04-apt-upgrade%E6%8F%90%E7%A4%BAesm-apps/ title="Ubuntu24.04 apt upgrade提示esm-apps">Ubuntu24.04 apt upgrade提示esm-apps</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/ubuntu24.04%E6%90%AD%E5%BB%BApppoe-server%E5%B9%B6%E8%BF%9B%E8%A1%8C%E6%8B%A8%E5%8F%B7%E6%B5%8B%E8%AF%95/ title="Ubuntu24.04搭建PPPoE Server并进行拨号测试">Ubuntu24.04搭建PPPoE Server并进行拨号测试</a></li><li><a href=https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/openwrt%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91%E4%BB%A5%E5%8F%8A%E5%9C%A8vmware%E4%B8%8A%E8%BF%90%E8%A1%8C/ title=OpenWrt下载编译以及在VMWare上运行>OpenWrt下载编译以及在VMWare上运行</a></li><li><a href=https://DBL2017.github.io/post/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/ubuntu24.04%E7%8E%AF%E5%A2%83%E7%BC%96%E8%AF%91glibc-2.40%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/ title=Ubuntu24.04环境编译glibc-2.40错误记录>Ubuntu24.04环境编译glibc-2.40错误记录</a></li><li><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/unix%E5%9F%9F%E5%A5%97%E6%8E%A5%E5%AD%97/ title=UNIX域套接字>UNIX域套接字</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/job-systemd-networkd-wait-online.service-start-running/ title="Job systemd-networkd-wait-online.service start running">Job systemd-networkd-wait-online.service start running</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/fdisk%E5%88%9B%E5%BB%BA%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E5%B9%B6%E6%A0%BC%E5%BC%8F%E5%8C%96/ title=fdisk创建磁盘分区并格式化>fdisk创建磁盘分区并格式化</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list><li><a href=https://DBL2017.github.io/categories/kindle/>KINDLE (1)</a></li><li><a href=https://DBL2017.github.io/categories/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/>传输协议 (11)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/>工具使用 (20)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/>开源三方 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/>操作系统 (7)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/>数字安全 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/>数据结构和算法 (5)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/>编程语言 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88/>网络工程师 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/>读书笔记 (56)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/>问题排查 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%BB%98%E8%AE%A4/>默认 (2)</a></li></ul></section><section class=widget><h3 class=widget-title>友情链接</h3><ul class=widget-list><li><a target=_blank href=https://mermaid.live/ title=Mermaid>Mermaid 编辑</a></li><li><a target=_blank href=https://excalidraw.com/ title=EXCALIDRAW>Excalidraw 绘图</a></li><li><a target=_blank href=https://git-scm.com/docs title=Git命令参考手册>Git命令参考手册</a></li><li><a target=_blank href=https://www.gnu.org/software/make/manual/make.html title="GNU make官方文档">GNU make官方文档</a></li><li><a target=_blank href=https://www.emojiall.com/ title=Emojiall表情网站>Emojiall表情网站</a></li></ul></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/index.xml>文章 RSS</a></li></ul></section></div></div></div><div class=container-footer><footer id=footer><div>&copy; 2024 <a href=https://DBL2017.github.io/>生如夏花 By
+生如夏花</a>
+| <a rel=nofollow target=_blank href=http://beian.miit.gov.cn/>广电总局</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered
+by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://DBL2017.github.io/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">生如夏花</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],displayMath:[["$$","$$"]],processEscapes:!0,processEnvironments:!0,skipTags:["script","noscript","style","textarea","pre"]}}</script><script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src=/js/jquery.fancybox.min.min.9040007c0fd2a6cdc356495acb1c45ba3328b261b0d9f75d3da19bc47229189108aab8ca043864c1801d59431de72dec8d51ae50539f9ce1f5964bf5f38786c3.js integrity="sha512-kEAAfA/Sps3DVklayxxFujMosmGw2fddPaGbxHIpGJEIqrjKBDhkwYAdWUMd5y3sjVGuUFOfnOH1lkv184eGww==" crossorigin=anonymous></script><a id=rocket href=#top></a><script src=/js/totop.min.8c7573186baa30f09c49b5cf3176c3b105785324d961b3d5c2f7f099d14673160a29aeebdec25909d046aa14936cd43451e17664662d518550d5e8998dbec670.js integrity="sha512-jHVzGGuqMPCcSbXPMXbDsQV4UyTZYbPVwvfwmdFGcxYKKa7r3sJZCdBGqhSTbNQ0UeF2ZGYtUYVQ1eiZjb7GcA==" crossorigin=anonymous></script><script src=/js/clipboard.min.0765794be1674926c1a3810afcf039f605f367cb11cef727ad49e6aa70f9fca0a37d329d64c55822896869eb0960763e73e085ee7675cbc497e4d3256a6e6a67.js integrity="sha512-B2V5S+FnSSbBo4EK/PA59gXzZ8sRzvcnrUnmqnD5/KCjfTKdZMVYIoloaesJYHY+c+CF7nZ1y8SX5NMlam5qZw==" crossorigin=anonymous></script><script>var spy=new Gumshoe("#TableOfContents a",{nested:!0,nestedClass:"active"})</script><script>hljs.highlightAll()</script></div></div></body></html>
