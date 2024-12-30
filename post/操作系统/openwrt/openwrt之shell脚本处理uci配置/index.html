@@ -43,7 +43,7 @@
 </span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=s2>&#34;</span><span class=nv>$RET</span><span class=s2>&#34;</span>
 </span></span><span class=line><span class=cl><span class=o>}</span>
 </span></span></code></pre></div><p>因此如果要在脚本中加载uci配置首先需要包含<code>/lib/functions.sh</code>脚本，可以在使用前通过下面的一行代码包含该脚本：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>. /lib/functions.sh
-</span></span></code></pre></div><p>当然如果是编写启动脚本的话，一般会以<code>#!/bin/sh /etc/rc.common</code>开头，此时就不需要再额外包含<code>/lib/functions.sh</code>，因为<code>/etc/rc.common</code>中已经包含了<code>/lib/functions.sh</code>。</p><p>以miniupnpd的启动脚本为例，<code>/etc/init.d/miniupnpd</code>内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=cp>#!/bin/sh /etc/rc.common
+</span></span></code></pre></div><p>当然如果是编写启动脚本的话，一般会以<code>#!/bin/sh /etc/rc.common</code>开头，此时就不需要再额外包含<code>/lib/functions.sh</code>，因为<code>/etc/rc.common</code>中已经包含了<code>/lib/functions.sh</code>。</p><p>以miniupnpd的启动脚本为例，<code>/etc/init.d/miniupnpd</code>内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=cp>#!/bin/sh /etc/rc.common
 </span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># Copyright (C) 2006-2014 OpenWrt.org</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=nv>START</span><span class=o>=</span><span class=m>94</span>
