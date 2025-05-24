@@ -1,0 +1,91 @@
+\documentclass[tikz,border=5mm]{standalone}
+\usepackage{ctex}
+\usepackage{tikz}
+\usepackage{svg}
+% 设置主字体
+%\setmainfont{FangSong}
+% \setCJKmainfont{FangSong}
+ 
+\usetikzlibrary{positioning, shapes.multipart}
+\begin{document}
+	\begin{tikzpicture}[
+		box/.style={
+			draw, 
+			minimum width=32cm,
+			minimum height=1.5cm,
+			align=center,
+			inner sep=0
+		},
+		field/.style={
+			draw, 
+			minimum height=1.5cm,
+			align=center,
+			font=\normalsize,
+			inner sep=0
+		}
+	]
+		
+		% \node [选项] (名称) at (坐标) {内容}; 默认绘制的为矩形	
+		% 绘制32位行框架
+		%\foreach \i in {0,1,2,3,4} {
+		%	\node[box] (row\i) at (0,-\i*1.5) {};
+		%	\node[left] at (row\i.west) {\i};
+		%}
+		% 确定原点位置
+		%\draw[fill=red] (0,-3.75) circle (2pt) node[right] {原点};
+		
+		% 位数表示
+		\node[minimum width=4cm] (left0) at (-15.5,1.0) {0};
+		\node[minimum width=4cm] (left0) at (-0.5,1.0) {15};
+		\node[minimum width=4cm] (left0) at (0.5,1.0) {16};
+		\node[minimum width=4cm] (left0) at (15.5,1.0) {31};
+		% 绘制右侧指示箭头和中间数字
+		\node (A) at (17.0, 0.75) {};
+		\node (B) at (17.0,-2.75) {};
+		\draw[->,line width=1pt] (B) -- (A);
+		\node at (17.0,-3) {20字节}; % 默认显示
+		\node (C) at (17.0, -3.25) {};
+		\node (D) at (17.0,-6.75) {};
+		\draw[->,line width=1pt] (C) -- (D);
+		
+		\node (E) at (16.25, 0.75) {};
+		\node (F) at (17.75, 0.75) {};
+		\draw[-,line width=1.2pt] (E) -- (F);
+		
+		\node (G) at (16.25, -6.75) {};
+		\node (H) at (17.75, -6.75) {};
+		\draw[-,line width=1.2pt] (G) -- (H);
+
+		% 第一行字段
+		\node[field, minimum width=4cm] (version) at (-14,0) {版本\\4位};
+		\node[field, minimum width=4cm, right=0pt of version] (ihl) {首部长度\\4位};
+		\node[field, minimum width=8cm, right=0pt of ihl] (tos) {服务类型\\8位};
+		\node[field, minimum width=16cm, right=0pt of tos] (totlen) {总长度\\16位};
+		
+		% 第二行字段
+		\node[field, minimum width=16cm] (id) at (-8,-1.5) {标识符\\16位};
+		\node[field, minimum width=3cm, right=0pt of id] (flags) {标志\\3位};
+		\node[field, minimum width=13cm, right=0pt of flags] (frag) {分片偏移\\13位};
+		
+		% 第三行字段
+		\node[field, minimum width=8cm] (ttl) at (-12,-3.0) {生存时间\\8位};
+		\node[field, minimum width=8cm, right=0pt of ttl] (proto) {协议\\8位};
+		\node[field, minimum width=16cm, right=0pt of proto] (checksum) {首部校验和\\16位};
+		
+		% 第四行字段
+		\node[field, minimum width=32cm] (src) at (0,-4.5) {源IP地址\\32位};
+		
+		% 第五行字段
+		\node[field, minimum width=32cm] (dst) at (0,-6.0) {目的IP地址\\32位};
+		
+		% 第六行字段
+		\node[field, minimum width=32cm, minimum height=2.5cm] (dst) at (0,-8.0) {选项（如果有）};
+		
+		%% 第七行字段
+		\node[field, minimum width=32cm, minimum height=2.5cm] (dst) at (0,-10.5) {数据};
+		
+	
+	\end{tikzpicture}
+	% 导出当前页面为SVG（需shell逃逸）
+	\immediate\write18{pdf2svg \jobname.pdf \jobname.svg}
+\end{document}

@@ -1,4 +1,41 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 生如夏花</title><link>https://DBL2017.github.io/post/</link><description>Recent content in Posts on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 12 May 2025 15:11:48 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>TCP之MSS字段备注</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%B1%82/tcp%E4%B9%8Bmss%E5%AD%97%E6%AE%B5%E5%A4%87%E6%B3%A8/</link><pubDate>Mon, 12 May 2025 15:11:48 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%B1%82/tcp%E4%B9%8Bmss%E5%AD%97%E6%AE%B5%E5%A4%87%E6%B3%A8/</guid><description>调整TCP参数MSS字段，来设置在TCP层分片而非IP层。当TCP负载大小不超过TCP的MSS字段值但其加上TCP头、IP头之后超过链路层MTU时，就会触发IP层分片。正常TCP的MSS字段值为MTU-IPv4头-TCP头=1500-20-20=1460字节或MTU-IPv6头-TCP头=1500-40-20=1440字节。当时当遇到IPIP协议（例如IPv4 over IPv6），此时TCP的MSS字段如果仍旧为1460或1440字节时，就会触发IP层分片，此时应设置为MTU-IPv6头-IPv4头-TCP头=1500-40-20-20=1420字节。</description><tags>传输协议 TCP MSS</tags><summary>&lt;p>调整TCP参数MSS字段，来设置在TCP层分片而非IP层。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 生如夏花</title><link>https://DBL2017.github.io/post/</link><description>Recent content in Posts on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 24 May 2025 19:10:19 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>LaTex之中文支持</title><link>https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E4%B9%8B%E4%B8%AD%E6%96%87%E6%94%AF%E6%8C%81/</link><pubDate>Sat, 24 May 2025 19:10:19 +0800</pubDate><guid>https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E4%B9%8B%E4%B8%AD%E6%96%87%E6%94%AF%E6%8C%81/</guid><description>本文主要介绍了LaTeX使用中文以及中文字体的方法，主要推荐使用xelatex引擎+ctex，因为这种方式支持中文字体更加灵活。</description><tags>LaTeX</tags><summary>&lt;p>LaTex支持三种中文编辑显示方法。&lt;/p>
+&lt;p>要想在pdflatex中编辑、显示中文，使用ctex宏包的同时也需要设置文件编码为UTF-8，区别是ctex宏包版本&amp;gt;=2.5.10时不用在代码中手动指定UTF-8编码。&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th style="text-align: center">特性&lt;/th>
+ &lt;th style="text-align: center">UTF-8+ctex（pdfLaTeX）&lt;/th>
+ &lt;th style="text-align: center">CJKutf8（pdfLaTeX）&lt;/th>
+ &lt;th style="text-align: center">ctex+XeLaTeX&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td style="text-align: center">编译器&lt;/td>
+ &lt;td style="text-align: center">pdflatex&lt;/td>
+ &lt;td style="text-align: center">pdflatex&lt;/td>
+ &lt;td style="text-align: center">xelatex&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: center">文件编码&lt;/td>
+ &lt;td style="text-align: center">UTF-8（自动检测）&lt;/td>
+ &lt;td style="text-align: center">UTF-8（强制）&lt;/td>
+ &lt;td style="text-align: center">UTF-8（原生支持）&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: center">字体管理&lt;/td>
+ &lt;td style="text-align: center">自动映射基础字体&lt;/td>
+ &lt;td style="text-align: center">需手工指定字体&lt;/td>
+ &lt;td style="text-align: center">直接调用系统字体&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: center">配置复杂度&lt;/td>
+ &lt;td style="text-align: center">中等（需版本适配）&lt;/td>
+ &lt;td style="text-align: center">高&lt;/td>
+ &lt;td style="text-align: center">最低&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table></summary></item><item><title>TCP之MSS字段备注</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%B1%82/tcp%E4%B9%8Bmss%E5%AD%97%E6%AE%B5%E5%A4%87%E6%B3%A8/</link><pubDate>Mon, 12 May 2025 15:11:48 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%B1%82/tcp%E4%B9%8Bmss%E5%AD%97%E6%AE%B5%E5%A4%87%E6%B3%A8/</guid><description>调整TCP参数MSS字段，来设置在TCP层分片而非IP层。当TCP负载大小不超过TCP的MSS字段值但其加上TCP头、IP头之后超过链路层MTU时，就会触发IP层分片。正常TCP的MSS字段值为MTU-IPv4头-TCP头=1500-20-20=1460字节或MTU-IPv6头-TCP头=1500-40-20=1440字节。当时当遇到IPIP协议（例如IPv4 over IPv6），此时TCP的MSS字段如果仍旧为1460或1440字节时，就会触发IP层分片，此时应设置为MTU-IPv6头-IPv4头-TCP头=1500-40-20-20=1420字节。</description><tags>传输协议 TCP MSS</tags><summary>&lt;p>调整TCP参数MSS字段，来设置在TCP层分片而非IP层。&lt;/p>
 &lt;p>当TCP负载大小不超过TCP的MSS字段值但其加上TCP头、IP头之后超过链路层MTU时，就会触发IP层分片。&lt;/p>
 &lt;p>正常TCP的MSS字段值为MTU-IPv4头-TCP头=1500-20-20=1460字节或MTU-IPv6头-TCP头=1500-40-20=1440字节。&lt;/p>
 &lt;p>当遇到IPIP协议（例如IPv4 over IPv6），此时TCP的MSS字段如果仍旧为1460或1440字节时，就会触发IP层分片（TCP层为查过MSS字段值不会触发分片，IP层超过1500字节触发分片），此时应设置为MTU-IPv6头-IPv4头-TCP头=1500-40-20-20=1420字节。&lt;/p></summary></item><item><title>内核数据结构之container_of</title><link>https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8Bcontainer_of/</link><pubDate>Sun, 27 Apr 2025 22:11:59 +0800</pubDate><guid>https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8Bcontainer_of/</guid><description>container_of宏用于**根据结构体某个成员的地址来获取结构体自身的地址**，获得结构体自身地址之后可以访问该结构其他字段。offsetof宏可以获取结构体中成员相对于结构体的偏移量。pragma pack预定义指令用于限制结构体成员的最大对齐数，结构体的对齐数取决于结构体成员的最大对齐数，结构体成员的对齐数取决于其自身大小和编译器设置的参数。__attribute__((packed))和__attribute__((aligned(n)))仅用于GCC</description><tags>数据结构 Offsetof Container_of 结构体对齐 Pragma Pack Attribute</tags><summary>&lt;p>&lt;code>container_of&lt;/code>宏用于&lt;strong>根据结构体某个成员的地址来获取结构体自身的地址&lt;/strong>，获得结构体自身地址之后可以访问该结构其他字段，定义在&lt;code>&amp;lt;linux/kernel.h&amp;gt;&lt;/code>中。&lt;/p>
@@ -345,7 +382,8 @@
 &lt;p>nvim-lspconfig，mason 等插件的安装配置。&lt;/p></summary></item><item><title>线性表</title><link>https://DBL2017.github.io/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/adt/linear_list/</link><pubDate>Sun, 13 Nov 2022 15:39:56 +0800</pubDate><guid>https://DBL2017.github.io/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/adt/linear_list/</guid><description/><tags>线性表 数据结构 ADT</tags><summary>&lt;p>&lt;strong>线性表&lt;/strong>是最常用且最简单的一种数据结构（逻辑结构）。简言之，一个线性表是 n 个数据元素的有限序列。&lt;/p></summary></item><item><title>数据结构</title><link>https://DBL2017.github.io/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/adt/data_struct/</link><pubDate>Sat, 12 Nov 2022 19:34:20 +0800</pubDate><guid>https://DBL2017.github.io/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/adt/data_struct/</guid><description/><tags>ADT 数据结构</tags><summary>&lt;p>本章主要总结了数据结构的基本概念和定义。&lt;/p>
 &lt;p>数据结构三要素：&lt;strong>逻辑结构、存储结构（物理结构）以及数据的运算（算法）。&lt;/strong>&lt;/p>
 &lt;p>数据结构的存储结构有四种，分别是顺序存储、链式存储、索引存储以及散列存储。本节主要介绍前两种。&lt;/p>
-&lt;p>数据的运算定义是基于逻辑结构的，而运算实现是基于存储结构的。同一逻辑结构的不同存储结构的运算的实现是不同的&lt;/p></summary></item><item><title>Linux运维书单</title><link>https://DBL2017.github.io/post/linux%E4%B9%A6%E5%8D%95/</link><pubDate>Thu, 03 Nov 2022 22:26:38 +0800</pubDate><guid>https://DBL2017.github.io/post/linux%E4%B9%A6%E5%8D%95/</guid><description/><tags>Linux运维 Linux参考书</tags><summary>&lt;p>下面介绍了Linux运维或编程一些常见的书籍。&lt;/p></summary></item><item><title>LaTex环境搭建</title><link>https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link><pubDate>Wed, 10 Aug 2022 15:55:23 +0800</pubDate><guid>https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid><description/><tags>LaTex 环境搭建</tags><summary>&lt;p>本文主要介绍的LaTex的作用、用法、以及环境搭建。可以通过neovim+vimtex+zathuura进行编写、编译以及查看tex。&lt;/p></summary></item><item><title>进程关系</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E8%BF%9B%E7%A8%8B%E5%85%B3%E7%B3%BB/</link><pubDate>Fri, 22 Jul 2022 21:11:24 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E8%BF%9B%E7%A8%8B%E5%85%B3%E7%B3%BB/</guid><description>终端简介之物理终端、模拟终端以及伪终端。终端登录以及网路登录的区别。进程组、会话以及控制终端相关概念。孤儿进程组、作业控制、终端驱动程序。fg、bg切换前后台进程。</description><tags>APUE 进程关系 终端 Unix环境高级编程</tags><summary>&lt;p>本文主要介绍了终端，包括物理终端、模拟终端以及伪终端等。&lt;/p>
+&lt;p>数据的运算定义是基于逻辑结构的，而运算实现是基于存储结构的。同一逻辑结构的不同存储结构的运算的实现是不同的&lt;/p></summary></item><item><title>Linux运维书单</title><link>https://DBL2017.github.io/post/linux%E4%B9%A6%E5%8D%95/</link><pubDate>Thu, 03 Nov 2022 22:26:38 +0800</pubDate><guid>https://DBL2017.github.io/post/linux%E4%B9%A6%E5%8D%95/</guid><description/><tags>Linux运维 Linux参考书</tags><summary>&lt;p>下面介绍了Linux运维或编程一些常见的书籍。&lt;/p></summary></item><item><title>TeX环境搭建</title><link>https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/tex%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link><pubDate>Wed, 10 Aug 2022 15:55:23 +0800</pubDate><guid>https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/tex%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid><description>本文主要介绍了TexLive的安装，以及在VSCode和neovim上配置Latex的编译方式。同时支持将TiKZ绘制的图片转为svg格式。</description><tags>LaTeX 环境搭建 TeX Pdf2svg TiKZ</tags><summary>&lt;p>本文主要介绍了TexLive的安装，以及在VSCode和neovim上配置Latex的编译方式，同时支持将TiKZ绘制的图片转为svg格式。&lt;/p>
+&lt;p>可以通过neovim+vimtex+zathuura进行编写、编译以及查看tex。&lt;/p></summary></item><item><title>进程关系</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E8%BF%9B%E7%A8%8B%E5%85%B3%E7%B3%BB/</link><pubDate>Fri, 22 Jul 2022 21:11:24 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E8%BF%9B%E7%A8%8B%E5%85%B3%E7%B3%BB/</guid><description>终端简介之物理终端、模拟终端以及伪终端。终端登录以及网路登录的区别。进程组、会话以及控制终端相关概念。孤儿进程组、作业控制、终端驱动程序。fg、bg切换前后台进程。</description><tags>APUE 进程关系 终端 Unix环境高级编程</tags><summary>&lt;p>本文主要介绍了终端，包括物理终端、模拟终端以及伪终端等。&lt;/p>
 &lt;p>两种不同的登录方式、即终端登录和网络登录。&lt;/p>
 &lt;p>重点是进程组、会话以及控制终端之间的联系。&lt;/p>
 &lt;p>最后是作业控制，作业控制是目前很多类Unix系统都支持的功能。&lt;/p>
