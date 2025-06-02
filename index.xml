@@ -51,6 +51,12 @@
 &lt;ol>
 &lt;li>下载源码&lt;/li>
 &lt;li>编译并执行示例和测试程序。&lt;/li>
+&lt;/ol></summary></item><item><title>Makefile函数</title><link>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/makefile/makefile%E5%87%BD%E6%95%B0/</link><pubDate>Thu, 06 Mar 2025 09:59:53 +0800</pubDate><guid>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/makefile/makefile%E5%87%BD%E6%95%B0/</guid><description>本文主要记录一些Makefile中使用过的相关函数和常规用法。</description><tags>Makefile Filter Patsubst Wildcard</tags><summary>&lt;p>持续记录中。。。&lt;/p>
+&lt;p>本文主要记录一些Makefile中使用过的相关函数和常规用法。&lt;/p>
+&lt;ol>
+&lt;li>filter&lt;/li>
+&lt;li>wildcard&lt;/li>
+&lt;li>patsubst&lt;/li>
 &lt;/ol></summary></item><item><title>函数</title><link>https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/lua/%E5%87%BD%E6%95%B0/</link><pubDate>Mon, 17 Feb 2025 21:37:18 +0800</pubDate><guid>https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/lua/%E5%87%BD%E6%95%B0/</guid><description>从Lua语言的数据类型可以看出，函数function是一个值的类型，这个值可以赋给变量，变量名就被成为函数名，因此对函数重命名是很容易的，赋给其他变量即可。同时Lua中函数还有一点比较特别，即可以返回多个值，但是什么情况下返回多个值需要具体分析。</description><tags>Lua 函数 闭包</tags><summary>&lt;p>Lua语言中函数本质上是一个&lt;code>function&lt;/code>类型的值。这个值可以作为表达式的一部分，也可以被赋予变量。当被赋予变量时，变量名则为函数名。&lt;/p>
 &lt;p>由于&lt;strong>函数是一个值&lt;/strong>，因此Lua中函数都是匿名的，所谓的&lt;strong>函数名则是保存函数值的变量&lt;/strong>。&lt;/p>
 &lt;p>&lt;strong>闭包指的是一个函数和该函数能够访问其外部作用域的局部变量的机制&lt;/strong>。&lt;/p>
