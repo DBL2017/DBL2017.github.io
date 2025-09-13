@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>虚拟内存 on 生如夏花</title><link>https://DBL2017.github.io/tags/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/</link><description>Recent content in 虚拟内存 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 26 May 2020 14:07:37 +0000</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/index.xml" rel="self" type="application/rss+xml"/><item><title>虚拟内存</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/csapp/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/</link><pubDate>Tue, 26 May 2020 14:07:37 +0000</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/csapp/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/</guid><description>虚拟内存是系统对物理内存的一种映射，进程的内存分配是基于虚拟内存的</description><tags>虚拟内存 CSAPP</tags><summary>&lt;p>一个系统中的进程与其他进程共享CPU和主存资源的。&lt;/p>
-&lt;p>为了更加有效地管理内存并且少出错，现代系统提供了一种对主存的抽象概念，叫做&lt;strong>虚拟内存VM&lt;/strong>。&lt;/p>
-&lt;p>虚拟内存是硬件异常，硬件地址，主存，磁盘文件和内核软件的完美交互，它为每个进程提供了一个大的，一致的和私有的地址空间。&lt;/p>
-&lt;p>虚拟内存提供了三个重要的能力：&lt;/p>
-&lt;ol>
-&lt;li>它将主存看成是一个存储在磁盘上的地址空间的高速缓存，在主存中只保存活动区域，并根据需要在磁盘和主存之间来回传送数据，通过这种方式，它高效地使用了主存。&lt;/li>
-&lt;li>它为每个进程提供了一致的地址空间，从而简化了内存管理。&lt;/li>
-&lt;li>它保护了每个进程的地址空间不被其他进程破坏。&lt;/li>
-&lt;/ol></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>虚拟内存 on 生如夏花</title><link>https://DBL2017.github.io/tags/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/</link><description>Recent content in 虚拟内存 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 26 May 2020 14:07:37 +0000</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/index.xml" rel="self" type="application/rss+xml"/><item><title>虚拟内存</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/csapp/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/</link><pubDate>Tue, 26 May 2020 14:07:37 +0000</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/csapp/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/</guid><description>虚拟内存是系统对物理内存的一种映射，进程的内存分配是基于虚拟内存的</description><tags>虚拟内存 CSAPP</tags><summary>&lt;p&gt;一个系统中的进程与其他进程共享CPU和主存资源的。&lt;/p&gt;
+&lt;p&gt;为了更加有效地管理内存并且少出错，现代系统提供了一种对主存的抽象概念，叫做&lt;strong&gt;虚拟内存VM&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;虚拟内存是硬件异常，硬件地址，主存，磁盘文件和内核软件的完美交互，它为每个进程提供了一个大的，一致的和私有的地址空间。&lt;/p&gt;
+&lt;p&gt;虚拟内存提供了三个重要的能力：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;它将主存看成是一个存储在磁盘上的地址空间的高速缓存，在主存中只保存活动区域，并根据需要在磁盘和主存之间来回传送数据，通过这种方式，它高效地使用了主存。&lt;/li&gt;
+&lt;li&gt;它为每个进程提供了一致的地址空间，从而简化了内存管理。&lt;/li&gt;
+&lt;li&gt;它保护了每个进程的地址空间不被其他进程破坏。&lt;/li&gt;
+&lt;/ol&gt;</summary></item></channel></rss>

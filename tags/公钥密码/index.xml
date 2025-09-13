@@ -1,39 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>公钥密码 on 生如夏花</title><link>https://DBL2017.github.io/tags/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</link><description>Recent content in 公钥密码 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 09 Jul 2023 21:14:06 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/index.xml" rel="self" type="application/rss+xml"/><item><title>密码技术总结与比特币</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E4%B8%8E%E6%AF%94%E7%89%B9%E5%B8%81/</link><pubDate>Sun, 09 Jul 2023 21:14:06 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E4%B8%8E%E6%AF%94%E7%89%B9%E5%B8%81/</guid><description/><tags>图解密码技术 对称密码 公钥密码 单向散列函数 消息认证码 数字签名 伪随机生成器 密码框架 压缩技术 比特币 区块链 挖矿 区块添加</tags><summary>&lt;p>“密码学家的工具箱”中一共包含了6种基本的密码技术。分别是对称密码、公钥密码、单向散列函数、消息认证码、数字签名以及伪随机数生成器。&lt;/p>
-&lt;p>比特币是一种虚拟货币，也叫密码学货币。&lt;/p>
-&lt;p>比特币可以脱离物理介质，仅通过互联网就可以流通。&lt;/p></summary></item><item><title>混合密码系统</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B7%B7%E5%90%88%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/</link><pubDate>Mon, 15 May 2023 21:55:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B7%B7%E5%90%88%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/</guid><description/><tags>图解密码技术 密码 混合密码 公钥密码 会话密钥</tags><summary>&lt;p>混合密码系统用对称明码加密明文，用公钥密码来加密对称密码中所使用的密钥。&lt;/p>
-&lt;p>通过使用混合密码系统，能够在通信中将对称密码和公钥密码的优势结合起来。&lt;/p></summary></item><item><title>公钥密码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</link><pubDate>Fri, 05 May 2023 23:42:48 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</guid><description/><tags>图解密码技术 密码 密码学 密码技术 公钥密码</tags><summary>&lt;p>&lt;strong>密钥配送问题&lt;/strong>：在对称密码中，由于加密和解密的密钥是相同的，因此必须事先向接收者配送密钥。&lt;/p>
-&lt;p>如果使用公钥密码，则无需向接收者配送用于解密的密钥，这就相当于解决了密钥配送问题。&lt;/p>
-&lt;p>&lt;strong>对称密码通过将明文转换为复杂的形式来保证机密性，公钥密码则是基于数学难题来保证机密性。&lt;/strong> 例如RSA利用了大整数的质因数分解问题的困难度。&lt;/p>
-&lt;p>即使已经有了公钥密码，对称密码也不会消失。&lt;/p>
-&lt;p>&lt;strong>公钥密码的运行速度远远低于对称密码&lt;/strong>，因此一般通信过程中，往往会配合使用这两种密码，即用对称密码提高处理速度，用公钥密码解决密钥配送问题。这样的方式称为&lt;strong>混合密码系统&lt;/strong>。&lt;/p></summary></item><item><title>密码学常识</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</link><pubDate>Thu, 13 Apr 2023 19:45:37 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</guid><description/><tags>图解密码技术 密码学 密码 对称密码 公钥密码 RSA 哈希 数字签名 随机数 伪随机数 消息认证码</tags><summary>&lt;p>&lt;strong>对称密码&lt;/strong>、&lt;strong>公钥密码&lt;/strong>、&lt;strong>单向散列函数&lt;/strong>、&lt;strong>消息认证码&lt;/strong>、&lt;strong>数字签名&lt;/strong>、&lt;strong>伪随机数生成器&lt;/strong>，这六种技术称为密码学家的工具箱。&lt;/p>
-&lt;table>
- &lt;thead>
- &lt;tr>
- &lt;th>信息安全所面临的威胁&lt;/th>
- &lt;th>受威胁的特性&lt;/th>
- &lt;th>用以应对的密码技术&lt;/th>
- &lt;/tr>
- &lt;/thead>
- &lt;tbody>
- &lt;tr>
- &lt;td>窃听（秘密泄露）&lt;/td>
- &lt;td>机密性&lt;/td>
- &lt;td>对称密码/公钥密码&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>篡改（信息被修改）&lt;/td>
- &lt;td>完整性&lt;/td>
- &lt;td>单向散列函数/消息认证码/数字签名&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>伪装（伪装成真正的发送者）&lt;/td>
- &lt;td>认证&lt;/td>
- &lt;td>消息认证码/数字签名&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>否认（是否称自己没有做过）&lt;/td>
- &lt;td>不可否认性&lt;/td>
- &lt;td>数字签名&lt;/td>
- &lt;/tr>
- &lt;/tbody>
-&lt;/table></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>公钥密码 on 生如夏花</title><link>https://DBL2017.github.io/tags/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</link><description>Recent content in 公钥密码 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 09 Jul 2023 21:14:06 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/index.xml" rel="self" type="application/rss+xml"/><item><title>密码技术总结与比特币</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E4%B8%8E%E6%AF%94%E7%89%B9%E5%B8%81/</link><pubDate>Sun, 09 Jul 2023 21:14:06 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E4%B8%8E%E6%AF%94%E7%89%B9%E5%B8%81/</guid><description/><tags>图解密码技术 对称密码 公钥密码 单向散列函数 消息认证码 数字签名 伪随机生成器 密码框架 压缩技术 比特币 区块链 挖矿 区块添加</tags><summary>&lt;p&gt;“密码学家的工具箱”中一共包含了6种基本的密码技术。分别是对称密码、公钥密码、单向散列函数、消息认证码、数字签名以及伪随机数生成器。&lt;/p&gt;
+&lt;p&gt;比特币是一种虚拟货币，也叫密码学货币。&lt;/p&gt;
+&lt;p&gt;比特币可以脱离物理介质，仅通过互联网就可以流通。&lt;/p&gt;</summary></item><item><title>混合密码系统</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B7%B7%E5%90%88%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/</link><pubDate>Mon, 15 May 2023 21:55:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B7%B7%E5%90%88%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/</guid><description/><tags>图解密码技术 密码 混合密码 公钥密码 会话密钥</tags><summary>&lt;p&gt;混合密码系统用对称明码加密明文，用公钥密码来加密对称密码中所使用的密钥。&lt;/p&gt;
+&lt;p&gt;通过使用混合密码系统，能够在通信中将对称密码和公钥密码的优势结合起来。&lt;/p&gt;</summary></item><item><title>公钥密码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</link><pubDate>Fri, 05 May 2023 23:42:48 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</guid><description/><tags>图解密码技术 密码 密码学 密码技术 公钥密码</tags><summary>&lt;p&gt;&lt;strong&gt;密钥配送问题&lt;/strong&gt;：在对称密码中，由于加密和解密的密钥是相同的，因此必须事先向接收者配送密钥。&lt;/p&gt;
+&lt;p&gt;如果使用公钥密码，则无需向接收者配送用于解密的密钥，这就相当于解决了密钥配送问题。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;对称密码通过将明文转换为复杂的形式来保证机密性，公钥密码则是基于数学难题来保证机密性。&lt;/strong&gt; 例如RSA利用了大整数的质因数分解问题的困难度。&lt;/p&gt;
+&lt;p&gt;即使已经有了公钥密码，对称密码也不会消失。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;公钥密码的运行速度远远低于对称密码&lt;/strong&gt;，因此一般通信过程中，往往会配合使用这两种密码，即用对称密码提高处理速度，用公钥密码解决密钥配送问题。这样的方式称为&lt;strong&gt;混合密码系统&lt;/strong&gt;。&lt;/p&gt;</summary></item><item><title>密码学常识</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</link><pubDate>Thu, 13 Apr 2023 19:45:37 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</guid><description/><tags>图解密码技术 密码学 密码 对称密码 公钥密码 RSA 哈希 数字签名 随机数 伪随机数 消息认证码</tags><summary>&lt;p&gt;&lt;strong&gt;对称密码&lt;/strong&gt;、&lt;strong&gt;公钥密码&lt;/strong&gt;、&lt;strong&gt;单向散列函数&lt;/strong&gt;、&lt;strong&gt;消息认证码&lt;/strong&gt;、&lt;strong&gt;数字签名&lt;/strong&gt;、&lt;strong&gt;伪随机数生成器&lt;/strong&gt;，这六种技术称为密码学家的工具箱。&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;信息安全所面临的威胁&lt;/th&gt;
+ &lt;th&gt;受威胁的特性&lt;/th&gt;
+ &lt;th&gt;用以应对的密码技术&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;窃听（秘密泄露）&lt;/td&gt;
+ &lt;td&gt;机密性&lt;/td&gt;
+ &lt;td&gt;对称密码/公钥密码&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;篡改（信息被修改）&lt;/td&gt;
+ &lt;td&gt;完整性&lt;/td&gt;
+ &lt;td&gt;单向散列函数/消息认证码/数字签名&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;伪装（伪装成真正的发送者）&lt;/td&gt;
+ &lt;td&gt;认证&lt;/td&gt;
+ &lt;td&gt;消息认证码/数字签名&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;否认（是否称自己没有做过）&lt;/td&gt;
+ &lt;td&gt;不可否认性&lt;/td&gt;
+ &lt;td&gt;数字签名&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;</summary></item></channel></rss>

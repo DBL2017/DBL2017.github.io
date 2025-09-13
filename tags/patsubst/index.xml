@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Patsubst on 生如夏花</title><link>https://DBL2017.github.io/tags/patsubst/</link><description>Recent content in Patsubst on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 06 Mar 2025 09:59:53 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/patsubst/index.xml" rel="self" type="application/rss+xml"/><item><title>Makefile函数</title><link>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/makefile/makefile%E5%87%BD%E6%95%B0/</link><pubDate>Thu, 06 Mar 2025 09:59:53 +0800</pubDate><guid>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/makefile/makefile%E5%87%BD%E6%95%B0/</guid><description>本文主要记录一些Makefile中使用过的相关函数和常规用法。</description><tags>Makefile Filter Patsubst Wildcard</tags><summary>&lt;p>持续记录中。。。&lt;/p>
-&lt;p>本文主要记录一些Makefile中使用过的相关函数和常规用法。&lt;/p>
-&lt;ol>
-&lt;li>filter&lt;/li>
-&lt;li>wildcard&lt;/li>
-&lt;li>patsubst&lt;/li>
-&lt;/ol></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Patsubst on 生如夏花</title><link>https://DBL2017.github.io/tags/patsubst/</link><description>Recent content in Patsubst on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 06 Mar 2025 09:59:53 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/patsubst/index.xml" rel="self" type="application/rss+xml"/><item><title>Makefile函数</title><link>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/makefile/makefile%E5%87%BD%E6%95%B0/</link><pubDate>Thu, 06 Mar 2025 09:59:53 +0800</pubDate><guid>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/makefile/makefile%E5%87%BD%E6%95%B0/</guid><description>本文主要记录一些Makefile中使用过的相关函数和常规用法。</description><tags>Makefile Filter Patsubst Wildcard</tags><summary>&lt;p&gt;持续记录中。。。&lt;/p&gt;
+&lt;p&gt;本文主要记录一些Makefile中使用过的相关函数和常规用法。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;filter&lt;/li&gt;
+&lt;li&gt;wildcard&lt;/li&gt;
+&lt;li&gt;patsubst&lt;/li&gt;
+&lt;/ol&gt;</summary></item></channel></rss>

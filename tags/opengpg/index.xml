@@ -1,39 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OpenGPG on 生如夏花</title><link>https://DBL2017.github.io/tags/opengpg/</link><description>Recent content in OpenGPG on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 04 Jul 2023 22:45:47 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/opengpg/index.xml" rel="self" type="application/rss+xml"/><item><title>PGP</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/pgp/</link><pubDate>Tue, 04 Jul 2023 22:45:47 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/pgp/</guid><description/><tags>图解密码技术 PGP OpenGPG GnuPG GnuPGv2 Gpg2 密钥对 信任网 信任级别 消息压缩 数字签名 加解密 混合密码系统</tags><summary>&lt;table>
- &lt;thead>
- &lt;tr>
- &lt;th>PGP&lt;/th>
- &lt;th>说明&lt;/th>
- &lt;/tr>
- &lt;/thead>
- &lt;tbody>
- &lt;tr>
- &lt;td>时间&lt;/td>
- &lt;td>1990年&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>作者&lt;/td>
- &lt;td>菲利普·齐默曼&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>全称&lt;/td>
- &lt;td>Pretty Good Privary&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>用途&lt;/td>
- &lt;td>商业密码软件&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>支持平台&lt;/td>
- &lt;td>Windows、Mac OS X、Linux&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>版本&lt;/td>
- &lt;td>商用版、免费版&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>GnuPG&lt;/td>
- &lt;td>GNU Privacy Guard，遵循OpenGPG规范编写的密码软件。&lt;/td>
- &lt;/tr>
- &lt;/tbody>
-&lt;/table>
-&lt;p>PGP设计目的是在连国家都不可信的情况下仍然能够使用，因此并不关心有没有可信的认证机构，而是采用了“&lt;strong>由用户自己来决定信任谁&lt;/strong>”的设计。&lt;/p></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OpenGPG on 生如夏花</title><link>https://DBL2017.github.io/tags/opengpg/</link><description>Recent content in OpenGPG on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 04 Jul 2023 22:45:47 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/opengpg/index.xml" rel="self" type="application/rss+xml"/><item><title>PGP</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/pgp/</link><pubDate>Tue, 04 Jul 2023 22:45:47 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/pgp/</guid><description/><tags>图解密码技术 PGP OpenGPG GnuPG GnuPGv2 Gpg2 密钥对 信任网 信任级别 消息压缩 数字签名 加解密 混合密码系统</tags><summary>&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;PGP&lt;/th&gt;
+ &lt;th&gt;说明&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;时间&lt;/td&gt;
+ &lt;td&gt;1990年&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;作者&lt;/td&gt;
+ &lt;td&gt;菲利普·齐默曼&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;全称&lt;/td&gt;
+ &lt;td&gt;Pretty Good Privary&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;用途&lt;/td&gt;
+ &lt;td&gt;商业密码软件&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;支持平台&lt;/td&gt;
+ &lt;td&gt;Windows、Mac OS X、Linux&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;版本&lt;/td&gt;
+ &lt;td&gt;商用版、免费版&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;GnuPG&lt;/td&gt;
+ &lt;td&gt;GNU Privacy Guard，遵循OpenGPG规范编写的密码软件。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;PGP设计目的是在连国家都不可信的情况下仍然能够使用，因此并不关心有没有可信的认证机构，而是采用了“&lt;strong&gt;由用户自己来决定信任谁&lt;/strong&gt;”的设计。&lt;/p&gt;</summary></item></channel></rss>

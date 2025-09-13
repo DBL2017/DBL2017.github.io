@@ -1,53 +1,53 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MQTT on 生如夏花</title><link>https://DBL2017.github.io/tags/mqtt/</link><description>Recent content in MQTT on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 26 Jul 2023 23:40:23 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/mqtt/index.xml" rel="self" type="application/rss+xml"/><item><title>MQTT保活机制</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%BF%9D%E6%B4%BB%E6%9C%BA%E5%88%B6/</link><pubDate>Wed, 26 Jul 2023 23:40:23 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%BF%9D%E6%B4%BB%E6%9C%BA%E5%88%B6/</guid><description/><tags>传输协议 MQTT KeepAlive 保活 PINGREQ PINGRESP 保持活动时间</tags><summary>&lt;p>MQTT保持活动机制是MQTT协议定义的一项功能。&lt;/p>
-&lt;p>MQTT客户端通过向代理发送为PINGREQ报文来维持与代理的连接。&lt;/p>
-&lt;p>MQTT代理通过接收PINGREQ来&lt;strong>检测客户端是否无响应或断开连接&lt;/strong>，同理MQTT客户端通过接收PINGRESP响应来判断代理是否可用。&lt;/p></summary></item><item><title>MQTT遗嘱</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E9%81%97%E5%98%B1/</link><pubDate>Fri, 21 Jul 2023 23:16:21 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E9%81%97%E5%98%B1/</guid><description/><tags>传输协议 MQTT 保留消息 遗嘱 遗嘱消息 设备状态</tags><summary>&lt;p>MQTT遗嘱（Last Will and Testament, LWT），允许客户端指定一条消息，在发生意外断开连接时，代理自动发布该消息到已订阅的其他客户端。&lt;/p>
-&lt;p>MQTT遗嘱 (LWT) 功能对于确保高效通信和在客户端意外断开时保持系统完整性至关重要。&lt;/p></summary></item><item><title>MQTT保留消息</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%BF%9D%E7%95%99%E6%B6%88%E6%81%AF/</link><pubDate>Fri, 21 Jul 2023 20:03:51 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%BF%9D%E7%95%99%E6%B6%88%E6%81%AF/</guid><description/><tags>传输协议 MQTT 保留消息 RetainMessage 保留标志</tags><summary>&lt;p>MQTT的保留消息可以&lt;strong>为订阅者提供指定主题上的最新状态&lt;/strong>（前提是最新消息发布时保留标志设置为true）。&lt;/p>
-&lt;p>保留消息是&lt;strong>保留标志设置为true的普通MQTT消息&lt;/strong>。&lt;/p>
-&lt;p>每个订阅带有保留消息的主题的客户端在&lt;strong>订阅后都会立即接收保留消息&lt;/strong>。&lt;/p>
-&lt;p>当客户端向指定主题发送多条保留消息时，代理仅存储最后的保留消息以及相应的QoS级别。&lt;/p>
-&lt;p>&lt;strong>代理为每个主题仅存储一条保留消息&lt;/strong>。&lt;/p></summary></item><item><title>MQTT持久会话</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%8C%81%E4%B9%85%E4%BC%9A%E8%AF%9D/</link><pubDate>Wed, 19 Jul 2023 23:51:14 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%8C%81%E4%B9%85%E4%BC%9A%E8%AF%9D/</guid><description/><tags>传输协议 MQTT 会话存在标志 SessionPresent QoS1 QoS2 会话状态 会话信息</tags><summary>&lt;p>MQTT中的持久会话允许客户端在断开连接时维护其会话状态，包括订阅的主题和未传递的消息。&lt;/p>
-&lt;p>非持久会话在断开连接时丢弃会话状态，要求客户端重新连接上再次订阅主题，并可能错过在断开连接期间发布的消息。&lt;/p>
-&lt;p>持久会话和非持久会话的选择取决于应用程序对会话连续性和消息持久性的要求。&lt;/p></summary></item><item><title>MQTT服务质量</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F/</link><pubDate>Tue, 18 Jul 2023 23:29:49 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F/</guid><description>MQTT的消息服务质量QoS，包含QoS0，QoS1以及QoS2，设计报文有PUBLISH、PUBACK、PUBREC、PUBCOMP等。解释了为什么QoS2会保证消息不重复并确保一次。</description><tags>传输协议 MQTT QoS 服务质量 QoS1 QoS2 QoS0</tags><summary>&lt;p>MQTT Quality of Service（QoS，服务质量）是消息发送者和接收者之间的协议，用于定义消息的传递保证级别。&lt;/p>
-&lt;p>QoS具有3个级别，分别是：&lt;/p>
-&lt;ol>
-&lt;li>最多一次（QoS 0）&lt;/li>
-&lt;li>至少一次（QoS 1）&lt;/li>
-&lt;li>确定一次（QoS 2）&lt;/li>
-&lt;/ol>
-&lt;p>其中涉及的MQTT报文有四种，分别是PUBLISH、PUBACK、PUBREC以及PUBCOMP。&lt;/p></summary></item><item><title>MQTT主题</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%B8%BB%E9%A2%98/</link><pubDate>Mon, 17 Jul 2023 23:16:16 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%B8%BB%E9%A2%98/</guid><description/><tags>传输协议 MQTT MQTT主题 主题 Topic $SYS 通配符</tags><summary>&lt;p>MQTT主题是MQTT客户端和代理之间进行通信的关键。&lt;/p>
-&lt;p>根据主题可以对消息进行有效的过滤和路由。&lt;/p>
-&lt;p>与消息队列相比，MQTT主题非常轻量。&lt;/p>
-&lt;p>客户端在发布或订阅所需的主题之前不需要创建该主题。代理接受每个有效的主题，而不需要事先进行任何初始化。&lt;/p></summary></item><item><title>MQTT消息传递与接收</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E4%B8%8E%E6%8E%A5%E6%94%B6/</link><pubDate>Sat, 15 Jul 2023 20:57:40 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E4%B8%8E%E6%8E%A5%E6%94%B6/</guid><description/><tags>传输协议 MQTT MQTT客户端 MQTT代理 MQTT连接 PUBLISH SUBSCRIBE SUBACK UNSUBSCRIBE UNSUBACK</tags><summary>&lt;p>MQTT客户端发布消息时使用的是PUBLISH报文，发布成功之后会接收到PUBACK报文。&lt;/p>
-&lt;p>订阅时发送SUBSCRIBE报文，订阅成功会接收到SUBACK报文。&lt;/p>
-&lt;p>取消订阅发送UNSUBSCIBE报文。&lt;/p></summary></item><item><title>MQTT建立连接</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/</link><pubDate>Sat, 15 Jul 2023 09:08:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/</guid><description/><tags>传输协议 MQTT MQTT客户端 MQTT代理 MQTT连接 CONNECT CONNACK Cleansession WillMessage</tags><summary>&lt;p>MQTT协议的两个主要组件是客户端和代理。&lt;/p>
-&lt;p>MQTT客户端可以是任何运行MQTT库并通过网络连接到MQTT代理的设备。&lt;/p>
-&lt;p>MQTT代理负责接收、过滤以及向已订阅的客户端发送消息，并处理客户端身份验证和授权。&lt;/p></summary></item><item><title>MQTT发布/订阅模式</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</link><pubDate>Thu, 13 Jul 2023 23:31:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</guid><description/><tags>传输协议 MQTT Pub/Sub 发布/订阅 主题 订阅</tags><summary>&lt;p>发布/订阅（Pub/Sub）架构提供了一种灵活的、可伸缩的方式来构建能够处理许多连接的客户端的分布式系统。&lt;/p>
-&lt;p>MQTT基于发布/订阅架构，支持持久会话与服务质量QoS功能，实现了发布者与订阅者在空间、时间以及同步等方面的解耦。&lt;/p></summary></item><item><title>MQTT简介</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E7%AE%80%E4%BB%8B/</link><pubDate>Wed, 12 Jul 2023 20:10:13 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E7%AE%80%E4%BB%8B/</guid><description/><tags>传输协议 MQTT MQTT3.1.1 MQTT5 消息模型 主题 订阅 QoS 持久会话</tags><summary>&lt;p>MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议）是一个&lt;strong>基于C/S架构的发布/订阅模式的消息传输协议&lt;/strong>。&lt;/p>
-&lt;p>目的是&lt;strong>在带宽和连接有限的不可靠网络的环境下发送少量数据&lt;/strong>，设计思想是轻量、开放、简单并且易于实现。&lt;/p>
-&lt;p>这些特性使得MQTT非常适合在受限的环境的环境中使用，比如机器对机器(M2M)通信和物联网(IoT)。&lt;/p></summary></item><item><title>PahoMQTT连线中断恢复之后无法收到消息</title><link>https://DBL2017.github.io/post/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/pahomqtt%E8%BF%9E%E7%BA%BF%E4%B8%AD%E6%96%AD%E6%81%A2%E5%A4%8D%E4%B9%8B%E5%90%8E%E6%97%A0%E6%B3%95%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF/</link><pubDate>Tue, 04 Jul 2023 09:13:27 +0800</pubDate><guid>https://DBL2017.github.io/post/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/pahomqtt%E8%BF%9E%E7%BA%BF%E4%B8%AD%E6%96%AD%E6%81%A2%E5%A4%8D%E4%B9%8B%E5%90%8E%E6%97%A0%E6%B3%95%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF/</guid><description/><tags>MQTT Topic Paho 连线中断 订阅 Cleansession AutomaticReconnect 会话 自动重连</tags><summary>&lt;table>
- &lt;thead>
- &lt;tr>
- &lt;th>条目&lt;/th>
- &lt;th>说明&lt;/th>
- &lt;/tr>
- &lt;/thead>
- &lt;tbody>
- &lt;tr>
- &lt;td>库名&lt;/td>
- &lt;td>paho.mqtt.c&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>版本&lt;/td>
- &lt;td>1.3.12&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>github&lt;/td>
- &lt;td>&lt;a href="https://github.com/eclipse/paho.mqtt.c.git">https://github.com/eclipse/paho.mqtt.c.git&lt;/a>&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>问题&lt;/td>
- &lt;td>启用&lt;code>cleansession&lt;/code>和&lt;code>automaticReconnect&lt;/code>后，连接中断恢复之后无法收到之前订阅的主题的消息。&lt;/td>
- &lt;/tr>
- &lt;/tbody>
-&lt;/table></summary></item><item><title>基于SSL的MQTT双向认证加密通信</title><link>https://DBL2017.github.io/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/%E5%9F%BA%E4%BA%8Essl%E7%9A%84mqtt%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E9%80%9A%E4%BF%A1/</link><pubDate>Sat, 20 May 2023 10:00:29 +0800</pubDate><guid>https://DBL2017.github.io/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/%E5%9F%BA%E4%BA%8Essl%E7%9A%84mqtt%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E9%80%9A%E4%BF%A1/</guid><description/><tags>MQTT Mosquitto MQTTX SSL TLS SSL/TLS 证书 双向通信验证</tags><summary>&lt;p>在Ubuntu22.04系统上，基于mosquitto version 2.0.11，搭建mqtt+ssl/tls broker。&lt;/p>
-&lt;p>测试工具有&lt;a href="https://mqttx.app/zh">MQTTX：跨平台 MQTT 5.0 桌面客户端工具&lt;/a>以及mqtt_sub和mqtt_pub。&lt;/p></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MQTT on 生如夏花</title><link>https://DBL2017.github.io/tags/mqtt/</link><description>Recent content in MQTT on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 26 Jul 2023 23:40:23 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/mqtt/index.xml" rel="self" type="application/rss+xml"/><item><title>MQTT保活机制</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%BF%9D%E6%B4%BB%E6%9C%BA%E5%88%B6/</link><pubDate>Wed, 26 Jul 2023 23:40:23 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%BF%9D%E6%B4%BB%E6%9C%BA%E5%88%B6/</guid><description/><tags>传输协议 MQTT KeepAlive 保活 PINGREQ PINGRESP 保持活动时间</tags><summary>&lt;p&gt;MQTT保持活动机制是MQTT协议定义的一项功能。&lt;/p&gt;
+&lt;p&gt;MQTT客户端通过向代理发送为PINGREQ报文来维持与代理的连接。&lt;/p&gt;
+&lt;p&gt;MQTT代理通过接收PINGREQ来&lt;strong&gt;检测客户端是否无响应或断开连接&lt;/strong&gt;，同理MQTT客户端通过接收PINGRESP响应来判断代理是否可用。&lt;/p&gt;</summary></item><item><title>MQTT遗嘱</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E9%81%97%E5%98%B1/</link><pubDate>Fri, 21 Jul 2023 23:16:21 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E9%81%97%E5%98%B1/</guid><description/><tags>传输协议 MQTT 保留消息 遗嘱 遗嘱消息 设备状态</tags><summary>&lt;p&gt;MQTT遗嘱（Last Will and Testament, LWT），允许客户端指定一条消息，在发生意外断开连接时，代理自动发布该消息到已订阅的其他客户端。&lt;/p&gt;
+&lt;p&gt;MQTT遗嘱 (LWT) 功能对于确保高效通信和在客户端意外断开时保持系统完整性至关重要。&lt;/p&gt;</summary></item><item><title>MQTT保留消息</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%BF%9D%E7%95%99%E6%B6%88%E6%81%AF/</link><pubDate>Fri, 21 Jul 2023 20:03:51 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%BF%9D%E7%95%99%E6%B6%88%E6%81%AF/</guid><description/><tags>传输协议 MQTT 保留消息 RetainMessage 保留标志</tags><summary>&lt;p&gt;MQTT的保留消息可以&lt;strong&gt;为订阅者提供指定主题上的最新状态&lt;/strong&gt;（前提是最新消息发布时保留标志设置为true）。&lt;/p&gt;
+&lt;p&gt;保留消息是&lt;strong&gt;保留标志设置为true的普通MQTT消息&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;每个订阅带有保留消息的主题的客户端在&lt;strong&gt;订阅后都会立即接收保留消息&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;当客户端向指定主题发送多条保留消息时，代理仅存储最后的保留消息以及相应的QoS级别。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;代理为每个主题仅存储一条保留消息&lt;/strong&gt;。&lt;/p&gt;</summary></item><item><title>MQTT持久会话</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%8C%81%E4%B9%85%E4%BC%9A%E8%AF%9D/</link><pubDate>Wed, 19 Jul 2023 23:51:14 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%8C%81%E4%B9%85%E4%BC%9A%E8%AF%9D/</guid><description/><tags>传输协议 MQTT 会话存在标志 SessionPresent QoS1 QoS2 会话状态 会话信息</tags><summary>&lt;p&gt;MQTT中的持久会话允许客户端在断开连接时维护其会话状态，包括订阅的主题和未传递的消息。&lt;/p&gt;
+&lt;p&gt;非持久会话在断开连接时丢弃会话状态，要求客户端重新连接上再次订阅主题，并可能错过在断开连接期间发布的消息。&lt;/p&gt;
+&lt;p&gt;持久会话和非持久会话的选择取决于应用程序对会话连续性和消息持久性的要求。&lt;/p&gt;</summary></item><item><title>MQTT服务质量</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F/</link><pubDate>Tue, 18 Jul 2023 23:29:49 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F/</guid><description>MQTT的消息服务质量QoS，包含QoS0，QoS1以及QoS2，设计报文有PUBLISH、PUBACK、PUBREC、PUBCOMP等。解释了为什么QoS2会保证消息不重复并确保一次。</description><tags>传输协议 MQTT QoS 服务质量 QoS1 QoS2 QoS0</tags><summary>&lt;p&gt;MQTT Quality of Service（QoS，服务质量）是消息发送者和接收者之间的协议，用于定义消息的传递保证级别。&lt;/p&gt;
+&lt;p&gt;QoS具有3个级别，分别是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;最多一次（QoS 0）&lt;/li&gt;
+&lt;li&gt;至少一次（QoS 1）&lt;/li&gt;
+&lt;li&gt;确定一次（QoS 2）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其中涉及的MQTT报文有四种，分别是PUBLISH、PUBACK、PUBREC以及PUBCOMP。&lt;/p&gt;</summary></item><item><title>MQTT主题</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%B8%BB%E9%A2%98/</link><pubDate>Mon, 17 Jul 2023 23:16:16 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E4%B8%BB%E9%A2%98/</guid><description/><tags>传输协议 MQTT MQTT主题 主题 Topic $SYS 通配符</tags><summary>&lt;p&gt;MQTT主题是MQTT客户端和代理之间进行通信的关键。&lt;/p&gt;
+&lt;p&gt;根据主题可以对消息进行有效的过滤和路由。&lt;/p&gt;
+&lt;p&gt;与消息队列相比，MQTT主题非常轻量。&lt;/p&gt;
+&lt;p&gt;客户端在发布或订阅所需的主题之前不需要创建该主题。代理接受每个有效的主题，而不需要事先进行任何初始化。&lt;/p&gt;</summary></item><item><title>MQTT消息传递与接收</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E4%B8%8E%E6%8E%A5%E6%94%B6/</link><pubDate>Sat, 15 Jul 2023 20:57:40 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E4%B8%8E%E6%8E%A5%E6%94%B6/</guid><description/><tags>传输协议 MQTT MQTT客户端 MQTT代理 MQTT连接 PUBLISH SUBSCRIBE SUBACK UNSUBSCRIBE UNSUBACK</tags><summary>&lt;p&gt;MQTT客户端发布消息时使用的是PUBLISH报文，发布成功之后会接收到PUBACK报文。&lt;/p&gt;
+&lt;p&gt;订阅时发送SUBSCRIBE报文，订阅成功会接收到SUBACK报文。&lt;/p&gt;
+&lt;p&gt;取消订阅发送UNSUBSCIBE报文。&lt;/p&gt;</summary></item><item><title>MQTT建立连接</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/</link><pubDate>Sat, 15 Jul 2023 09:08:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/</guid><description/><tags>传输协议 MQTT MQTT客户端 MQTT代理 MQTT连接 CONNECT CONNACK Cleansession WillMessage</tags><summary>&lt;p&gt;MQTT协议的两个主要组件是客户端和代理。&lt;/p&gt;
+&lt;p&gt;MQTT客户端可以是任何运行MQTT库并通过网络连接到MQTT代理的设备。&lt;/p&gt;
+&lt;p&gt;MQTT代理负责接收、过滤以及向已订阅的客户端发送消息，并处理客户端身份验证和授权。&lt;/p&gt;</summary></item><item><title>MQTT发布/订阅模式</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</link><pubDate>Thu, 13 Jul 2023 23:31:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</guid><description/><tags>传输协议 MQTT Pub/Sub 发布/订阅 主题 订阅</tags><summary>&lt;p&gt;发布/订阅（Pub/Sub）架构提供了一种灵活的、可伸缩的方式来构建能够处理许多连接的客户端的分布式系统。&lt;/p&gt;
+&lt;p&gt;MQTT基于发布/订阅架构，支持持久会话与服务质量QoS功能，实现了发布者与订阅者在空间、时间以及同步等方面的解耦。&lt;/p&gt;</summary></item><item><title>MQTT简介</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E7%AE%80%E4%BB%8B/</link><pubDate>Wed, 12 Jul 2023 20:10:13 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/mqtt/mqtt%E7%AE%80%E4%BB%8B/</guid><description/><tags>传输协议 MQTT MQTT3.1.1 MQTT5 消息模型 主题 订阅 QoS 持久会话</tags><summary>&lt;p&gt;MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议）是一个&lt;strong&gt;基于C/S架构的发布/订阅模式的消息传输协议&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;目的是&lt;strong&gt;在带宽和连接有限的不可靠网络的环境下发送少量数据&lt;/strong&gt;，设计思想是轻量、开放、简单并且易于实现。&lt;/p&gt;
+&lt;p&gt;这些特性使得MQTT非常适合在受限的环境的环境中使用，比如机器对机器(M2M)通信和物联网(IoT)。&lt;/p&gt;</summary></item><item><title>PahoMQTT连线中断恢复之后无法收到消息</title><link>https://DBL2017.github.io/post/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/pahomqtt%E8%BF%9E%E7%BA%BF%E4%B8%AD%E6%96%AD%E6%81%A2%E5%A4%8D%E4%B9%8B%E5%90%8E%E6%97%A0%E6%B3%95%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF/</link><pubDate>Tue, 04 Jul 2023 09:13:27 +0800</pubDate><guid>https://DBL2017.github.io/post/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/pahomqtt%E8%BF%9E%E7%BA%BF%E4%B8%AD%E6%96%AD%E6%81%A2%E5%A4%8D%E4%B9%8B%E5%90%8E%E6%97%A0%E6%B3%95%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF/</guid><description/><tags>MQTT Topic Paho 连线中断 订阅 Cleansession AutomaticReconnect 会话 自动重连</tags><summary>&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;条目&lt;/th&gt;
+ &lt;th&gt;说明&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;库名&lt;/td&gt;
+ &lt;td&gt;paho.mqtt.c&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;版本&lt;/td&gt;
+ &lt;td&gt;1.3.12&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;github&lt;/td&gt;
+ &lt;td&gt;&lt;a href="https://github.com/eclipse/paho.mqtt.c.git"&gt;https://github.com/eclipse/paho.mqtt.c.git&lt;/a&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;问题&lt;/td&gt;
+ &lt;td&gt;启用&lt;code&gt;cleansession&lt;/code&gt;和&lt;code&gt;automaticReconnect&lt;/code&gt;后，连接中断恢复之后无法收到之前订阅的主题的消息。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;</summary></item><item><title>基于SSL的MQTT双向认证加密通信</title><link>https://DBL2017.github.io/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/%E5%9F%BA%E4%BA%8Essl%E7%9A%84mqtt%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E9%80%9A%E4%BF%A1/</link><pubDate>Sat, 20 May 2023 10:00:29 +0800</pubDate><guid>https://DBL2017.github.io/post/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/%E5%9F%BA%E4%BA%8Essl%E7%9A%84mqtt%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E9%80%9A%E4%BF%A1/</guid><description/><tags>MQTT Mosquitto MQTTX SSL TLS SSL/TLS 证书 双向通信验证</tags><summary>&lt;p&gt;在Ubuntu22.04系统上，基于mosquitto version 2.0.11，搭建mqtt+ssl/tls broker。&lt;/p&gt;
+&lt;p&gt;测试工具有&lt;a href="https://mqttx.app/zh"&gt;MQTTX：跨平台 MQTT 5.0 桌面客户端工具&lt;/a&gt;以及mqtt_sub和mqtt_pub。&lt;/p&gt;</summary></item></channel></rss>

@@ -1,106 +1,106 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>数字签名 on 生如夏花</title><link>https://DBL2017.github.io/tags/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/</link><description>Recent content in 数字签名 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 09 Jul 2023 21:14:06 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/index.xml" rel="self" type="application/rss+xml"/><item><title>密码技术总结与比特币</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E4%B8%8E%E6%AF%94%E7%89%B9%E5%B8%81/</link><pubDate>Sun, 09 Jul 2023 21:14:06 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E4%B8%8E%E6%AF%94%E7%89%B9%E5%B8%81/</guid><description/><tags>图解密码技术 对称密码 公钥密码 单向散列函数 消息认证码 数字签名 伪随机生成器 密码框架 压缩技术 比特币 区块链 挖矿 区块添加</tags><summary>&lt;p>“密码学家的工具箱”中一共包含了6种基本的密码技术。分别是对称密码、公钥密码、单向散列函数、消息认证码、数字签名以及伪随机数生成器。&lt;/p>
-&lt;p>比特币是一种虚拟货币，也叫密码学货币。&lt;/p>
-&lt;p>比特币可以脱离物理介质，仅通过互联网就可以流通。&lt;/p></summary></item><item><title>PGP</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/pgp/</link><pubDate>Tue, 04 Jul 2023 22:45:47 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/pgp/</guid><description/><tags>图解密码技术 PGP OpenGPG GnuPG GnuPGv2 Gpg2 密钥对 信任网 信任级别 消息压缩 数字签名 加解密 混合密码系统</tags><summary>&lt;table>
- &lt;thead>
- &lt;tr>
- &lt;th>PGP&lt;/th>
- &lt;th>说明&lt;/th>
- &lt;/tr>
- &lt;/thead>
- &lt;tbody>
- &lt;tr>
- &lt;td>时间&lt;/td>
- &lt;td>1990年&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>作者&lt;/td>
- &lt;td>菲利普·齐默曼&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>全称&lt;/td>
- &lt;td>Pretty Good Privary&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>用途&lt;/td>
- &lt;td>商业密码软件&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>支持平台&lt;/td>
- &lt;td>Windows、Mac OS X、Linux&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>版本&lt;/td>
- &lt;td>商用版、免费版&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>GnuPG&lt;/td>
- &lt;td>GNU Privacy Guard，遵循OpenGPG规范编写的密码软件。&lt;/td>
- &lt;/tr>
- &lt;/tbody>
-&lt;/table>
-&lt;p>PGP设计目的是在连国家都不可信的情况下仍然能够使用，因此并不关心有没有可信的认证机构，而是采用了“&lt;strong>由用户自己来决定信任谁&lt;/strong>”的设计。&lt;/p></summary></item><item><title>证书</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E8%AF%81%E4%B9%A6/</link><pubDate>Tue, 13 Jun 2023 23:32:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E8%AF%81%E4%B9%A6/</guid><description/><tags>图解密码技术 CA 证书 签名 数字签名 散列值 X.509 证书作废 PKI PKCS 认证 认证机构</tags><summary>&lt;p>什么是证书？证书的使用场景。&lt;/p>
-&lt;p>证书标准规范X.509、颁发证书的认证机构。&lt;/p>
-&lt;p>公钥基础设施PKI，对PKI的攻击方法和对策。&lt;/p>
-&lt;p>无论是数字签名、证书，还是认证机构的层级结构，都&lt;strong>不可能在完全不可信的状态下创造出信任关系&lt;/strong>。&lt;/p></summary></item><item><title>数字签名</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/</link><pubDate>Mon, 12 Jun 2023 09:44:34 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/</guid><description/><tags>图解密码技术 数字签名 密钥 散列值 DSA ECDSA</tags><summary>&lt;p>数字签名的基础知识、如何使用公钥密码实现数字签名。&lt;/p>
-&lt;p>使用RSA具体实践数字签名的生成和验证。&lt;/p>
-&lt;p>探讨针对数字签名的攻击方法以及数字签名与消息验证码之间的关系。&lt;/p>
-&lt;p>数字签名可以识别篡改和伪装，还可以防止否认。&lt;/p>
-&lt;p>数字签名是一种非常重要的认证技术，前提&lt;strong>是用于验证签名的发送者的公钥没有被伪造。&lt;/strong>&lt;/p></summary></item><item><title>消息认证码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/</link><pubDate>Mon, 05 Jun 2023 22:41:51 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/</guid><description/><tags>图解密码技术 消息认证码 HMAC 单向散列函数 数字签名 对称密码 GCM 认证</tags><summary>&lt;table>
- &lt;thead>
- &lt;tr>
- &lt;th style="text-align: right">消息认证码&lt;/th>
- &lt;th>说明&lt;/th>
- &lt;/tr>
- &lt;/thead>
- &lt;tbody>
- &lt;tr>
- &lt;td style="text-align: right">作用&lt;/td>
- &lt;td>对消息进行认证并确认其完整性的技术，但不能保证消息的机密性&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td style="text-align: right">原理&lt;/td>
- &lt;td>使用发送者和接收者之间共享的密码，识别是否存在伪装或篡改&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td style="text-align: right">实用技术&lt;/td>
- &lt;td>单向散列函数和对称加密技术&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td style="text-align: right">存在问题&lt;/td>
- &lt;td>由于收发双方共享相同密钥，因此无法对第三方证明以及无法防止否认&lt;/td>
- &lt;/tr>
- &lt;/tbody>
-&lt;/table>
-&lt;p>&lt;strong>认证加密&lt;/strong>是将消息认证码与对称加密相结合，同时满足消息机密性、完整性以及认证三大功能。&lt;/p>
-&lt;p>由于使用对称密码，发送者和接收者均可以生成消息认证码，因此对于第三方来说无法证明消息是由发送者生成的，即&lt;strong>消息认证码无法防止否认&lt;/strong>。&lt;/p></summary></item><item><title>密码学常识</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</link><pubDate>Thu, 13 Apr 2023 19:45:37 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</guid><description/><tags>图解密码技术 密码学 密码 对称密码 公钥密码 RSA 哈希 数字签名 随机数 伪随机数 消息认证码</tags><summary>&lt;p>&lt;strong>对称密码&lt;/strong>、&lt;strong>公钥密码&lt;/strong>、&lt;strong>单向散列函数&lt;/strong>、&lt;strong>消息认证码&lt;/strong>、&lt;strong>数字签名&lt;/strong>、&lt;strong>伪随机数生成器&lt;/strong>，这六种技术称为密码学家的工具箱。&lt;/p>
-&lt;table>
- &lt;thead>
- &lt;tr>
- &lt;th>信息安全所面临的威胁&lt;/th>
- &lt;th>受威胁的特性&lt;/th>
- &lt;th>用以应对的密码技术&lt;/th>
- &lt;/tr>
- &lt;/thead>
- &lt;tbody>
- &lt;tr>
- &lt;td>窃听（秘密泄露）&lt;/td>
- &lt;td>机密性&lt;/td>
- &lt;td>对称密码/公钥密码&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>篡改（信息被修改）&lt;/td>
- &lt;td>完整性&lt;/td>
- &lt;td>单向散列函数/消息认证码/数字签名&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>伪装（伪装成真正的发送者）&lt;/td>
- &lt;td>认证&lt;/td>
- &lt;td>消息认证码/数字签名&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>否认（是否称自己没有做过）&lt;/td>
- &lt;td>不可否认性&lt;/td>
- &lt;td>数字签名&lt;/td>
- &lt;/tr>
- &lt;/tbody>
-&lt;/table></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>数字签名 on 生如夏花</title><link>https://DBL2017.github.io/tags/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/</link><description>Recent content in 数字签名 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 09 Jul 2023 21:14:06 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/index.xml" rel="self" type="application/rss+xml"/><item><title>密码技术总结与比特币</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E4%B8%8E%E6%AF%94%E7%89%B9%E5%B8%81/</link><pubDate>Sun, 09 Jul 2023 21:14:06 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E4%B8%8E%E6%AF%94%E7%89%B9%E5%B8%81/</guid><description/><tags>图解密码技术 对称密码 公钥密码 单向散列函数 消息认证码 数字签名 伪随机生成器 密码框架 压缩技术 比特币 区块链 挖矿 区块添加</tags><summary>&lt;p&gt;“密码学家的工具箱”中一共包含了6种基本的密码技术。分别是对称密码、公钥密码、单向散列函数、消息认证码、数字签名以及伪随机数生成器。&lt;/p&gt;
+&lt;p&gt;比特币是一种虚拟货币，也叫密码学货币。&lt;/p&gt;
+&lt;p&gt;比特币可以脱离物理介质，仅通过互联网就可以流通。&lt;/p&gt;</summary></item><item><title>PGP</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/pgp/</link><pubDate>Tue, 04 Jul 2023 22:45:47 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/pgp/</guid><description/><tags>图解密码技术 PGP OpenGPG GnuPG GnuPGv2 Gpg2 密钥对 信任网 信任级别 消息压缩 数字签名 加解密 混合密码系统</tags><summary>&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;PGP&lt;/th&gt;
+ &lt;th&gt;说明&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;时间&lt;/td&gt;
+ &lt;td&gt;1990年&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;作者&lt;/td&gt;
+ &lt;td&gt;菲利普·齐默曼&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;全称&lt;/td&gt;
+ &lt;td&gt;Pretty Good Privary&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;用途&lt;/td&gt;
+ &lt;td&gt;商业密码软件&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;支持平台&lt;/td&gt;
+ &lt;td&gt;Windows、Mac OS X、Linux&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;版本&lt;/td&gt;
+ &lt;td&gt;商用版、免费版&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;GnuPG&lt;/td&gt;
+ &lt;td&gt;GNU Privacy Guard，遵循OpenGPG规范编写的密码软件。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;PGP设计目的是在连国家都不可信的情况下仍然能够使用，因此并不关心有没有可信的认证机构，而是采用了“&lt;strong&gt;由用户自己来决定信任谁&lt;/strong&gt;”的设计。&lt;/p&gt;</summary></item><item><title>证书</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E8%AF%81%E4%B9%A6/</link><pubDate>Tue, 13 Jun 2023 23:32:17 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E8%AF%81%E4%B9%A6/</guid><description/><tags>图解密码技术 CA 证书 签名 数字签名 散列值 X.509 证书作废 PKI PKCS 认证 认证机构</tags><summary>&lt;p&gt;什么是证书？证书的使用场景。&lt;/p&gt;
+&lt;p&gt;证书标准规范X.509、颁发证书的认证机构。&lt;/p&gt;
+&lt;p&gt;公钥基础设施PKI，对PKI的攻击方法和对策。&lt;/p&gt;
+&lt;p&gt;无论是数字签名、证书，还是认证机构的层级结构，都&lt;strong&gt;不可能在完全不可信的状态下创造出信任关系&lt;/strong&gt;。&lt;/p&gt;</summary></item><item><title>数字签名</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/</link><pubDate>Mon, 12 Jun 2023 09:44:34 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/</guid><description/><tags>图解密码技术 数字签名 密钥 散列值 DSA ECDSA</tags><summary>&lt;p&gt;数字签名的基础知识、如何使用公钥密码实现数字签名。&lt;/p&gt;
+&lt;p&gt;使用RSA具体实践数字签名的生成和验证。&lt;/p&gt;
+&lt;p&gt;探讨针对数字签名的攻击方法以及数字签名与消息验证码之间的关系。&lt;/p&gt;
+&lt;p&gt;数字签名可以识别篡改和伪装，还可以防止否认。&lt;/p&gt;
+&lt;p&gt;数字签名是一种非常重要的认证技术，前提&lt;strong&gt;是用于验证签名的发送者的公钥没有被伪造。&lt;/strong&gt;&lt;/p&gt;</summary></item><item><title>消息认证码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/</link><pubDate>Mon, 05 Jun 2023 22:41:51 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/</guid><description/><tags>图解密码技术 消息认证码 HMAC 单向散列函数 数字签名 对称密码 GCM 认证</tags><summary>&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th style="text-align: right"&gt;消息认证码&lt;/th&gt;
+ &lt;th&gt;说明&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: right"&gt;作用&lt;/td&gt;
+ &lt;td&gt;对消息进行认证并确认其完整性的技术，但不能保证消息的机密性&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: right"&gt;原理&lt;/td&gt;
+ &lt;td&gt;使用发送者和接收者之间共享的密码，识别是否存在伪装或篡改&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: right"&gt;实用技术&lt;/td&gt;
+ &lt;td&gt;单向散列函数和对称加密技术&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: right"&gt;存在问题&lt;/td&gt;
+ &lt;td&gt;由于收发双方共享相同密钥，因此无法对第三方证明以及无法防止否认&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;认证加密&lt;/strong&gt;是将消息认证码与对称加密相结合，同时满足消息机密性、完整性以及认证三大功能。&lt;/p&gt;
+&lt;p&gt;由于使用对称密码，发送者和接收者均可以生成消息认证码，因此对于第三方来说无法证明消息是由发送者生成的，即&lt;strong&gt;消息认证码无法防止否认&lt;/strong&gt;。&lt;/p&gt;</summary></item><item><title>密码学常识</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</link><pubDate>Thu, 13 Apr 2023 19:45:37 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%B8%B8%E8%AF%86/</guid><description/><tags>图解密码技术 密码学 密码 对称密码 公钥密码 RSA 哈希 数字签名 随机数 伪随机数 消息认证码</tags><summary>&lt;p&gt;&lt;strong&gt;对称密码&lt;/strong&gt;、&lt;strong&gt;公钥密码&lt;/strong&gt;、&lt;strong&gt;单向散列函数&lt;/strong&gt;、&lt;strong&gt;消息认证码&lt;/strong&gt;、&lt;strong&gt;数字签名&lt;/strong&gt;、&lt;strong&gt;伪随机数生成器&lt;/strong&gt;，这六种技术称为密码学家的工具箱。&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;信息安全所面临的威胁&lt;/th&gt;
+ &lt;th&gt;受威胁的特性&lt;/th&gt;
+ &lt;th&gt;用以应对的密码技术&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;窃听（秘密泄露）&lt;/td&gt;
+ &lt;td&gt;机密性&lt;/td&gt;
+ &lt;td&gt;对称密码/公钥密码&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;篡改（信息被修改）&lt;/td&gt;
+ &lt;td&gt;完整性&lt;/td&gt;
+ &lt;td&gt;单向散列函数/消息认证码/数字签名&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;伪装（伪装成真正的发送者）&lt;/td&gt;
+ &lt;td&gt;认证&lt;/td&gt;
+ &lt;td&gt;消息认证码/数字签名&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;否认（是否称自己没有做过）&lt;/td&gt;
+ &lt;td&gt;不可否认性&lt;/td&gt;
+ &lt;td&gt;数字签名&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;</summary></item></channel></rss>

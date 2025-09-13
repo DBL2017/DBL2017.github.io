@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>HMAC on 生如夏花</title><link>https://DBL2017.github.io/tags/hmac/</link><description>Recent content in HMAC on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 05 Jun 2023 22:41:51 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/hmac/index.xml" rel="self" type="application/rss+xml"/><item><title>消息认证码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/</link><pubDate>Mon, 05 Jun 2023 22:41:51 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/</guid><description/><tags>图解密码技术 消息认证码 HMAC 单向散列函数 数字签名 对称密码 GCM 认证</tags><summary>&lt;table>
- &lt;thead>
- &lt;tr>
- &lt;th style="text-align: right">消息认证码&lt;/th>
- &lt;th>说明&lt;/th>
- &lt;/tr>
- &lt;/thead>
- &lt;tbody>
- &lt;tr>
- &lt;td style="text-align: right">作用&lt;/td>
- &lt;td>对消息进行认证并确认其完整性的技术，但不能保证消息的机密性&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td style="text-align: right">原理&lt;/td>
- &lt;td>使用发送者和接收者之间共享的密码，识别是否存在伪装或篡改&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td style="text-align: right">实用技术&lt;/td>
- &lt;td>单向散列函数和对称加密技术&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td style="text-align: right">存在问题&lt;/td>
- &lt;td>由于收发双方共享相同密钥，因此无法对第三方证明以及无法防止否认&lt;/td>
- &lt;/tr>
- &lt;/tbody>
-&lt;/table>
-&lt;p>&lt;strong>认证加密&lt;/strong>是将消息认证码与对称加密相结合，同时满足消息机密性、完整性以及认证三大功能。&lt;/p>
-&lt;p>由于使用对称密码，发送者和接收者均可以生成消息认证码，因此对于第三方来说无法证明消息是由发送者生成的，即&lt;strong>消息认证码无法防止否认&lt;/strong>。&lt;/p></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>HMAC on 生如夏花</title><link>https://DBL2017.github.io/tags/hmac/</link><description>Recent content in HMAC on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 05 Jun 2023 22:41:51 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/hmac/index.xml" rel="self" type="application/rss+xml"/><item><title>消息认证码</title><link>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/</link><pubDate>Mon, 05 Jun 2023 22:41:51 +0800</pubDate><guid>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%A7%A3%E5%AF%86%E7%A0%81%E6%8A%80%E6%9C%AF/%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81/</guid><description/><tags>图解密码技术 消息认证码 HMAC 单向散列函数 数字签名 对称密码 GCM 认证</tags><summary>&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th style="text-align: right"&gt;消息认证码&lt;/th&gt;
+ &lt;th&gt;说明&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: right"&gt;作用&lt;/td&gt;
+ &lt;td&gt;对消息进行认证并确认其完整性的技术，但不能保证消息的机密性&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: right"&gt;原理&lt;/td&gt;
+ &lt;td&gt;使用发送者和接收者之间共享的密码，识别是否存在伪装或篡改&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: right"&gt;实用技术&lt;/td&gt;
+ &lt;td&gt;单向散列函数和对称加密技术&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: right"&gt;存在问题&lt;/td&gt;
+ &lt;td&gt;由于收发双方共享相同密钥，因此无法对第三方证明以及无法防止否认&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;认证加密&lt;/strong&gt;是将消息认证码与对称加密相结合，同时满足消息机密性、完整性以及认证三大功能。&lt;/p&gt;
+&lt;p&gt;由于使用对称密码，发送者和接收者均可以生成消息认证码，因此对于第三方来说无法证明消息是由发送者生成的，即&lt;strong&gt;消息认证码无法防止否认&lt;/strong&gt;。&lt;/p&gt;</summary></item></channel></rss>

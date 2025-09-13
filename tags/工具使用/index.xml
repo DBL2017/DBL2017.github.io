@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具使用 on 生如夏花</title><link>https://DBL2017.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</link><description>Recent content in 工具使用 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 13 Mar 2024 15:58:33 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>codebrowser之从浏览器阅读源码</title><link>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/codebrowser%E4%B9%8B%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/</link><pubDate>Wed, 13 Mar 2024 15:58:33 +0800</pubDate><guid>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/codebrowser%E4%B9%8B%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/</guid><description>基于WEB的源码阅读CodeBrowser的使用</description><tags>C语言 工具使用 源码阅读</tags><summary>&lt;p>codebrowser能够对源码生成静态HTML网页，搭配nginx可以在WEB上浏览源码。&lt;/p>
-&lt;p>支持功能如下：&lt;/p>
-&lt;ol>
-&lt;li>代码跳转。&lt;/li>
-&lt;li>代码高亮。&lt;/li>
-&lt;li>代码提示。&lt;/li>
-&lt;/ol></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具使用 on 生如夏花</title><link>https://DBL2017.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</link><description>Recent content in 工具使用 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 13 Mar 2024 15:58:33 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>codebrowser之从浏览器阅读源码</title><link>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/codebrowser%E4%B9%8B%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/</link><pubDate>Wed, 13 Mar 2024 15:58:33 +0800</pubDate><guid>https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/codebrowser%E4%B9%8B%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/</guid><description>基于WEB的源码阅读CodeBrowser的使用</description><tags>C语言 工具使用 源码阅读</tags><summary>&lt;p&gt;codebrowser能够对源码生成静态HTML网页，搭配nginx可以在WEB上浏览源码。&lt;/p&gt;
+&lt;p&gt;支持功能如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;代码跳转。&lt;/li&gt;
+&lt;li&gt;代码高亮。&lt;/li&gt;
+&lt;li&gt;代码提示。&lt;/li&gt;
+&lt;/ol&gt;</summary></item></channel></rss>

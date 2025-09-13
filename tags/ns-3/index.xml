@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>NS-3 on 生如夏花</title><link>https://DBL2017.github.io/tags/ns-3/</link><description>Recent content in NS-3 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 16 Apr 2025 11:28:09 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/ns-3/index.xml" rel="self" type="application/rss+xml"/><item><title>NS-3环境搭建</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/ns-3/ns-3%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link><pubDate>Wed, 16 Apr 2025 11:28:09 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/ns-3/ns-3%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid><description>本文主要参考NS-3的官方安装指引进行编译安装NS-3.44。</description><tags>传输协议 网络仿真 NS-3</tags><summary>&lt;p>本文主要参考NS-3的官方参考教程搭建NS-3网络仿真工具。&lt;/p>
-&lt;p>主要包括两个方面：&lt;/p>
-&lt;ol>
-&lt;li>下载源码&lt;/li>
-&lt;li>编译并执行示例和测试程序。&lt;/li>
-&lt;/ol></summary></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>NS-3 on 生如夏花</title><link>https://DBL2017.github.io/tags/ns-3/</link><description>Recent content in NS-3 on 生如夏花</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 16 Apr 2025 11:28:09 +0800</lastBuildDate><atom:link href="https://DBL2017.github.io/tags/ns-3/index.xml" rel="self" type="application/rss+xml"/><item><title>NS-3环境搭建</title><link>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/ns-3/ns-3%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link><pubDate>Wed, 16 Apr 2025 11:28:09 +0800</pubDate><guid>https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/ns-3/ns-3%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid><description>本文主要参考NS-3的官方安装指引进行编译安装NS-3.44。</description><tags>传输协议 网络仿真 NS-3</tags><summary>&lt;p&gt;本文主要参考NS-3的官方参考教程搭建NS-3网络仿真工具。&lt;/p&gt;
+&lt;p&gt;主要包括两个方面：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;下载源码&lt;/li&gt;
+&lt;li&gt;编译并执行示例和测试程序。&lt;/li&gt;
+&lt;/ol&gt;</summary></item></channel></rss>
