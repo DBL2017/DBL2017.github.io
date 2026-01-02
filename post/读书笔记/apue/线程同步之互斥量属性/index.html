@@ -8,12 +8,12 @@
 <span class=meta-category><a href=/series/#APUE>APUE</a></span></div><div class=post-meta><span>|</span>
 <span>共5119字</span></div><div class=post-meta><span>|</span>
 <span>阅读时长(11分钟)</span></div><div class=clear style=display:none><div class=toc-article><div class=toc-title>文章目录</div></div></div><div class=post-content><p>本文主要介绍了线程同步对象互斥量的相关属性，并通过代码验证了这些属性。</p><p>通过这些线程同步对象的属性可以控制不同线程在使用互斥量进行同步时的行为。</p><h2 id=属性介绍><a href=#%e5%b1%9e%e6%80%a7%e4%bb%8b%e7%bb%8d>属性介绍</a></h2><p>数据类型：<code>pthread_mutexattr_t</code>。</p><p>初始化函数：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_mutexattr_init</span><span class=p>(</span><span class=kt>pthread_mutexattr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_mutexattr_destroy</span><span class=p>(</span><span class=kt>pthread_mutexattr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=c1>// 返回值：成功返回0，失败返回错误编号
 </span></span></span></code></pre></div><p><code>pthread_mutexattr_init</code>函数使用默认互斥量属性值初始化<code>attr</code>参数。</p><p>以下是具体的三个互斥量属性：</p><h2 id=进程共享属性><a href=#%e8%bf%9b%e7%a8%8b%e5%85%b1%e4%ba%ab%e5%b1%9e%e6%80%a7>进程共享属性</a></h2><p><strong>是否支持</strong>：通过<code>_POSIX_PROCESS_SHARED</code>或<code>_SC_THREAD_SHARED</code>（<code>sysconf</code>参数）来检测。</p><p><strong>可取值</strong>：<code>PTHREAD_PROCESS_PRIVATE</code>（默认值）与<code>PTHREAD_PROCESS_SHARED</code>。</p><p><strong>作用</strong>：当多个进程需要同步访问数据（比如共享内存中数据）时，可以将<strong>同一互斥量</strong>（即共享内存中分配的互斥量）的属性设置为<code>PTHREAD_PROCESS_SHARED</code>，就可以在多个进程之间进行数据同步访问。</p><p><strong>函数</strong>：<code>pthread_mutexattr_getpshared</code>与<code>pthread_mutexattr_setpshared</code>函数用于获取与修改该属性。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_mutexattr_getpshared</span><span class=p>(</span>
 </span></span><span class=line><span class=cl>                     <span class=k>const</span> <span class=kt>pthread_mutexattr_t</span> <span class=o>*</span><span class=kr>restrict</span> <span class=n>attr</span><span class=p>,</span>
 </span></span><span class=line><span class=cl>                     <span class=kt>int</span> <span class=o>*</span><span class=kr>restrict</span> <span class=n>pshared</span><span class=p>);</span>
@@ -28,32 +28,32 @@
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/types.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/wait.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=cp>#define SHARED_MEMORY_KEY 1234
 </span></span></span><span class=line><span class=cl><span class=cp>#define SHARED_MEMORY_SIZE 1024
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=k>typedef</span> <span class=k>struct</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=kt>pthread_mutex_t</span> <span class=n>mutex</span><span class=p>;</span>  <span class=c1>// 互斥量保证父子进程之间的同步
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>counter</span><span class=p>;</span>            <span class=c1>// 父子进程之间对该变量进行同步+1
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span> <span class=n>SharedData</span><span class=p>;</span>               <span class=c1>// 共享内存数据
-</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>counter</span><span class=p>;</span>            <span class=c1>// 父子进程之间对该变量进行同步+1
+</span></span></span><span class=line><span class=cl><span class=p>}</span> <span class=n>SharedData</span><span class=p>;</span>               <span class=c1>// 共享内存数据
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>void</span><span class=o>*</span> <span class=nf>childProcess</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=n>SharedData</span><span class=o>*</span> <span class=n>sharedData</span> <span class=o>=</span> <span class=p>(</span><span class=n>SharedData</span><span class=o>*</span><span class=p>)</span><span class=n>arg</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 加锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process: Counter before increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 增加计数器
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=o>++</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=o>++</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process: Counter after increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
@@ -64,7 +64,7 @@
 </span></span><span class=line><span class=cl>    <span class=n>SharedData</span><span class=o>*</span> <span class=n>sharedData</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 创建共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedMemoryId</span> <span class=o>=</span> <span class=nf>shmget</span><span class=p>(</span><span class=n>SHARED_MEMORY_KEY</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>SharedData</span><span class=p>),</span> <span class=n>IPC_CREAT</span> <span class=o>|</span> <span class=mo>0666</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedMemoryId</span> <span class=o>=</span> <span class=nf>shmget</span><span class=p>(</span><span class=n>SHARED_MEMORY_KEY</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>SharedData</span><span class=p>),</span> <span class=n>IPC_CREAT</span> <span class=o>|</span> <span class=mo>0666</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>sharedMemoryId</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;shmget&#34;</span><span class=p>);</span>
@@ -72,7 +72,7 @@
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 连接到共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedData</span> <span class=o>=</span> <span class=nf>shmat</span><span class=p>(</span><span class=n>sharedMemoryId</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedData</span> <span class=o>=</span> <span class=nf>shmat</span><span class=p>(</span><span class=n>sharedMemoryId</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>sharedData</span> <span class=o>==</span> <span class=p>(</span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;shmat&#34;</span><span class=p>);</span>
@@ -80,18 +80,18 @@
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 初始化互斥量
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_mutexattr_t</span> <span class=n>mutexAttr</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>pthread_mutexattr_t</span> <span class=n>mutexAttr</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 设置互斥量的进程共享属性，使其能够在父子进程之间同步
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutexattr_setpshared</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>,</span> <span class=n>PTHREAD_PROCESS_SHARED</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_setpshared</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>,</span> <span class=n>PTHREAD_PROCESS_SHARED</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_init</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>),</span> <span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 初始化计数器
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 创建子进程
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pid_t</span> <span class=n>pid</span> <span class=o>=</span> <span class=nf>fork</span><span class=p>();</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>pid_t</span> <span class=n>pid</span> <span class=o>=</span> <span class=nf>fork</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>pid</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;fork&#34;</span><span class=p>);</span>
@@ -101,7 +101,7 @@
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>pid</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 子进程
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=p>(</span><span class=n>i</span> <span class=o>&lt;</span> <span class=mi>10</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=nf>childProcess</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
@@ -111,7 +111,7 @@
 </span></span><span class=line><span class=cl>        <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=c1>// 分离共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=k>else</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
@@ -119,7 +119,7 @@
 </span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=p>(</span><span class=n>i</span> <span class=o>&lt;</span> <span class=mi>10</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=c1>// 加锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>            <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Parent process: Counter before increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
@@ -128,7 +128,7 @@
 </span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Parent process: Counter after increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>            <span class=c1>// 解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>            <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>            <span class=n>i</span><span class=o>++</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
@@ -136,13 +136,13 @@
 </span></span><span class=line><span class=cl>        <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=c1>// 等待子进程结束
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>wait</span><span class=p>(</span><span class=nb>NULL</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>wait</span><span class=p>(</span><span class=nb>NULL</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=c1>// 分离共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=c1>// 删除共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>shmctl</span><span class=p>(</span><span class=n>sharedMemoryId</span><span class=p>,</span> <span class=n>IPC_RMID</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>shmctl</span><span class=p>(</span><span class=n>sharedMemoryId</span><span class=p>,</span> <span class=n>IPC_RMID</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
@@ -189,13 +189,13 @@
 </span></span></span><span class=line><span class=cl><span class=c1>// Parent process: Counter before increment: 19
 </span></span></span><span class=line><span class=cl><span class=c1>// Parent process: Counter after increment: 20
 </span></span></span></code></pre></div><h2 id=健壮属性><a href=#%e5%81%a5%e5%a3%ae%e5%b1%9e%e6%80%a7>健壮属性</a></h2><p>该属性与启用了进程共享属性的互斥量有关。</p><p>作用是<strong>当持有互斥量的进程意外终止时，解决互斥量状态恢复的问题</strong>，否则互斥量处于加锁状态，其他阻塞在这个锁的进程会一直继续阻塞下去。</p><table><thead><tr><th>取值</th><th>含义</th></tr></thead><tbody><tr><td><code>PTHREAD_MUTEX_STALLED</code></td><td><strong>默认值</strong>，持有互斥量的进程终止时不采取任何动作，其他阻塞在该互斥量解锁的进程会一致阻塞。</td></tr><tr><td><code>PTHREAD_MUTEX_ROBUST</code></td><td><strong>当锁被另一个进程持有并且在终止时未释放锁的情况下，互斥量就会处于不一致的状态，当前进程或线程调用<code>pthread_mutex_lock</code>获取锁时返回<code>EOWNERDEAD</code>而非0，从而得知这个情况。</strong></td></tr></tbody></table><p>如果使用<code>PTHREAD_MUTEX_ROBUST</code>属性的互斥量，那么<code>pthread_mutex_lock()</code>函数会有三种返回值分别是：<strong>EOWNERDEAD（加锁成功但需要恢复互斥量状态）、0（加锁成功不需要恢复）以及加锁失败</strong>。</p><p>下面两个函数用于获取或者设置互斥量的健壮属性：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>pthread_mutexattr_getrobust</span><span class=p>(</span><span class=k>const</span> <span class=kt>pthread_mutexattr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>,</span>
+</span></span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_mutexattr_getrobust</span><span class=p>(</span><span class=k>const</span> <span class=kt>pthread_mutexattr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>,</span>
 </span></span><span class=line><span class=cl>                               <span class=kt>int</span> <span class=o>*</span><span class=n>robustness</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_mutexattr_setrobust</span><span class=p>(</span><span class=kt>pthread_mutexattr_t</span> <span class=o>*</span><span class=n>attr</span><span class=p>,</span>
 </span></span><span class=line><span class=cl>                              <span class=kt>int</span> <span class=n>robustness</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=c1>// 返回值：成功返回0，失败返回错误编号
 </span></span></span></code></pre></div><p>如果已经使用了健壮的互斥量，那么当出现上面所述的问题时，又该<strong>如何恢复互斥量的状态</strong>呢？</p><p>线程可以调用<code>pthread_mutex_consistent()</code>函数，来恢复互斥量的状态，使其可以继续被使用。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_mutex_consistent</span><span class=p>(</span><span class=kt>pthread_mutex_t</span> <span class=o>*</span><span class=n>mutex</span><span class=p>);</span>
 </span></span></code></pre></div><p>当互斥量处于不一致的状态之后，先获取到互斥量的线程（返回值为<code>EOWNERDEAD</code>）没有恢复互斥量状态，而是直接解锁，那么就会导致后续获取互斥量的线程返回<code>ENOTCOVERABLE</code>错误，不能再恢复互斥量。换句话说，即<strong>恢复互斥量状态一致性的机会仅有一次</strong>。</p><h3 id=示例-1><a href=#%e7%a4%ba%e4%be%8b-1>示例</a></h3><p>下面的例子提供了3个线程，其中线程1在持有互斥量的情况终止，线程2与父线程分别演示恢复互斥量与不恢复互斥量状态的结果：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
@@ -205,57 +205,57 @@
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/types.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/wait.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=cp>#define SHARED_MEMORY_KEY 1234
 </span></span></span><span class=line><span class=cl><span class=cp>#define SHARED_MEMORY_SIZE 1024
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=k>typedef</span> <span class=k>struct</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=kt>pthread_mutex_t</span> <span class=n>mutex</span><span class=p>;</span>  <span class=c1>// 互斥量保证父子进程之间的同步
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>counter</span><span class=p>;</span>            <span class=c1>// 父子进程之间对该变量进行同步+1
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span> <span class=n>SharedData</span><span class=p>;</span>               <span class=c1>// 共享内存数据
-</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>counter</span><span class=p>;</span>            <span class=c1>// 父子进程之间对该变量进行同步+1
+</span></span></span><span class=line><span class=cl><span class=p>}</span> <span class=n>SharedData</span><span class=p>;</span>               <span class=c1>// 共享内存数据
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>void</span><span class=o>*</span> <span class=nf>childProcess1</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 子进程1
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>SharedData</span><span class=o>*</span> <span class=n>sharedData</span> <span class=o>=</span> <span class=p>(</span><span class=n>SharedData</span><span class=o>*</span><span class=p>)</span><span class=n>arg</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>SharedData</span><span class=o>*</span> <span class=n>sharedData</span> <span class=o>=</span> <span class=p>(</span><span class=n>SharedData</span><span class=o>*</span><span class=p>)</span><span class=n>arg</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 加锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process1: Counter before increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 增加计数器
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=o>++</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=o>++</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process1: Counter after increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 当counter==5时，子进程再持有互斥锁的情况退出
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span> <span class=o>&gt;=</span> <span class=mi>5</span><span class=p>)</span>
+</span></span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span> <span class=o>&gt;=</span> <span class=mi>5</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process1: exit</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=nf>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=kt>void</span><span class=o>*</span> <span class=nf>childProcess2</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 子进程2
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>SharedData</span><span class=o>*</span> <span class=n>sharedData</span> <span class=o>=</span> <span class=p>(</span><span class=n>SharedData</span><span class=o>*</span><span class=p>)</span><span class=n>arg</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>SharedData</span><span class=o>*</span> <span class=n>sharedData</span> <span class=o>=</span> <span class=p>(</span><span class=n>SharedData</span><span class=o>*</span><span class=p>)</span><span class=n>arg</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 加锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>==</span> <span class=n>ENOTRECOVERABLE</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 进程1退出之后，主进程先获取到锁，但未恢复互斥量
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process2: mutex not recoverable</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process2: mutex not recoverable</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=nf>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>==</span> <span class=n>EOWNERDEAD</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 解锁之前不恢复互斥量，会导致接下来其他进程也无法恢复
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process2: recover mutex</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
@@ -264,11 +264,11 @@
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process2: Counter before increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 增加计数器
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=o>++</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=o>++</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Child process2: Counter after increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>NULL</span><span class=p>;</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl>
@@ -278,7 +278,7 @@
 </span></span><span class=line><span class=cl>    <span class=n>SharedData</span><span class=o>*</span> <span class=n>sharedData</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 创建共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedMemoryId</span> <span class=o>=</span> <span class=nf>shmget</span><span class=p>(</span><span class=n>SHARED_MEMORY_KEY</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>SharedData</span><span class=p>),</span> <span class=n>IPC_CREAT</span> <span class=o>|</span> <span class=mo>0666</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedMemoryId</span> <span class=o>=</span> <span class=nf>shmget</span><span class=p>(</span><span class=n>SHARED_MEMORY_KEY</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>SharedData</span><span class=p>),</span> <span class=n>IPC_CREAT</span> <span class=o>|</span> <span class=mo>0666</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>sharedMemoryId</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;shmget&#34;</span><span class=p>);</span>
@@ -286,7 +286,7 @@
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 连接到共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedData</span> <span class=o>=</span> <span class=nf>shmat</span><span class=p>(</span><span class=n>sharedMemoryId</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedData</span> <span class=o>=</span> <span class=nf>shmat</span><span class=p>(</span><span class=n>sharedMemoryId</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>sharedData</span> <span class=o>==</span> <span class=p>(</span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;shmat&#34;</span><span class=p>);</span>
@@ -294,20 +294,20 @@
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 初始化互斥量
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_mutexattr_t</span> <span class=n>mutexAttr</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>pthread_mutexattr_t</span> <span class=n>mutexAttr</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 设置互斥量的进程共享属性，使其能够在父子进程之间同步
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutexattr_setpshared</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>,</span> <span class=n>PTHREAD_PROCESS_SHARED</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_setpshared</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>,</span> <span class=n>PTHREAD_PROCESS_SHARED</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 设置互斥量的健壮属性
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutexattr_setrobust</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>,</span> <span class=n>PTHREAD_MUTEX_ROBUST</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_setrobust</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>,</span> <span class=n>PTHREAD_MUTEX_ROBUST</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_init</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>),</span> <span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 初始化计数器
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 创建子进程1
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pid_t</span> <span class=n>pid1</span> <span class=o>=</span> <span class=nf>fork</span><span class=p>();</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>pid_t</span> <span class=n>pid1</span> <span class=o>=</span> <span class=nf>fork</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>pid1</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;fork&#34;</span><span class=p>);</span>
@@ -317,7 +317,7 @@
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>pid1</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 子进程1
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=p>(</span><span class=n>i</span> <span class=o>&lt;</span> <span class=mi>5</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=nf>childProcess1</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
@@ -325,12 +325,12 @@
 </span></span><span class=line><span class=cl>            <span class=nf>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=p>}</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 分离共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=k>else</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 创建子进程1
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kt>pid_t</span> <span class=n>pid2</span> <span class=o>=</span> <span class=nf>fork</span><span class=p>();</span>
+</span></span></span><span class=line><span class=cl>        <span class=kt>pid_t</span> <span class=n>pid2</span> <span class=o>=</span> <span class=nf>fork</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>pid2</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=nf>perror</span><span class=p>(</span><span class=s>&#34;fork&#34;</span><span class=p>);</span>
@@ -339,7 +339,7 @@
 </span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>pid2</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=c1>// 子进程2
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>            <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>            <span class=k>while</span> <span class=p>(</span><span class=n>i</span> <span class=o>&lt;</span> <span class=mi>5</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>            <span class=p>{</span>
 </span></span><span class=line><span class=cl>                <span class=nf>childProcess2</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
@@ -347,26 +347,26 @@
 </span></span><span class=line><span class=cl>                <span class=nf>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>            <span class=p>}</span>
 </span></span><span class=line><span class=cl>            <span class=c1>// 分离共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>            <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=p>}</span>
 </span></span><span class=line><span class=cl>        <span class=k>else</span>
 </span></span><span class=line><span class=cl>        <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=c1>// 父进程
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>            <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>            <span class=k>while</span> <span class=p>(</span><span class=n>i</span> <span class=o>&lt;</span> <span class=mi>5</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>            <span class=p>{</span>
 </span></span><span class=line><span class=cl>                <span class=c1>// 父进程检测返回值，判断是否需要恢复互斥量
-</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=kt>int</span> <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>                <span class=kt>int</span> <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>==</span> <span class=n>ENOTRECOVERABLE</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>                <span class=p>{</span>
 </span></span><span class=line><span class=cl>                    <span class=c1>// 进程1退出之后，进程2先获取到锁，但未恢复互斥量
-</span></span></span><span class=line><span class=cl><span class=c1></span>                    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Parent process: mutex not recoverable</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>                    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Parent process: mutex not recoverable</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>                    <span class=nf>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>                <span class=p>}</span>
 </span></span><span class=line><span class=cl>                <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>==</span> <span class=n>EOWNERDEAD</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>                <span class=p>{</span>
 </span></span><span class=line><span class=cl>                    <span class=c1>// 解锁之前不恢复互斥量，会导致接下来其他进程也无法恢复
-</span></span></span><span class=line><span class=cl><span class=c1></span>                    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>                    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>                    <span class=k>break</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>                    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Parent process: recover mutex</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
@@ -378,19 +378,19 @@
 </span></span><span class=line><span class=cl>                <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Parent process: Counter after increment: %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>                <span class=c1>// 解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>                <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=p>(</span><span class=n>sharedData</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>                <span class=n>i</span><span class=o>++</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>                <span class=nf>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>            <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>            <span class=c1>// 回收两个子进程资源
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>wait</span><span class=p>(</span><span class=nb>NULL</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>            <span class=nf>wait</span><span class=p>(</span><span class=nb>NULL</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>            <span class=nf>wait</span><span class=p>(</span><span class=nb>NULL</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>            <span class=c1>// 分离共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>            <span class=nf>shmdt</span><span class=p>(</span><span class=n>sharedData</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>            <span class=c1>// 删除共享内存
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nf>shmctl</span><span class=p>(</span><span class=n>sharedMemoryId</span><span class=p>,</span> <span class=n>IPC_RMID</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>            <span class=nf>shmctl</span><span class=p>(</span><span class=n>sharedMemoryId</span><span class=p>,</span> <span class=n>IPC_RMID</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
@@ -443,25 +443,25 @@
 </span></span></span><span class=line><span class=cl><span class=c1>// Child process1: exit
 </span></span></span><span class=line><span class=cl><span class=c1>// Child process2: mutex not recoverable 父进程先持有互斥量，但未恢复
 </span></span></span></code></pre></div><p>从结果中可以看出，进程2与父进程在恢复互斥量状态时，都可以继续执行。但是第2次的结果中，父进程获得锁之后未恢复互斥量状态，直接导致进程2终止。</p><h2 id=类型属性><a href=#%e7%b1%bb%e5%9e%8b%e5%b1%9e%e6%80%a7>类型属性</a></h2><p>该属性决定互斥量的锁定特性，POSIX.1指定了以下4取值。</p><table><thead><tr><th>互斥量属性</th><th>说明</th></tr></thead><tbody><tr><td><code>PTHREAD_MUTEX_NORMAL</code></td><td>标准互斥量类型，不做错误检查或死锁检测。</td></tr><tr><td><code>PTHREAD_MUTEX_ERRORCHECK</code></td><td>提供错误检查。</td></tr><tr><td><code>PTHREAD_MUTEX_RECURSIVE</code></td><td>允许同一线程<strong>在互斥量解锁之前对该互斥量进行多次加锁</strong>。递归互斥量维护锁的计数，在解锁次数与加锁次数不相同的情况下，不会释放锁。</td></tr><tr><td><code>PTHREAD_MUTEX_DEFAULT</code></td><td>操作系统实现时会映射到其他三种互斥量。</td></tr></tbody></table><p>以下是不同类型互斥量在对三种不同情况（重复加锁、未占用时解锁以及重复解锁）时的处理结果：</p><table><thead><tr><th>互斥量类型</th><th>重复加锁</th><th>未占用时解锁</th><th>重复解锁</th></tr></thead><tbody><tr><td><code>PTHREAD_MUTEX_NORMAL</code></td><td>死锁</td><td>未定义</td><td>未定义</td></tr><tr><td><code>PTHREAD_MUTEX_ERRORCHECK</code></td><td>返回错误</td><td>返回错误</td><td>返回错误</td></tr><tr><td><code>PTHREAD_MUTEX_RECURSIVE</code></td><td>允许</td><td>返回错误</td><td>返回错误</td></tr></tbody></table><p>可以使用下面的函数获取或设置互斥量的类型属性：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span><span class=kt>int</span> <span class=nf>pthread_mutexattr_settype</span><span class=p>(</span><span class=kt>pthread_mutexattr_t</span><span class=o>*</span> <span class=n>attr</span><span class=p>,</span> <span class=kt>int</span> <span class=n>kind</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_mutexattr_settype</span><span class=p>(</span><span class=kt>pthread_mutexattr_t</span><span class=o>*</span> <span class=n>attr</span><span class=p>,</span> <span class=kt>int</span> <span class=n>kind</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>pthread_mutexattr_gettype</span><span class=p>(</span><span class=k>const</span> <span class=kt>pthread_mutexattr_t</span><span class=o>*</span> <span class=n>attr</span><span class=p>,</span> <span class=kt>int</span><span class=o>*</span> <span class=n>kind</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=c1>// 返回值：成功返回0，失败返回错误编号
 </span></span></span></code></pre></div><h3 id=示例1><a href=#%e7%a4%ba%e4%be%8b1>示例1</a></h3><p>在这个示例中，验证两种互斥量类型<code>PTHREAD_MUTEX_ERRORCHECK</code>与<code>PTHREAD_MUTEX_RECURSIVE</code>对上面三种情况的处理结果。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;string.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 设置错误检查互斥量
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_mutex_t</span> <span class=n>mutex</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>pthread_mutex_t</span> <span class=n>mutex</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=kt>pthread_mutexattr_t</span> <span class=n>mutexAttr</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_settype</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>,</span> <span class=n>PTHREAD_MUTEX_ERRORCHECK</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>mutexAttr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 1. 未加锁时解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;PTHREAD_MUTEX_ERRORCHECK: %d %s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>iRet</span><span class=p>,</span> <span class=nf>strerror</span><span class=p>(</span><span class=n>iRet</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
@@ -469,7 +469,7 @@
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 2. 检测重复加锁返回错误
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;PTHREAD_MUTEX_ERRORCHECK: %d %s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>iRet</span><span class=p>,</span> <span class=nf>strerror</span><span class=p>(</span><span class=n>iRet</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
@@ -477,20 +477,20 @@
 </span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=c1>// 3. 未占有时解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>            <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>                <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;PTHREAD_MUTEX_ERRORCHECK: %d %s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>iRet</span><span class=p>,</span> <span class=nf>strerror</span><span class=p>(</span><span class=n>iRet</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>        <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 递归互斥量
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_mutex_t</span> <span class=n>mutex1</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>pthread_mutex_t</span> <span class=n>mutex1</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=kt>pthread_mutexattr_t</span> <span class=n>mutexAttr1</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_settype</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutexAttr1</span><span class=p>,</span> <span class=n>PTHREAD_MUTEX_RECURSIVE</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex1</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>mutexAttr1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 1. 未加锁时解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex1</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;PTHREAD_MUTEX_RECURSIVE: %d %s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>iRet</span><span class=p>,</span> <span class=nf>strerror</span><span class=p>(</span><span class=n>iRet</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
@@ -498,7 +498,7 @@
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 2. 检测重复加锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex1</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;PTHREAD_MUTEX_RECURSIVE: %d %s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>iRet</span><span class=p>,</span> <span class=nf>strerror</span><span class=p>(</span><span class=n>iRet</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>        <span class=k>else</span>
@@ -512,7 +512,7 @@
 </span></span><span class=line><span class=cl>                <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;PTHREAD_MUTEX_RECURSIVE: %d %s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>iRet</span><span class=p>,</span> <span class=nf>strerror</span><span class=p>(</span><span class=n>iRet</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>            <span class=c1>// 3. 未占有时解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex1</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>            <span class=n>iRet</span> <span class=o>=</span> <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>mutex1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>iRet</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>                <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;PTHREAD_MUTEX_RECURSIVE: %d %s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>iRet</span><span class=p>,</span> <span class=nf>strerror</span><span class=p>(</span><span class=n>iRet</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>        <span class=p>}</span>
@@ -526,61 +526,61 @@
 </span></span></span><span class=line><span class=cl><span class=c1>// PTHREAD_MUTEX_RECURSIVE: 1 Operation not permitted 未占有时解锁
 </span></span></span></code></pre></div><h3 id=示例2><a href=#%e7%a4%ba%e4%be%8b2>示例2</a></h3><p>递归锁的一种使用场景是<strong>当一个库需要调用库之外的函数，而且该函数可能会再次回调该库中的函数</strong>时，就需要递归锁。</p><p>例如当前库中加锁调用一个库之外的函数，并且该函数会调用传入的回调函数，回调函数中又会获取相同的锁，此时就需要使用递归锁。</p><p>下面是针对这种情况使用AI工具生成的一个示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;pthread.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1>// 定义递归锁
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>pthread_mutex_t</span> <span class=n>lock</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl><span class=kt>pthread_mutex_t</span> <span class=n>lock</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1>// 传入回调函数的结构体
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>typedef</span> <span class=k>struct</span>
+</span></span></span><span class=line><span class=cl><span class=k>typedef</span> <span class=k>struct</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=p>(</span><span class=o>*</span><span class=n>callback</span><span class=p>)(</span><span class=kt>void</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span> <span class=n>CallbackData</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1>// 外部函数，会调用传入的回调函数
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>void</span> <span class=nf>externalFunction</span><span class=p>(</span><span class=n>CallbackData</span><span class=o>*</span> <span class=n>data</span><span class=p>)</span>
+</span></span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>externalFunction</span><span class=p>(</span><span class=n>CallbackData</span><span class=o>*</span> <span class=n>data</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 加锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Executing external function</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 调用传入的回调函数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>data</span><span class=o>-&gt;</span><span class=nf>callback</span><span class=p>();</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>data</span><span class=o>-&gt;</span><span class=nf>callback</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1>// 回调函数，在该函数中又会获取相同的锁
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>void</span> <span class=nf>callbackFunction</span><span class=p>()</span>
+</span></span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>callbackFunction</span><span class=p>()</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 加锁（递归锁）
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Executing callback function</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 解锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 初始化递归锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_mutexattr_t</span> <span class=n>attr</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>pthread_mutexattr_t</span> <span class=n>attr</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_settype</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>,</span> <span class=n>PTHREAD_MUTEX_RECURSIVE</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutexattr_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>attr</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 创建回调函数数据结构
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>CallbackData</span> <span class=n>data</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=n>CallbackData</span> <span class=n>data</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=n>data</span><span class=p>.</span><span class=n>callback</span> <span class=o>=</span> <span class=n>callbackFunction</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 调用外部函数，传入回调函数数据结构
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>externalFunction</span><span class=p>(</span><span class=o>&amp;</span><span class=n>data</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>externalFunction</span><span class=p>(</span><span class=o>&amp;</span><span class=n>data</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 销毁递归锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>pthread_mutex_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>lock</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
@@ -593,13 +593,13 @@
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;time.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#define SECTIONSEC 1000000000  </span><span class=c1>// 秒到纳秒的转换率
-</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=k>typedef</span> <span class=k>struct</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>counter</span><span class=p>;</span>            <span class=c1>// 计数器
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>condition</span><span class=p>;</span>          <span class=c1>// 条件，主线程在条件满足时延迟执行函数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_mutex_t</span> <span class=n>mutex</span><span class=p>;</span>  <span class=c1>// 用于保护条件与计数器
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>pthread_cond_t</span> <span class=n>cond</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>condition</span><span class=p>;</span>          <span class=c1>// 条件，主线程在条件满足时延迟执行函数
+</span></span></span><span class=line><span class=cl>    <span class=kt>pthread_mutex_t</span> <span class=n>mutex</span><span class=p>;</span>  <span class=c1>// 用于保护条件与计数器
+</span></span></span><span class=line><span class=cl>    <span class=kt>pthread_cond_t</span> <span class=n>cond</span><span class=p>;</span>
 </span></span><span class=line><span class=cl><span class=p>}</span> <span class=kt>context_t</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>context_t</span><span class=o>*</span> <span class=n>pContext</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
@@ -607,9 +607,9 @@
 </span></span><span class=line><span class=cl><span class=k>struct</span> <span class=n>to_info</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=p>(</span><span class=o>*</span><span class=n>to_fn</span><span class=p>)(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>);</span>  <span class=c1>// 运行的函数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>;</span>                 <span class=c1>// 函数参数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>to_wait</span><span class=p>;</span>   <span class=c1>// 等待时间
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>};</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>;</span>                 <span class=c1>// 函数参数
+</span></span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>to_wait</span><span class=p>;</span>   <span class=c1>// 等待时间
+</span></span></span><span class=line><span class=cl><span class=p>};</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>int</span> <span class=nf>makepthread</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=p>(</span><span class=o>*</span><span class=n>fn</span><span class=p>)(</span><span class=kt>void</span><span class=o>*</span><span class=p>),</span> <span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
@@ -633,14 +633,14 @@
 </span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>to_info</span><span class=o>*</span> <span class=n>tip</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=n>tip</span> <span class=o>=</span> <span class=p>(</span><span class=k>struct</span> <span class=n>to_info</span><span class=o>*</span><span class=p>)</span><span class=n>arg</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 在线程中休眠指定时长，然后调用函数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_nanosleep</span><span class=p>(</span><span class=n>CLOCK_REALTIME</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_wait</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>clock_nanosleep</span><span class=p>(</span><span class=n>CLOCK_REALTIME</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_wait</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>(</span><span class=o>*</span><span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_fn</span><span class=p>)(</span><span class=n>tip</span><span class=o>-&gt;</span><span class=n>arg</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>free</span><span class=p>(</span><span class=n>arg</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1>// 该函数的作用时，在when指定的时间之后运行func参数指定的函数，函数的参数为arg
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>static</span> <span class=kt>void</span> <span class=nf>timeout</span><span class=p>(</span><span class=k>const</span> <span class=k>struct</span> <span class=n>timespec</span><span class=o>*</span> <span class=n>when</span><span class=p>,</span> <span class=kt>void</span> <span class=p>(</span><span class=o>*</span><span class=n>func</span><span class=p>)(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>),</span> <span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>timeout</span><span class=p>(</span><span class=k>const</span> <span class=k>struct</span> <span class=n>timespec</span><span class=o>*</span> <span class=n>when</span><span class=p>,</span> <span class=kt>void</span> <span class=p>(</span><span class=o>*</span><span class=n>func</span><span class=p>)(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>),</span> <span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>now</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>to_info</span><span class=o>*</span> <span class=n>tip</span><span class=p>;</span>
@@ -650,8 +650,8 @@
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>((</span><span class=n>when</span><span class=o>-&gt;</span><span class=n>tv_sec</span> <span class=o>&gt;</span> <span class=n>now</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>)</span> <span class=o>||</span> <span class=p>(</span><span class=n>when</span><span class=o>-&gt;</span><span class=n>tv_sec</span> <span class=o>==</span> <span class=n>now</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>&amp;&amp;</span> <span class=n>when</span><span class=o>-&gt;</span><span class=n>tv_nsec</span> <span class=o>&gt;</span> <span class=n>now</span><span class=p>.</span><span class=n>tv_nsec</span><span class=p>))</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 时间没到
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=c1>// 打包传递给线程的数据结构
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>tip</span> <span class=o>=</span> <span class=p>(</span><span class=k>struct</span> <span class=n>to_info</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=k>sizeof</span><span class=p>(</span><span class=k>struct</span> <span class=n>to_info</span><span class=p>));</span>
+</span></span></span><span class=line><span class=cl>        <span class=c1>// 打包传递给线程的数据结构
+</span></span></span><span class=line><span class=cl>        <span class=n>tip</span> <span class=o>=</span> <span class=p>(</span><span class=k>struct</span> <span class=n>to_info</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=k>sizeof</span><span class=p>(</span><span class=k>struct</span> <span class=n>to_info</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>tip</span> <span class=o>!=</span> <span class=nb>NULL</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=nf>memset</span><span class=p>(</span><span class=n>tip</span><span class=p>,</span> <span class=mh>0x00</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=k>struct</span> <span class=n>to_info</span><span class=p>));</span>
@@ -659,18 +659,18 @@
 </span></span><span class=line><span class=cl>            <span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_fn</span> <span class=o>=</span> <span class=n>func</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>            <span class=c1>// 时间没到，计算剩余时间长度
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_wait</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>=</span> <span class=n>when</span><span class=o>-&gt;</span><span class=n>tv_sec</span> <span class=o>-</span> <span class=n>now</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>            <span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_wait</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>=</span> <span class=n>when</span><span class=o>-&gt;</span><span class=n>tv_sec</span> <span class=o>-</span> <span class=n>now</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>when</span><span class=o>-&gt;</span><span class=n>tv_nsec</span> <span class=o>&gt;=</span> <span class=n>now</span><span class=p>.</span><span class=n>tv_nsec</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>                <span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_wait</span><span class=p>.</span><span class=n>tv_nsec</span> <span class=o>=</span> <span class=n>when</span><span class=o>-&gt;</span><span class=n>tv_nsec</span> <span class=o>-</span> <span class=n>now</span><span class=p>.</span><span class=n>tv_nsec</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>            <span class=k>else</span>
 </span></span><span class=line><span class=cl>            <span class=p>{</span>
 </span></span><span class=line><span class=cl>                <span class=c1>// 需要借位
-</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_wait</span><span class=p>.</span><span class=n>tv_sec</span><span class=o>--</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>                <span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_wait</span><span class=p>.</span><span class=n>tv_sec</span><span class=o>--</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>                <span class=n>tip</span><span class=o>-&gt;</span><span class=n>to_wait</span><span class=p>.</span><span class=n>tv_nsec</span> <span class=o>=</span> <span class=n>SECTIONSEC</span> <span class=o>+</span> <span class=n>when</span><span class=o>-&gt;</span><span class=n>tv_nsec</span> <span class=o>-</span> <span class=n>now</span><span class=p>.</span><span class=n>tv_nsec</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>            <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>            <span class=c1>// 创建线程，等待并调用函数
-</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=n>err</span> <span class=o>=</span> <span class=nf>makepthread</span><span class=p>(</span><span class=n>timeout_helper</span><span class=p>,</span> <span class=p>(</span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=n>tip</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>            <span class=n>err</span> <span class=o>=</span> <span class=nf>makepthread</span><span class=p>(</span><span class=n>timeout_helper</span><span class=p>,</span> <span class=p>(</span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=n>tip</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>err</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>                <span class=k>return</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>            <span class=k>else</span>
@@ -682,14 +682,14 @@
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 时间已过，或者创建线程失败，则立即执行函数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 这意味着该函数没有在线程中运行，与main函数在同一个线程中。
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 此时需要使用递归互斥量，否则会死锁
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>(</span><span class=o>*</span><span class=n>func</span><span class=p>)(</span><span class=n>arg</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=c1>// 这意味着该函数没有在线程中运行，与main函数在同一个线程中。
+</span></span></span><span class=line><span class=cl>    <span class=c1>// 此时需要使用递归互斥量，否则会死锁
+</span></span></span><span class=line><span class=cl>    <span class=p>(</span><span class=o>*</span><span class=n>func</span><span class=p>)(</span><span class=n>arg</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1>// 要定时执行的函数
 </span></span></span><span class=line><span class=cl><span class=c1>// 对全局计数器+1
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>static</span> <span class=kt>void</span> <span class=nf>retry</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
+</span></span></span><span class=line><span class=cl><span class=k>static</span> <span class=kt>void</span> <span class=nf>retry</span><span class=p>(</span><span class=kt>void</span><span class=o>*</span> <span class=n>arg</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=n>pContext</span><span class=o>-&gt;</span><span class=n>counter</span><span class=o>++</span><span class=p>;</span>
@@ -706,7 +706,7 @@
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 设置条件
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>pContext</span><span class=o>-&gt;</span><span class=n>condition</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>        <span class=n>pContext</span><span class=o>-&gt;</span><span class=n>condition</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>        <span class=nf>pthread_mutex_unlock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=nf>pthread_cond_signal</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>cond</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
@@ -714,7 +714,7 @@
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1>// 这段程序的作用是一段时间（10s）之后对全局计数器加1
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>err</span><span class=p>,</span> <span class=n>arg</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>timespec</span> <span class=n>when</span><span class=p>;</span>
@@ -756,8 +756,8 @@
 </span></span><span class=line><span class=cl>        <span class=nf>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 创建一个线程，来控制条件，模拟实际场景线程交互
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// th_func1线程设置条件，主线程在满足条件的情况下延迟调用函数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>((</span><span class=n>err</span> <span class=o>=</span> <span class=nf>makepthread</span><span class=p>(</span><span class=n>th_func1</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>))</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span></span><span class=line><span class=cl>    <span class=c1>// th_func1线程设置条件，主线程在满足条件的情况下延迟调用函数
+</span></span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>((</span><span class=n>err</span> <span class=o>=</span> <span class=nf>makepthread</span><span class=p>(</span><span class=n>th_func1</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>))</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>    <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;makepthread failed, %s</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=nf>strerror</span><span class=p>(</span><span class=n>err</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>        <span class=nf>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
@@ -765,12 +765,12 @@
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_lock</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 在加锁的情况下验证条件
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>while</span> <span class=p>(</span><span class=o>!</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>condition</span><span class=p>)</span>
+</span></span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=o>!</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>condition</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 条件不满足的时候阻塞等待
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>pthread_cond_wait</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>cond</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>pthread_cond_wait</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>cond</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 设置10s后执行retry函数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_REALTIME</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>when</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>clock_gettime</span><span class=p>(</span><span class=n>CLOCK_REALTIME</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>when</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;%s %ld counter=%d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>__FUNCTION__</span><span class=p>,</span> <span class=n>when</span><span class=p>.</span><span class=n>tv_sec</span><span class=p>,</span> <span class=n>pContext</span><span class=o>-&gt;</span><span class=n>counter</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=n>when</span><span class=p>.</span><span class=n>tv_sec</span> <span class=o>+=</span> <span class=mi>10</span><span class=p>;</span>
@@ -782,7 +782,7 @@
 </span></span><span class=line><span class=cl>    <span class=nf>pthread_mutex_destroy</span><span class=p>(</span><span class=o>&amp;</span><span class=n>pContext</span><span class=o>-&gt;</span><span class=n>mutex</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 执行其他任务，防止主线程退出
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>while</span> <span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=nf>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nf>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
@@ -791,7 +791,7 @@
 </span></span></span><span class=line><span class=cl><span class=c1>// ^C
 </span></span></span></code></pre></div><p>从执行结果中可以看出，<code>retry</code>函数在10s之后完成了调用，符合预期。</p></div><div class=post-archive><ul class=post-copyright><li><strong>原文作者：</strong><a rel=author href=https://DBL2017.github.io/>生如夏花</a></li><li style=word-break:break-all><strong>原文链接：</strong><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E9%87%8F%E5%B1%9E%E6%80%A7/>https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E9%87%8F%E5%B1%9E%E6%80%A7/</a></li><li><strong>版权声明：</strong>本作品采用<a rel=license href=https://creativecommons.org/licenses/by-nc-nd/4.0/>知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li></ul></div><br><div class=post-archive><h2>相关文章</h2><ul class=listing><li><a href=/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/apue/%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7/>线程属性</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=/tags/%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7>线程属性</a></li><li><a href=/tags/%E4%BA%92%E6%96%A5%E9%87%8F%E5%B1%9E%E6%80%A7>互斥量属性</a></li><li><a href=/tags/%E5%81%A5%E5%A3%AE>健壮</a></li><li><a href=/tags/%E7%B1%BB%E5%9E%8B>类型</a></li><li><a href=/tags/%E8%BF%9B%E7%A8%8B%E5%85%B1%E4%BA%AB>进程共享</a></li></ul></div></article><div class="post bg-white"><script src=https://utteranc.es/client.js repo=DBL2017/DBL2017.github.io issue-term=title theme=github-light crossorigin=anonymous async></script></div></div></div></div><div class=content-right><div class=sidebar><section class=widget><form id=form-search action=https://DBL2017.github.io/search/ method=get accept-charset=utf-8 _lpchecked=1><input type=text name=q maxlength=20 placeholder=请输入查找关键字 required>
 <button type=submit class=submit title=提交>
-<svg t="1714448321870" class="icon" style="width:22px;height:22px" viewBox="0 0 1024 1024" p-id="1771" width="200" height="200"><path d="M781.9264 691.1232l236.928 236.9216-90.816 90.8032-236.9152-236.9216c-72.032 53.3568-161.184 84.9088-257.7088 84.9088C194.048 866.8352.0 672.7872.0 433.408.0 194.048 194.048.0 433.4144.0c239.3728.0 433.4208 194.048 433.4208 433.4144.0 96.5248-31.552 185.6768-84.9088 257.7088zm-348.512 47.2896c168.448.0 304.9984-136.5504 304.9984-304.9984s-136.5504-304.992-304.9984-304.992-304.992 136.5504-304.992 304.9856c0 168.448 136.5504 304.9984 304.992 304.9984z" fill="#4A4A4A" p-id="1772"/></svg></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/windowsterminal%E9%85%8D%E7%BD%AE/ title=WindowsTerminal配置>WindowsTerminal配置</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%BF%98%E8%AE%B0ubuntu14.04%E7%9A%84%E7%99%BB%E5%BD%95%E8%B4%A6%E5%AF%86%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/ title=记录一次忘记Ubuntu14.04的登录账密的处理方式>记录一次忘记Ubuntu14.04的登录账密的处理方式</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91/neovim/diagnostic/ title=Diagnostic>Diagnostic</a></li><li><a href=https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/libubox/uloop%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/ title=uloop源码剖析>uloop源码剖析</a></li><li><a href=https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/tikz%E7%BB%98%E5%88%B6%E6%8A%98%E7%BA%BF%E5%9B%BE/ title=TiKZ绘制折线图>TiKZ绘制折线图</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/ubuntu18%E6%B0%B8%E4%B9%85%E4%BF%AE%E6%94%B9%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%90%8D%E7%A7%B0/ title=Ubuntu18永久修改网络接口名称>Ubuntu18永久修改网络接口名称</a></li><li><a href=https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E4%B9%8Bdocumentclass/ title=LaTeX之documentclass>LaTeX之documentclass</a></li><li><a href=https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E4%B9%8Bctex%E5%AE%8F%E9%9B%86%E4%B9%8B%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%E7%B1%BB/ title=LaTeX之CTeX宏集之中文文档类>LaTeX之CTeX宏集之中文文档类</a></li><li><a href=https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E4%B9%8B%E4%B8%AD%E6%96%87%E6%94%AF%E6%8C%81/ title=LaTex之中文支持>LaTex之中文支持</a></li><li><a href=https://DBL2017.github.io/post/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/dibbler-server%E7%9A%84dhcpv6-pd%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D56%E4%BD%8D%E5%89%8D%E7%BC%80/ title=dibbler-server的DHCPv6-PD如何分配56位前缀>dibbler-server的DHCPv6-PD如何分配56位前缀</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list><li><a href=https://DBL2017.github.io/categories/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/>传输协议 (17)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/>工具使用 (25)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/>开源三方 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/>操作系统 (14)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/>数字安全 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/>数据结构和算法 (5)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/>编程语言 (14)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88/>网络工程师 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/>读书笔记 (56)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/>问题排查 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%BB%98%E8%AE%A4/>默认 (2)</a></li></ul></section><section class=widget><h3 class=widget-title>友情链接</h3><ul class=widget-list><li><a target=_blank href=https://mermaid.live/ title=Mermaid>Mermaid 编辑</a></li><li><a target=_blank href=https://excalidraw.com/ title=EXCALIDRAW>Excalidraw 绘图</a></li><li><a target=_blank href=https://git-scm.com/docs title=Git命令参考手册>Git命令参考手册</a></li><li><a target=_blank href=https://www.gnu.org/software/make/manual/make.html title="GNU make官方文档">GNU make官方文档</a></li><li><a target=_blank href=https://www.emojiall.com/ title=Emojiall表情网站>Emojiall表情网站</a></li></ul></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/index.xml>文章 RSS</a></li></ul></section></div></div></div><div class=container-footer><footer id=footer><div>&copy; 2025 <a href=https://DBL2017.github.io/>生如夏花 By
+<svg t="1714448321870" class="icon" style="width:22px;height:22px" viewBox="0 0 1024 1024" p-id="1771" width="200" height="200"><path d="M781.9264 691.1232l236.928 236.9216-90.816 90.8032-236.9152-236.9216c-72.032 53.3568-161.184 84.9088-257.7088 84.9088C194.048 866.8352.0 672.7872.0 433.408.0 194.048 194.048.0 433.4144.0c239.3728.0 433.4208 194.048 433.4208 433.4144.0 96.5248-31.552 185.6768-84.9088 257.7088zm-348.512 47.2896c168.448.0 304.9984-136.5504 304.9984-304.9984s-136.5504-304.992-304.9984-304.992-304.992 136.5504-304.992 304.9856c0 168.448 136.5504 304.9984 304.992 304.9984z" fill="#4A4A4A" p-id="1772"/></svg></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/post/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/unp/%E5%A5%97%E6%8E%A5%E5%AD%97%E5%9F%BA%E7%A1%80/ title=套接字基础>套接字基础</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/windowsterminal%E9%85%8D%E7%BD%AE/ title=WindowsTerminal配置>WindowsTerminal配置</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%BF%98%E8%AE%B0ubuntu14.04%E7%9A%84%E7%99%BB%E5%BD%95%E8%B4%A6%E5%AF%86%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/ title=记录一次忘记Ubuntu14.04的登录账密的处理方式>记录一次忘记Ubuntu14.04的登录账密的处理方式</a></li><li><a href=https://DBL2017.github.io/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91/neovim/diagnostic/ title=Diagnostic>Diagnostic</a></li><li><a href=https://DBL2017.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/openwrt/libubox/uloop%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/ title=uloop源码剖析>uloop源码剖析</a></li><li><a href=https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/tikz%E7%BB%98%E5%88%B6%E6%8A%98%E7%BA%BF%E5%9B%BE/ title=TiKZ绘制折线图>TiKZ绘制折线图</a></li><li><a href=https://DBL2017.github.io/post/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/ubuntu18%E6%B0%B8%E4%B9%85%E4%BF%AE%E6%94%B9%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%90%8D%E7%A7%B0/ title=Ubuntu18永久修改网络接口名称>Ubuntu18永久修改网络接口名称</a></li><li><a href=https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E4%B9%8Bdocumentclass/ title=LaTeX之documentclass>LaTeX之documentclass</a></li><li><a href=https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E4%B9%8Bctex%E5%AE%8F%E9%9B%86%E4%B9%8B%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%E7%B1%BB/ title=LaTeX之CTeX宏集之中文文档类>LaTeX之CTeX宏集之中文文档类</a></li><li><a href=https://DBL2017.github.io/post/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/latex/latex%E4%B9%8B%E4%B8%AD%E6%96%87%E6%94%AF%E6%8C%81/ title=LaTex之中文支持>LaTex之中文支持</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list><li><a href=https://DBL2017.github.io/categories/%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/>传输协议 (17)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/>工具使用 (25)</a></li><li><a href=https://DBL2017.github.io/categories/%E5%BC%80%E6%BA%90%E4%B8%89%E6%96%B9/>开源三方 (2)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/>操作系统 (14)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8/>数字安全 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/>数据结构和算法 (5)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/>编程语言 (14)</a></li><li><a href=https://DBL2017.github.io/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88/>网络工程师 (4)</a></li><li><a href=https://DBL2017.github.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/>读书笔记 (57)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/>问题排查 (6)</a></li><li><a href=https://DBL2017.github.io/categories/%E9%BB%98%E8%AE%A4/>默认 (2)</a></li></ul></section><section class=widget><h3 class=widget-title>友情链接</h3><ul class=widget-list><li><a target=_blank href=https://mermaid.live/ title=Mermaid>Mermaid 编辑</a></li><li><a target=_blank href=https://excalidraw.com/ title=EXCALIDRAW>Excalidraw 绘图</a></li><li><a target=_blank href=https://git-scm.com/docs title=Git命令参考手册>Git命令参考手册</a></li><li><a target=_blank href=https://www.gnu.org/software/make/manual/make.html title="GNU make官方文档">GNU make官方文档</a></li><li><a target=_blank href=https://www.emojiall.com/ title=Emojiall表情网站>Emojiall表情网站</a></li></ul></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://DBL2017.github.io/index.xml>文章 RSS</a></li></ul></section></div></div></div><div class=container-footer><footer id=footer><div>&copy; 2026 <a href=https://DBL2017.github.io/>生如夏花 By
 生如夏花</a>
 | <a rel=nofollow target=_blank href=http://beian.miit.gov.cn/>广电总局</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered
-by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://DBL2017.github.io/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">生如夏花</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script src=/js/jquery.fancybox.min.min.7fa821ee946e58947030e5d007d358378119205e16b74ab4d0c60560a36d0414a775f9dbe0586ce12723c75cea8794fabadd1f33100a9ee22f6da3826256c0ef.js integrity="sha512-f6gh7pRuWJRwMOXQB9NYN4EZIF4Wt0q00MYFYKNtBBSndfnb4Fhs4Scjx1zqh5T6ut0fMxAKnuIvbaOCYlbA7w==" crossorigin=anonymous></script><a id=rocket href=#top></a><script src=/js/totop.min.8c7573186baa30f09c49b5cf3176c3b105785324d961b3d5c2f7f099d14673160a29aeebdec25909d046aa14936cd43451e17664662d518550d5e8998dbec670.js integrity="sha512-jHVzGGuqMPCcSbXPMXbDsQV4UyTZYbPVwvfwmdFGcxYKKa7r3sJZCdBGqhSTbNQ0UeF2ZGYtUYVQ1eiZjb7GcA==" crossorigin=anonymous></script><script src=/js/clipboard.min.0765794be1674926c1a3810afcf039f605f367cb11cef727ad49e6aa70f9fca0a37d329d64c55822896869eb0960763e73e085ee7675cbc497e4d3256a6e6a67.js integrity="sha512-B2V5S+FnSSbBo4EK/PA59gXzZ8sRzvcnrUnmqnD5/KCjfTKdZMVYIoloaesJYHY+c+CF7nZ1y8SX5NMlam5qZw==" crossorigin=anonymous></script><script>var spy=new Gumshoe("#TableOfContents a",{nested:!0,nestedClass:"active"})</script><script>hljs.highlightAll()</script></div></div></body></html>
+by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://DBL2017.github.io/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">生如夏花</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script src=/js/jquery.fancybox.min.min.65c12100ca45d31006ad262cbdfa339fe0849703b18dfd74dd0156de627f0a1dc42eba3364e03876562117d2fa7722d8153cee03bdf747264c3c029102e154f6.js integrity="sha512-ZcEhAMpF0xAGrSYsvfozn+CElwOxjf103QFW3mJ/Ch3ELrozZOA4dlYhF9L6dyLYFTzuA733RyZMPAKRAuFU9g==" crossorigin=anonymous></script><a id=rocket href=#top></a><script src=/js/totop.min.8c7573186baa30f09c49b5cf3176c3b105785324d961b3d5c2f7f099d14673160a29aeebdec25909d046aa14936cd43451e17664662d518550d5e8998dbec670.js integrity="sha512-jHVzGGuqMPCcSbXPMXbDsQV4UyTZYbPVwvfwmdFGcxYKKa7r3sJZCdBGqhSTbNQ0UeF2ZGYtUYVQ1eiZjb7GcA==" crossorigin=anonymous></script><script src=/js/clipboard.min.0765794be1674926c1a3810afcf039f605f367cb11cef727ad49e6aa70f9fca0a37d329d64c55822896869eb0960763e73e085ee7675cbc497e4d3256a6e6a67.js integrity="sha512-B2V5S+FnSSbBo4EK/PA59gXzZ8sRzvcnrUnmqnD5/KCjfTKdZMVYIoloaesJYHY+c+CF7nZ1y8SX5NMlam5qZw==" crossorigin=anonymous></script><script>var spy=new Gumshoe("#TableOfContents a",{nested:!0,nestedClass:"active"})</script><script>hljs.highlightAll()</script></div></div></body></html>
